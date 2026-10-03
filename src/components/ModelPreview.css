@@ -1,0 +1,122 @@
+.model-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  background: #f5f8f7;
+}
+.three-preview-host,
+.footprint-svg-viewport {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  touch-action: none;
+}
+.footprint-svg-viewport {
+  cursor: grab;
+}
+.footprint-svg-viewport.has-grid {
+  background-image:
+    linear-gradient(#e2eae580 1px, transparent 1px),
+    linear-gradient(90deg, #e2eae580 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: center;
+}
+.footprint-svg-viewport:active {
+  cursor: grabbing;
+}
+.footprint-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 28px;
+  user-select: none;
+  transform-origin: center;
+  pointer-events: none;
+}
+.preview-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  color: #65766d;
+  font-size: 13px;
+  pointer-events: none;
+}
+.preview-camera-controls {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid #d9e2dc;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 3px 12px #213b2810;
+}
+.preview-camera-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 29px;
+  height: 29px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 5px;
+  color: #687a70;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.preview-camera-controls button:hover {
+  background: #f0f5f2;
+  color: #198467;
+}
+.preview-camera-controls button[aria-pressed="true"] {
+  color: #198467;
+  background: #e8f2ec;
+}
+.preview-camera-controls button:focus-visible {
+  outline: 2px solid #198467;
+  outline-offset: 2px;
+}
+.preview-interaction-hint {
+  position: absolute;
+  bottom: 26px;
+  right: 18px;
+  color: #7b8b81;
+  font-size: 10px;
+  pointer-events: none;
+}
+.preview-advisory {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  max-width: calc(100% - 30px);
+  padding: 8px 11px;
+  border: 1px solid #d9e2dc;
+  border-radius: 7px;
+  color: #63786b;
+  background: #ffffffed;
+  font-size: 11px;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .preview-interaction-hint {
+    display: none;
+  }
+  .preview-camera-controls {
+    left: 12px;
+    bottom: 12px;
+  }
+  .footprint-preview {
+    padding: 18px;
+  }
+}
