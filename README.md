@@ -55,4 +55,8 @@ Update the pinned package version and metadata together, then run the tests. Cat
 
 ## Deployment
 
-`bun run build` produces the static site in `dist/`. The included `vercel.json` sets the Bun install/build commands and Vite output directory. Connect this repository to Vercel and assign `models.tscircuit.com` to publish at that domain.
+The [live configurator](https://models-tscircuit-com.vercel.app) is hosted in the `tscircuit` team's Vercel project `models-tscircuit-com`. This GitHub repository is connected to Vercel with production deployments from `main`.
+
+`bun run build` produces the static site in `dist/`. The included `vercel.json` sets the Bun install/build commands and Vite output directory.
+
+The custom domain `models.tscircuit.com` is assigned to this project. To activate it, add a Cloudflare CNAME record named `models` pointing to `c27d28c7764d151e.vercel-dns-016.com`, with proxy status **DNS only**.
