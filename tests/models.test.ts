@@ -229,3 +229,19 @@ test("tiny numerical values serialize without unsupported exponent notation", ()
     ...configured.values,
   })
 })
+
+test("helical gear strings preserve tooth count, helix angle, handedness, and resolution", () => {
+  const spec = "helicalgear32_m0.5mm_width4mm_ha30_left_bore2mm_turnsegments48"
+  const imported = modelInputFromSpec(spec)
+  expect(imported.values).toMatchObject({
+    toothCount: 32,
+    faceWidth: 4,
+    helixAngle: 30,
+    handedness: "left",
+    segmentsPerTurn: 48,
+  })
+  const configured = configureModel(entry("helicalgear"), imported.values)
+  expect(parseSpec(configured.spec)).toEqual({ fn: "helicalgear", ...configured.values })
+  expect(configured.spec).toContain("helicalgear32")
+  expect(configured.code).toContain(configured.spec)
+})

@@ -1,4 +1,6 @@
 import { expect, test } from "bun:test"
+import { getFootprintNames } from "@tscircuit/footprinter"
+import { modelCatalog } from "../src/lib/model-catalog"
 import {
   catalog,
   configure,
@@ -9,12 +11,12 @@ import {
 } from "../src/lib/catalog"
 
 test("function search covers both catalogs and matches all query words", () => {
-  expect(catalog).toHaveLength(110)
+  expect(catalog).toHaveLength(modelCatalog.length + getFootprintNames().length)
   expect(
     searchCatalog("gear")
       .map((entry) => entry.fn)
       .sort(),
-  ).toEqual(["spurgear", "wormgear"])
+  ).toEqual(["helicalgear", "spurgear", "wormgear"])
   expect(searchCatalog("gear", "footprinter")).toEqual([])
   expect(searchCatalog("nema motor")[0]?.fn).toBe("nema")
   expect(searchCatalog("SOIC", "footprinter")[0]?.fn).toBe("soic")

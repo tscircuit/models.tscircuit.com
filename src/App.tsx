@@ -161,6 +161,14 @@ export function App() {
   }, [entry, values, baseSpec])
 
   useEffect(() => {
+    if (!workspaceOpen) return
+    // Save explicit inputs, including JSON-only settings, without freezing defaults.
+    const url = shareUrl(entry, values, baseSpec)
+    if (url !== window.location.href)
+      window.history.replaceState(window.history.state, "", url)
+  }, [entry, values, baseSpec, workspaceOpen])
+
+  useEffect(() => {
     if (!workspaceOpen || !configured.result) return
     const timer = window.setTimeout(() => {
       setRequest({
@@ -270,11 +278,6 @@ export function App() {
     setCatalogOpen(false)
     setParametersOpen(false)
     setWorkspaceOpen(true)
-    window.history.replaceState(
-      null,
-      "",
-      shareUrl(next.entry, next.values, next.spec),
-    )
   }
   const choose = (next: CatalogEntry) =>
     selectConfiguration({

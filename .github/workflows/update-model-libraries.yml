@@ -1,0 +1,63 @@
+name: Update model libraries
+
+on:
+  schedule:
+    - cron: "23 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-model-libraries
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+      - run: bun install --frozen-lockfile
+      - name: Check npm and update package and source pins
+        id: update
+        run: bun scripts/update-model-libraries.ts
+      - name: Regenerate catalogs, typecheck, and build
+        if: steps.update.outputs.changed == 'true'
+        run: bun run build
+      - name: Test updated libraries
+        if: steps.update.outputs.changed == 'true'
+        run: bun run test
+      - name: Install Chromium
+        if: steps.update.outputs.changed == 'true'
+        run: bunx playwright install --with-deps chromium
+      - name: Test production site
+        if: steps.update.outputs.changed == 'true'
+        run: bun run test:browser
+        env:
+          PLAYWRIGHT_PREVIEW: "1"
+      - name: Commit validated updates and trigger Vercel deployment
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json bun.lock scripts/source-pins.json src/lib/footprint-parameters.json src/lib/model-examples.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: update model libraries and generated catalogs"
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: model-library-update-failure
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
