@@ -516,6 +516,7 @@ export function App() {
             </button>
             <ModelDownload
               name={modelSpec}
+              request={request}
               preview={
                 !error && !busy && editedSpec === null &&
                 configured.result && request?.values === configured.result.values &&

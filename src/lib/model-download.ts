@@ -1,8 +1,9 @@
-import type { PreviewMesh } from "./catalog-types"
+import type { PreviewMesh, PreviewRequest } from "./catalog-types"
+import type { CadExportRequest } from "../workers/export-cad.worker"
 import { Group } from "three"
 import { createPreviewMesh } from "./three-preview"
 
-export type DownloadFormat = "glb" | "step"
+export type DownloadFormat = "glb" | "step" | "x_t"
 
 async function createGlb(meshes: PreviewMesh[]) {
   const { GLTFExporter } =
@@ -25,10 +26,11 @@ async function createGlb(meshes: PreviewMesh[]) {
   }
 }
 
-function createStep(meshes: PreviewMesh[], signal: AbortSignal): Promise<Blob> {
+function createCad(job: CadExportRequest, signal: AbortSignal): Promise<Blob> {
+  const label = job.format === "step" ? "STEP" : "Parasolid"
   return new Promise((resolve, reject) => {
     const worker = new Worker(
-      new URL("../workers/export-step.worker.ts", import.meta.url),
+      new URL("../workers/export-cad.worker.ts", import.meta.url),
       {
         type: "module",
       },
@@ -45,21 +47,27 @@ function createStep(meshes: PreviewMesh[], signal: AbortSignal): Promise<Blob> {
     const abort = () => fail("Download cancelled.")
     const timeout = window.setTimeout(
       () =>
-        fail("STEP export took too long. Try reducing the model resolution."),
+        fail(
+          `${label} export took too long. Try reducing the model resolution.`,
+        ),
       60_000,
     )
     signal.addEventListener("abort", abort, { once: true })
     worker.onmessage = (
-      event: MessageEvent<{ step?: string; error?: string }>,
+      event: MessageEvent<{ text?: string; error?: string }>,
     ) => {
       cleanup()
-      if (event.data.step)
-        resolve(new Blob([event.data.step], { type: "application/step" }))
-      else reject(new Error(event.data.error ?? "Unable to export STEP."))
+      if (event.data.text)
+        resolve(
+          new Blob([event.data.text], {
+            type: job.format === "step" ? "application/step" : "text/plain",
+          }),
+        )
+      else reject(new Error(event.data.error ?? `Unable to export ${label}.`))
     }
-    worker.onerror = () => fail("Unable to export STEP. Please try again.")
+    worker.onerror = () => fail(`Unable to export ${label}. Please try again.`)
     // Clone the buffers: transferring them would detach the live preview geometry.
-    worker.postMessage(meshes)
+    worker.postMessage(job)
   })
 }
 
@@ -68,12 +76,20 @@ export async function downloadModel(
   format: DownloadFormat,
   name: string,
   signal: AbortSignal,
+  request: PreviewRequest | null,
 ) {
   signal.throwIfAborted()
+  if (format === "x_t" && !request)
+    throw new Error("Wait for a valid model preview.")
   const blob =
     format === "glb"
       ? await createGlb(meshes)
-      : await createStep(meshes, signal)
+      : await createCad(
+          format === "step"
+            ? { format, meshes }
+            : { format, request: request! },
+          signal,
+        )
   signal.throwIfAborted()
   const url = URL.createObjectURL(blob)
   const link = document.createElement("a")

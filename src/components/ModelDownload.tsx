@@ -1,14 +1,16 @@
 import { useEffect, useId, useRef, useState } from "react"
 import { ChevronDown, Download, LoaderCircle } from "lucide-react"
-import type { PreviewResult } from "../lib/catalog-types"
+import type { PreviewRequest, PreviewResult } from "../lib/catalog-types"
 import { downloadModel, type DownloadFormat } from "../lib/model-download"
 
 export function ModelDownload({
   preview,
   name,
+  request,
 }: {
   preview: PreviewResult | null
   name: string
+  request: PreviewRequest | null
 }) {
   const [open, setOpen] = useState(false)
   const [format, setFormat] = useState<DownloadFormat | null>(null)
@@ -46,7 +48,13 @@ export function ModelDownload({
     const controller = new AbortController()
     job.current = controller
     try {
-      await downloadModel(preview.meshes, nextFormat, name, controller.signal)
+      await downloadModel(
+        preview.meshes,
+        nextFormat,
+        name,
+        controller.signal,
+        request,
+      )
     } catch (error) {
       if (!controller.signal.aborted)
         setError(
@@ -102,7 +110,7 @@ export function ModelDownload({
         disabled={disabled}
         aria-label={
           format
-            ? `Preparing ${format.toUpperCase()} download`
+            ? `Preparing ${format === "x_t" ? "Parasolid" : format.toUpperCase()} download`
             : "Download model"
         }
         aria-haspopup="menu"
@@ -131,6 +139,9 @@ export function ModelDownload({
           </button>
           <button role="menuitem" onClick={() => download("step")}>
             STEP (.step)
+          </button>
+          <button role="menuitem" onClick={() => download("x_t")}>
+            Parasolid (.x_t)
           </button>
         </div>
       )}

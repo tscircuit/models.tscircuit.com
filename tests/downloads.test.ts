@@ -2,6 +2,8 @@ import { beforeAll, expect, test } from "bun:test"
 import { createRequire } from "node:module"
 import jscad from "@jscad/modeling"
 import { exportStep } from "../src/lib/export-step"
+import { exportParasolid } from "../src/lib/export-parasolid"
+import { inspectParasolid } from "./parasolid-helpers"
 import {
   generatePreview,
   geometryToMesh,
@@ -10,6 +12,65 @@ import {
 import { modelCatalog } from "../src/lib/model-catalog"
 import { configureModel } from "../src/lib/model-configuration"
 import type { PreviewMesh } from "../src/lib/catalog-types"
+
+for (const [fn, edits] of [
+  ["spurgear", { faceWidth: 9, hubLength: 0 }],
+  [
+    "flexscreen",
+    {
+      offset: { x: 100, y: -50, z: 25 },
+      orientation: "sitsFlat",
+      conductorCount: 2,
+    },
+  ],
+] as const) {
+  test(`Parasolid preserves ${fn} bodies, dimensions, and resolved parameters`, () => {
+    const entry = modelCatalog.find((entry) => entry.fn === fn)!
+    const config = configureModel(entry, { ...entry.initialValues, ...edits })
+    const request = { id: 1, library: "modelprinter" as const, fn, ...config }
+    const preview = generatePreview(request)
+    expect(preview.error).toBeUndefined()
+    const parsed = inspectParasolid(exportParasolid(request))
+    expect(parsed.fullyParsed).toBe(true)
+    expect(parsed.bodies).toBe(preview.meshes.length)
+    // Parasolid stores meters and preserves the model's Z-up orientation.
+    for (let axis = 0; axis < 3; axis++) {
+      expect(parsed.min[axis] * 1000).toBeCloseTo(preview.bounds!.min[axis], 3)
+      expect(parsed.max[axis] * 1000).toBeCloseTo(preview.bounds!.max[axis], 3)
+    }
+  }, 30_000)
+}
+
+test("Parasolid exports NEMA solids without collapsing small faces to Float32", () => {
+  const entry = modelCatalog.find((entry) => entry.fn === "nema")!
+  const config = configureModel(entry, entry.initialValues)
+  const text = exportParasolid({
+    id: 1,
+    library: "modelprinter",
+    fn: entry.fn,
+    ...config,
+  })
+  expect(text).toContain("TRANSMIT FILE")
+  expect(text).not.toMatch(/NaN|Infinity/)
+}, 15_000)
+
+test("Parasolid includes footprint copper and rejects invalid requests", () => {
+  const request = {
+    id: 1,
+    library: "footprinter" as const,
+    fn: "smtpad",
+    spec: "smtpad",
+    values: { width: 4, height: 3 },
+  }
+  const parsed = inspectParasolid(exportParasolid(request))
+  expect(parsed.fullyParsed).toBe(true)
+  expect(parsed.bodies).toBeGreaterThan(0)
+  expect(parsed.max[0] - parsed.min[0]).toBeCloseTo(0.004, 6)
+  expect(parsed.max[1] - parsed.min[1]).toBeCloseTo(0.003, 6)
+  expect(() =>
+    exportParasolid({ ...request, fn: "unknown", spec: "unknown" }),
+  ).toThrow()
+})
 
 // The independent OpenCascade importer ships no TypeScript declarations.
 const createOcct = createRequire(import.meta.url)("occt-import-js")

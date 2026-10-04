@@ -178,13 +178,19 @@ function hasExactBodySpec(
   return normalize(fromSpec) === normalize(resolved)
 }
 
-export function generatePreview(request: PreviewRequest): PreviewResult {
+/** CAD exporters can capture the full-precision solids before display triangulation. */
+export function generatePreview(
+  request: PreviewRequest,
+  onGeometry?: (geometries: Geom3[]) => void,
+): PreviewResult {
   try {
     if (request.library === "modelprinter") {
       const component = modelComponents[request.fn]
       if (!component)
         throw new Error(`No geometry generator is available for ${request.fn}.`)
-      const meshes = meshGeometries(renderComponent(component, request.values))
+      const geometries = renderComponent(component, request.values)
+      onGeometry?.(geometries)
+      const meshes = meshGeometries(geometries)
       if (meshes.length === 0)
         throw new Error(
           "These settings produce no visible geometry. Enable a model part to preview it.",
@@ -244,6 +250,7 @@ export function generatePreview(request: PreviewRequest): PreviewResult {
       message =
         "3D copper is not available for this pad shape. The 2D footprint shows the complete configuration."
     }
+    onGeometry?.([...body, ...pads])
     const meshes = [...meshGeometries(body), ...meshGeometries(pads, "#71717a")]
     return {
       id: request.id,

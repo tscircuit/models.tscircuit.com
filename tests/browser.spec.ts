@@ -86,7 +86,7 @@ test.afterEach(async ({ page }) => {
   expect(browserErrors.get(page), "Browser errors").toEqual([])
 })
 
-test("downloads the current geometry as GLB and STEP, including after edits", async ({ page }) => {
+test("downloads the current geometry as GLB, STEP, and Parasolid, including after edits", async ({ page }) => {
   await page.goto(workspaceUrl())
   const downloadButton = page.getByRole("button", { name: "Download model", exact: true })
   await expect(downloadButton).toBeEnabled()
@@ -95,16 +95,19 @@ test("downloads the current geometry as GLB and STEP, including after edits", as
   await expect(page.getByRole("menuitem", { name: "GLB (.glb)", exact: true })).toBeFocused()
   await page.keyboard.press("ArrowDown")
   await expect(page.getByRole("menuitem", { name: "STEP (.step)", exact: true })).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(page.getByRole("menuitem", { name: "Parasolid (.x_t)", exact: true })).toBeFocused()
   await page.keyboard.press("Escape")
   await expect(downloadButton).toBeFocused()
   await expect(page.getByRole("menu")).toHaveCount(0)
 
-  const download = async (format: "GLB" | "STEP") => {
+  const download = async (format: "GLB" | "STEP" | "Parasolid") => {
+    const extension = format === "Parasolid" ? "x_t" : format.toLowerCase()
     await downloadButton.click()
     const pending = page.waitForEvent("download")
-    await page.getByRole("menuitem", { name: `${format} (.${format.toLowerCase()})`, exact: true }).click()
+    await page.getByRole("menuitem", { name: `${format} (.${extension})`, exact: true }).click()
     const file = await pending
-    expect(file.suggestedFilename()).toMatch(new RegExp(`^spurgear.*\\.${format.toLowerCase()}$`))
+    expect(file.suggestedFilename()).toMatch(new RegExp(`^spurgear.*\\.${extension}$`))
     return readFile((await file.path())!)
   }
 
@@ -129,6 +132,10 @@ test("downloads the current geometry as GLB and STEP, including after edits", as
   expect(step).toContain("FACETED_BREP")
   expect(step).toContain("SI_UNIT(.MILLI.,.METRE.)")
   expect(step).toContain("END-ISO-10303-21;")
+  const parasolid = (await download("Parasolid")).toString()
+  expect(parasolid).toContain("TRANSMIT FILE")
+  expect(parasolid).toContain("SCH_3000000_30000")
+  expect(parasolid).not.toMatch(/NaN|Infinity/)
 
   await openGroup(page, "Bore and hub")
   await page.getByLabel("Bore diameter", { exact: true }).fill("100mm")
@@ -140,6 +147,7 @@ test("downloads the current geometry as GLB and STEP, including after edits", as
   await expect(downloadButton).toBeInViewport()
   await downloadButton.click()
   await expect(page.getByRole("menuitem", { name: "STEP (.step)", exact: true })).toBeInViewport()
+  await expect(page.getByRole("menuitem", { name: "Parasolid (.x_t)", exact: true })).toBeInViewport()
   const pending = page.waitForEvent("download")
   await page.getByRole("menuitem", { name: "GLB (.glb)", exact: true }).click()
   const footprint = await pending
