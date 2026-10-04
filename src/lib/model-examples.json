@@ -3,12 +3,12 @@
     {
       "library": "modelprinter",
       "package": "@tscircuit/modelprinter",
-      "version": "0.0.7",
+      "version": "0.0.8",
       "repository": "tscircuit/modelprinter",
-      "commit": "e20a65dab565666481c2a6872c9eff6bfd9df53b",
-      "testFiles": 11,
-      "scannedStrings": 318,
-      "examples": 40
+      "commit": "acb1af3e013eca07ba6f671b6d63d9ee43f410ce",
+      "testFiles": 12,
+      "scannedStrings": 408,
+      "examples": 44
     },
     {
       "library": "footprinter",
@@ -51,6 +51,74 @@
         {
           "file": "tests/fixtures/assert-modelprinter.ts",
           "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:9a0605cfb861343f",
+      "library": "modelprinter",
+      "fn": "helicalgear",
+      "spec": "helicalgear",
+      "sources": [
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 21
+        },
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 22
+        },
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 25
+        },
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 31
+        },
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 33
+        },
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 178
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:55a5442c5d92453d",
+      "library": "modelprinter",
+      "fn": "helicalgear",
+      "spec": "helicalgear_teeth16_m2_w4_pa20_ha25_right_bore3",
+      "sources": [
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 52
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:97aa50dad2ff0746",
+      "library": "modelprinter",
+      "fn": "helicalgear",
+      "spec": "helicalgear_width2mm",
+      "sources": [
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:fa62e62920f3628e",
+      "library": "modelprinter",
+      "fn": "helicalgear",
+      "spec": "HELICALGEAR32_module0.1CM_facewidth0.25in_pressureangle20deg_helixangle30deg_left_borediameter2mm_backlash0.1mm_clearance0.3mm_hubdiameter10mm_hublength2mm_phase-15deg_segments24_turnsegments64",
+      "sources": [
+        {
+          "file": "tests/helical-gears.test.ts",
+          "line": 28
         }
       ]
     },

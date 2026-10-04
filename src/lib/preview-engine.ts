@@ -5,6 +5,7 @@ import {
   ExtrudedPads,
   FlexScreen,
   HexSocketBolt,
+  HelicalGear,
   NemaMotor,
   SheetMetal,
   SpurGear,
@@ -36,6 +37,7 @@ const modelComponents: Record<string, ComponentType<any>> = {
   hexsocketbolt: HexSocketBolt,
   sheetmetal: SheetMetal,
   spurgear: SpurGear,
+  helicalgear: HelicalGear,
   wormgear: WormGear,
   flexscreen: FlexScreen,
 }

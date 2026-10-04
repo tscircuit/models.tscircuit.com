@@ -9,17 +9,18 @@
     "build": "bun run generate:catalog && tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "bun test tests/models.test.ts tests/footprints.test.ts tests/preview.test.ts tests/catalog.test.ts tests/examples.test.ts tests/parameters.test.ts tests/downloads.test.ts",
-    "test:browser": "playwright test"
+    "test": "bun test tests/models.test.ts tests/footprints.test.ts tests/preview.test.ts tests/catalog.test.ts tests/examples.test.ts tests/parameters.test.ts tests/downloads.test.ts tests/library-updates.test.ts",
+    "test:browser": "playwright test",
+    "update:libraries": "bun scripts/update-model-libraries.ts"
   },
   "dependencies": {
     "@jscad/modeling": "^2.12.7",
     "@tscircuit/circuit-json-util": "^0.0.119",
     "@tscircuit/footprinter": "0.0.430",
-    "@tscircuit/modelprinter": "0.0.7",
+    "@tscircuit/modelprinter": "0.0.8",
     "circuit-json-to-connectivity-map": "^0.0.33",
     "circuit-to-svg": "^0.0.393",
-    "jscad-electronics": "0.0.185",
+    "jscad-electronics": "0.0.186",
     "jscad-fiber": "^0.0.85",
     "lucide-react": "^0.468.0",
     "react": "19.1.0",

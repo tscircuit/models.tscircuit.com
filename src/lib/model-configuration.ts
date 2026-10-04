@@ -4,6 +4,7 @@ import {
   hexSocketBoltModelPropsSchema,
   sheetMetalModelPropsSchema,
   spurGearModelPropsSchema,
+  helicalGearModelPropsSchema,
   wormGearModelPropsSchema,
   modelprinter,
 } from "@tscircuit/modelprinter"
@@ -15,11 +16,21 @@ export const modelSchemas = {
   hexsocketbolt: hexSocketBoltModelPropsSchema,
   sheetmetal: sheetMetalModelPropsSchema,
   spurgear: spurGearModelPropsSchema,
+  helicalgear: helicalGearModelPropsSchema,
   wormgear: wormGearModelPropsSchema,
 }
 export type ModelName = keyof typeof modelSchemas
 
 export const lengthTokens: Record<ModelName, Record<string, string>> = {
+  helicalgear: {
+    module: "m",
+    faceWidth: "w",
+    backlash: "backlash",
+    clearance: "clearance",
+    boreDiameter: "bore",
+    hubDiameter: "hubdiameter",
+    hubLength: "hublength",
+  },
   spurgear: {
     module: "m",
     faceWidth: "w",
@@ -104,6 +115,13 @@ export const lengthTokens: Record<ModelName, Record<string, string>> = {
   },
 }
 const numberTokens: Partial<Record<ModelName, Record<string, string>>> = {
+  helicalgear: {
+    pressureAngle: "pa",
+    helixAngle: "ha",
+    phase: "phase",
+    segmentsPerTooth: "segments",
+    segmentsPerTurn: "turnsegments",
+  },
   nema: {
     wireCount: "wirecount",
     wireSideAngle: "wireangle",
@@ -185,6 +203,12 @@ const shortcutTokens: Record<string, string> = {
 }
 
 const inputAliases: Partial<Record<ModelName, Record<string, string>>> = {
+  helicalgear: {
+    teeth: "toothCount",
+    width: "faceWidth",
+    right: "handedness",
+    left: "handedness",
+  },
   nema: {
     l: "bodyLength",
     length: "bodyLength",
@@ -261,7 +285,7 @@ export function modelInputFromSpec(spec: string): {
   }
   const values: Record<string, unknown> = {}
   if (fn === "nema") values.nemaSize = definition.nemaSize
-  if (fn === "spurgear" && raw.num_pins !== undefined)
+  if ((fn === "spurgear" || fn === "helicalgear") && raw.num_pins !== undefined)
     values.toothCount = definition.toothCount
   for (const token of Object.keys(raw)) {
     const key = tokenToProperty[token]
@@ -296,8 +320,8 @@ export function serializeModelInput(
   const tokens = [
     fn === "nema"
       ? `nema${props.nemaSize}`
-      : fn === "spurgear"
-        ? `spurgear${props.toothCount}`
+      : fn === "spurgear" || fn === "helicalgear"
+        ? `${fn}${props.toothCount}`
         : fn,
   ]
   // Emit only supplied fields; schema/parser defaults retain their upstream semantics.
@@ -323,7 +347,7 @@ export function serializeModelInput(
       tokens.push(`m${value.slice(1)}`)
     else if (fn === "nema" && key === "backFaceScrewSize")
       tokens.push(`backscrewm${value.slice(1)}`)
-    else if (fn === "wormgear" && key === "handedness") tokens.push(value)
+    else if ((fn === "wormgear" || fn === "helicalgear") && key === "handedness") tokens.push(value)
     else if (fn === "sheetmetal" && key === "profile") tokens.push(value)
     else if (fn === "sheetmetal" && key === "holes") {
       for (const [index, hole] of value.entries()) {
@@ -388,6 +412,7 @@ const componentNames: Record<ModelName, string> = {
   hexsocketbolt: "HexSocketBolt",
   sheetmetal: "SheetMetal",
   spurgear: "SpurGear",
+  helicalgear: "HelicalGear",
   wormgear: "WormGear",
 }
 const placementKeys = ["offset", "rotation", "screenOffset", "screenRotation"]

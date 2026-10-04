@@ -17,22 +17,10 @@ import { modelprinter } from "@tscircuit/modelprinter"
 import footprintMetadata from "../src/lib/footprint-parameters.json"
 import type { Library } from "../src/lib/catalog-types"
 import type { ModelExample } from "../src/lib/examples"
+import sourcePins from "./source-pins.json"
 
 const appRoot = resolve(import.meta.dir, "..")
-export const sourcePins = {
-  footprinter: {
-    package: "@tscircuit/footprinter",
-    version: "0.0.430",
-    repository: "tscircuit/footprinter",
-    commit: "69b6d99f65c30afc0e1c578a7754dce5d1dbcdfe",
-  },
-  modelprinter: {
-    package: "@tscircuit/modelprinter",
-    version: "0.0.7",
-    repository: "tscircuit/modelprinter",
-    commit: "e20a65dab565666481c2a6872c9eff6bfd9df53b",
-  },
-} as const
+export { sourcePins }
 
 /** Clean Vercel checkouts fetch the exact sources matching the installed packages. */
 export async function getPinnedSource(library: Library): Promise<string> {

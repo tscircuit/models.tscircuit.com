@@ -1,8 +1,10 @@
 import { describe, expect, test } from "bun:test"
+import { modelprinter } from "@tscircuit/modelprinter"
 import {
   extractAllTestStrings,
   extractTestStrings,
   validatedExamples,
+  sourcePins,
 } from "../scripts/generate-model-examples"
 import {
   exampleSources,
@@ -112,12 +114,12 @@ describe("test string discovery", () => {
 })
 
 describe("generated example catalog", () => {
-  test("retains pinned provenance and discovers all six ModelPrinter families", () => {
+  test("retains pinned provenance and discovers all installed ModelPrinter families", () => {
     expect(
       exampleSources.map((source) => `${source.package}@${source.version}`),
     ).toEqual([
-      "@tscircuit/modelprinter@0.0.7",
-      "@tscircuit/footprinter@0.0.430",
+      `${sourcePins.modelprinter.package}@${sourcePins.modelprinter.version}`,
+      `${sourcePins.footprinter.package}@${sourcePins.footprinter.version}`,
     ])
     expect(
       exampleSources.every(
@@ -131,7 +133,7 @@ describe("generated example catalog", () => {
           .filter((example) => example.library === "modelprinter")
           .map((example) => example.fn),
       ).size,
-    ).toBe(6)
+    ).toBe(modelprinter.getModelNames().length)
     expect(
       modelExamples.filter((example) => example.library === "footprinter")
         .length,

@@ -70,6 +70,14 @@ const metadata: Record<
     initialValues: Record<string, unknown>
   }
 > = {
+  helicalgear: {
+    name: "Helical gear",
+    category: "Gears",
+    tags: ["gear", "helical", "teeth", "mechanical"],
+    description: "An involute gear with configurable helix angle and handedness.",
+    initialSpec: "helicalgear",
+    initialValues: {},
+  },
   spurgear: {
     name: "Spur gear",
     category: "Gears",
@@ -150,7 +158,7 @@ function isCanonicalParameter(fn: ModelName, key: string): boolean {
 function group(fn: ModelName, key: string): string {
   if (placementKeys.includes(key) || key === "phase") return "Placement"
   if (/segments/i.test(key)) return "Resolution"
-  if (fn === "spurgear" || fn === "wormgear") {
+  if (fn === "spurgear" || fn === "wormgear" || fn === "helicalgear") {
     if (/bore|hub/i.test(key)) return "Bore and hub"
     if (["pressureAngle", "backlash", "clearance"].includes(key))
       return "Tooth profile"
