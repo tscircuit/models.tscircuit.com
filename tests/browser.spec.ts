@@ -12,6 +12,18 @@ const screenshotPath = (info: TestInfo, name: string) =>
     ? join(process.env.PLAYWRIGHT_SCREENSHOT_DIR, name)
     : info.outputPath(name)
 
+const workspaceUrl = (model = "modelprinter:spurgear") =>
+  `/?model=${encodeURIComponent(model)}`
+
+async function expectTopSpec(page: Page) {
+  await expect(spec(page)).toBeInViewport()
+  const field = await spec(page).boundingBox()
+  const preview = await page.getByTestId("model-preview").boundingBox()
+  expect(field).not.toBeNull()
+  expect(preview).not.toBeNull()
+  expect(field!.y + field!.height).toBeLessThanOrEqual(preview!.y)
+}
+
 async function settle(page: Page) {
   await expect(page.getByTestId("model-preview")).toHaveAttribute(
     "aria-busy",
@@ -74,9 +86,10 @@ test.afterEach(async ({ page }) => {
 test("spur controls regenerate real geometry and preserve the last valid preview", async ({
   page,
 }, testInfo) => {
-  await page.goto("/")
+  await page.goto(workspaceUrl())
   await expect(dimensions(page)).toContainText("26 × 26 × 5")
   await settle(page)
+  await expectTopSpec(page)
   await expect(canvas(page)).toBeVisible()
   const before = await canvas(page).screenshot()
 
@@ -121,7 +134,7 @@ test("spur controls regenerate real geometry and preserve the last valid preview
 test("function search and worm controls produce a multi-start left-handed screw", async ({
   page,
 }) => {
-  await page.goto("/")
+  await page.goto(workspaceUrl())
   const search = page.getByRole("textbox", { name: "Search functions" })
   await search.fill("gear")
   await expect(page.locator(".catalog-item")).toHaveCount(2)
@@ -129,7 +142,7 @@ test("function search and worm controls produce a multi-start left-handed screw"
   await expect(
     page.getByText("No functions found", { exact: true }),
   ).toBeVisible()
-  await page.getByRole("button", { name: "Clear search" }).click()
+  await page.getByRole("button", { name: "Clear search" }).first().click()
   await expect(page.getByTestId("catalog-qfn")).toBeVisible()
   await page.getByTestId("catalog-wormgear").click()
   await expect(dimensions(page)).toContainText("12 × 12 × 20")
@@ -162,7 +175,7 @@ test("function search and worm controls produce a multi-start left-handed screw"
 test("footprint controls change SVG pad count, dimensions, and the 3D preview", async ({
   page,
 }) => {
-  await page.goto("/")
+  await page.goto(workspaceUrl())
   await page.getByRole("button", { name: "Footprints", exact: true }).click()
   await page.getByTestId("catalog-qfn").click()
   await expect(page.getByTestId("footprint-svg")).toBeVisible()
@@ -194,7 +207,7 @@ test("footprint controls change SVG pad count, dimensions, and the 3D preview", 
 test("false boolean overrides change actual BGA pads from circles to rectangles", async ({
   page,
 }) => {
-  await page.goto("/")
+  await page.goto(workspaceUrl())
   await page.getByTestId("catalog-bga").click()
   await expect(page.getByTestId("footprint-svg")).toBeVisible()
   await expect
@@ -217,7 +230,7 @@ test("false boolean overrides change actual BGA pads from circles to rectangles"
 test("raw DSL updates controls and shared links restore both libraries", async ({
   page,
 }) => {
-  await page.goto("/")
+  await page.goto(workspaceUrl())
   await spec(page).fill("spurgear20_m0.5mm_w3mm_bore2mm")
   await page.getByRole("button", { name: "Apply", exact: true }).click()
   await expect(page.getByLabel("Teeth", { exact: true })).toHaveValue("20")
@@ -286,19 +299,17 @@ test("mobile drawers support configuration and keyboard dismissal", async ({
 }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto("/")
-  await expect(dimensions(page)).toContainText("26 × 26 × 5")
-  await settle(page)
-  await expect(
-    page.getByRole("textbox", { name: "Search functions" }),
-  ).not.toBeVisible()
-  await page.getByRole("button", { name: "Open catalog", exact: true }).click()
-  await page.getByRole("textbox", { name: "Search functions" }).fill("worm")
-  await page.getByTestId("catalog-wormgear").click()
+  const homeSearch = page.getByRole("textbox", { name: "Search functions" })
+  await expect(homeSearch).toBeInViewport()
+  await homeSearch.fill("wormgear")
+  await page.getByRole("button", { name: "Configure wormgear", exact: true }).click()
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Worm gear")
   await expect(
     page.getByRole("textbox", { name: "Search functions" }),
   ).not.toBeVisible()
   await expect(dimensions(page)).toContainText("12 × 12 × 20")
+  await settle(page)
+  await expectTopSpec(page)
 
   await page
     .getByRole("button", { name: "Open parameters", exact: true })
@@ -322,16 +333,22 @@ test("mobile drawers support configuration and keyboard dismissal", async ({
   await expect(
     page.getByRole("textbox", { name: "Search functions" }),
   ).not.toBeVisible()
+  await page.getByRole("button", { name: "Back to search", exact: true }).click()
+  await expect(homeSearch).toBeInViewport()
+  await expect(page.getByRole("button", { name: "Configure wormgear", exact: true })).toBeVisible()
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(390)
 })
 
 test("imported NEMA strings retain automatic frame dimensions and required resets", async ({
   page,
 }) => {
-  await page.goto("/")
+  await page.goto(workspaceUrl())
   await expect(dimensions(page)).toContainText("26 × 26 × 5")
   await settle(page)
   await spec(page).fill("")
-  await page.getByRole("heading", { level: 1 }).click()
+  await spec(page).blur()
   await expect(spec(page)).toHaveValue("")
   await expect(
     page.getByRole("button", { name: "Apply", exact: true }),
@@ -364,5 +381,83 @@ test("imported NEMA strings retain automatic frame dimensions and required reset
   await expect(spec(page)).toHaveValue("nema17")
   await expect(bodyLength).toHaveAttribute("placeholder", "38")
   await expect(dimensions(page)).toContainText("× 42.3 ×")
+  await settle(page)
+})
+
+test("home searches build-time examples and opens the selected geometry", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/")
+  const search = page.getByRole("textbox", { name: "Search functions" })
+  await expect(search).toBeInViewport()
+  await expect(page.getByRole("textbox", { name: "Model string", exact: true })).toHaveCount(0)
+  await expect(page.getByRole("complementary", { name: "Model parameters" })).toHaveCount(0)
+  await expect(page.getByTestId("model-preview")).toHaveCount(0)
+  await expect(page.locator(".example-card").first()).toBeVisible()
+  await expect(page.locator(".example-card img").first()).toBeVisible()
+  await page.screenshot({
+    path: screenshotPath(testInfo, "models-example-home.png"),
+    fullPage: false,
+  })
+
+  await search.fill("qfn")
+  const footprintExample = page.locator(".example-card").first()
+  const footprintImage = footprintExample.getByRole("img")
+  await expect(footprintImage).toBeVisible()
+  await expect(footprintImage).toHaveAttribute("src", /^data:image\/svg\+xml/)
+  const thumbnailPads = await footprintImage.evaluate((image) => {
+    const source = (image as HTMLImageElement).src
+    const svg = decodeURIComponent(source.slice(source.indexOf(",") + 1))
+    return new DOMParser()
+      .parseFromString(svg, "image/svg+xml")
+      .querySelectorAll('[data-type="pcb_smtpad"]').length
+  })
+  expect(thumbnailPads).toBeGreaterThan(0)
+
+  await search.fill("missing-example-239847")
+  await expect(page.locator(".example-card")).toHaveCount(0)
+  await search.fill("spurgear6 width2mm")
+  const example = page.getByRole("button", { name: "Configure spurgear6_width2mm", exact: true })
+  await expect(example).toBeVisible()
+  const modelImage = example.getByRole("img")
+  await expect(modelImage).toBeVisible()
+  await expect(modelImage).toHaveAttribute("src", /^data:image\/png/)
+  await expect.poll(async () => modelImage.evaluate((image) =>
+    (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0,
+  )).toBe(true)
+  await expect(page.locator(".example-card canvas")).toHaveCount(0)
+  await page.screenshot({
+    path: screenshotPath(testInfo, "models-example-search.png"),
+    fullPage: true,
+  })
+  await example.click()
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Spur gear")
+  await expect(page.getByLabel("Teeth", { exact: true })).toHaveValue("6")
+  await expect(page.getByLabel("Face width", { exact: true })).toHaveValue(/^2(?:mm)?$/)
+  await expect(dimensions(page)).toContainText("× 2")
+  await settle(page)
+  await expectTopSpec(page)
+  await page.getByLabel("Face width", { exact: true }).fill("4mm")
+  await expect(spec(page)).toHaveValue(/w4mm/)
+  await expect(dimensions(page)).toContainText("× 4")
+  await settle(page)
+  await page.getByRole("button", { name: "Back to search", exact: true }).click()
+  await expect(search).toBeInViewport()
+  await expect(example).toBeVisible()
+  await expect(page.getByTestId("model-preview")).toHaveCount(0)
+
+  await example.click()
+  await page.getByRole("button", { name: "Reset Teeth", exact: true }).click()
+  await page.getByRole("button", { name: "Reset Face width", exact: true }).click()
+  await expect(spec(page)).toHaveValue("spurgear24")
+  await expect(dimensions(page)).toContainText("26 × 26 × 5")
+  await settle(page)
+  await page.getByRole("button", { name: "Share", exact: true }).click()
+  const resetUrl = await page.evaluate(
+    () => (window as unknown as { copiedText: string }).copiedText,
+  )
+  await page.goto(resetUrl)
+  await expect(spec(page)).toHaveValue("spurgear24")
+  await expect(dimensions(page)).toContainText("26 × 26 × 5")
   await settle(page)
 })

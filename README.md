@@ -1,14 +1,16 @@
 # models.tscircuit.com
 
-An interactive workbench for [ModelPrinter](https://github.com/tscircuit/modelprinter) and [Footprinter](https://github.com/tscircuit/footprinter). Search a function, edit its parameters, and see the resulting model update automatically.
+An interactive workbench for [ModelPrinter](https://github.com/tscircuit/modelprinter) and [Footprinter](https://github.com/tscircuit/footprinter). Search examples from the libraries' tests, open a model string, and edit its parameters with a realtime preview.
 
-![Spur gear configuration with a live 3D preview](docs/configurator.png)
+![Searchable model and footprint examples](docs/examples.png)
 
 - Six ModelPrinter functions: NEMA motors, sheet metal, flexible screens, socket bolts, involute spur gears, and worm screws.
 - All 104 functions from Footprinter 0.0.430, with controls generated from the native parameter schemas.
 - 3D orbit, pan, zoom, camera presets, and fit; footprint SVG previews with pan and zoom.
 - Editable model strings, generated TypeScript, parameter JSON, and shareable configuration URLs.
 - Responsive catalog and parameter panels, keyboard search with Ctrl/Cmd+K, and validation that preserves the last valid preview.
+
+![Spur gear configuration with a live 3D preview](docs/configurator.png)
 
 ## Development
 
@@ -23,7 +25,7 @@ Open the URL printed by Vite. Geometry generation runs in a Web Worker; edits ar
 
 ```sh
 bun run test       # Catalog, parameter serialization, and real geometry checks
-bun run build      # Typecheck and production bundle
+bun run build      # Regenerate catalogs, typecheck, and bundle
 bunx playwright install chromium
 bun run test:browser
 ```
@@ -32,7 +34,7 @@ To test a production build, stop the dev server and run `PLAYWRIGHT_PREVIEW=1 bu
 
 ## Parameter and preview accuracy
 
-The controls use ModelPrinter's exported schemas and checked-in Footprinter schema metadata. Inputs remain separate from resolved defaults so changing a package preset can recompute dependent dimensions. The preview uses the libraries' actual generated geometry and Circuit JSON.
+The controls use ModelPrinter's exported Zod schemas and generated metadata from Footprinter's native schemas. The generator filters duplicate aliases, fixed values, and inherited fields ignored by the selected function. Inputs remain separate from resolved defaults so changing a package preset can recompute dependent dimensions. The preview uses the libraries' actual generated geometry and Circuit JSON.
 
 Some Footprinter booleans and enum combinations cannot be expressed by its string grammar. In those cases, the TypeScript tab exports the complete configuration and the UI explains the string limitation. Unsupported or mismatched package bodies are omitted from 3D previews; the exact copper and footprint SVG remain available.
 
@@ -40,18 +42,15 @@ FlexScreen placement objects are edited as JSON and exported as JSX when needed.
 
 ## Updating the catalogs
 
-ModelPrinter controls are derived from the installed package. Footprinter does not export its schemas in the npm bundle, so its controls are generated from a matching source checkout:
+Both `dev` and `build` run `generate:catalog`. A clean checkout downloads the pinned public source commits matching the installed npm versions; subsequent runs reuse the immutable source cache in `node_modules/.cache/tscircuit-sources` and scan the tests again.
 
 ```sh
-git clone https://github.com/tscircuit/footprinter ../footprinter
-cd ../footprinter
-git checkout 69b6d99f65c30afc0e1c578a7754dce5d1dbcdfe
-bun install
-cd ../models.tscircuit.com
-FOOTPRINTER_SOURCE_PATH=../footprinter bun scripts/generate-footprint-catalog.ts
+bun run generate:catalog
 ```
 
-Update the pinned package version and metadata together, then run the tests. Catalog coverage tests check every installed function and its default footprint.
+`scripts/generate-footprint-catalog.ts` derives Footprinter controls from its Zod schemas. `scripts/generate-model-examples.ts` statically scans all upstream test files for literal strings, finite template expressions, and shared fixtures, without executing test code. It validates candidates with the installed libraries, excludes invalid examples and ignored tokens, and records source files and line numbers. The current pins yield 40 ModelPrinter and 473 Footprinter examples from 253 test files.
+
+When upgrading either package, update its version and `sourcePins` in the example generator together, regenerate the catalogs, and run the tests. Catalog tests cover all six ModelPrinter and 104 Footprinter functions, including functions without a valid test-string example. `FOOTPRINTER_SOURCE_PATH` can override the Footprinter checkout while developing its schemas.
 
 ## Deployment
 

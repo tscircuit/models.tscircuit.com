@@ -60,11 +60,42 @@ function passiveDimensions(parameters: Values): Values | undefined {
 
 function applyValues(builder: Footprinter, fn: string, values: Values): void {
   const raw = builder.params() as Values
+  const effectiveValues = { ...values }
+  const canonicalAliases: Record<string, string[]> = {
+    leftrightpadwidth: ["lrpw"],
+    leftrightpadlength: ["lrpl"],
+    leftrightpins: ["lrpins"],
+    topbottompins: ["tbpins"],
+    smd: ["surfacemount"],
+    array: ["x"],
+    numPins: ["pinrow"],
+  }
+  if (fn === "smtpad")
+    Object.assign(canonicalAliases, {
+      d: ["pd", "diameter", "r", "pr", "radius"],
+      w: ["pw", "width", "s", "size"],
+      h: ["ph", "height"],
+    })
+  if (fn === "platedhole")
+    Object.assign(canonicalAliases, { d: ["hd", "r", "hr"], pd: ["pr"] })
+  if (fn === "mountedpcbmodule")
+    Object.assign(canonicalAliases, {
+      pinRowSide: ["pinrowleft", "pinrowright", "pinrowtop", "pinrowbottom"],
+      usbposition: ["usbleft", "usbtop", "usbright", "usbbottom"],
+      usbtype: ["usbmicro", "usbc"],
+    })
+  for (const [canonical, aliases] of Object.entries(canonicalAliases)) {
+    if (values[canonical] === undefined) continue
+    for (const alias of aliases) {
+      delete raw[alias]
+      delete effectiveValues[alias]
+    }
+  }
   if (values.metric !== undefined) delete raw.imperial
   if (values.imperial !== undefined) delete raw.metric
   if (fn === "mountedpcbmodule" && values.numPins !== undefined)
     delete raw.pinrow
-  for (const [key, value] of Object.entries(values)) {
+  for (const [key, value] of Object.entries(effectiveValues)) {
     if (typeof value === "number" && !Number.isFinite(value)) {
       throw new Error(`${key} must be a finite number.`)
     }
@@ -118,12 +149,24 @@ export function createConfiguredFootprint(
   spec: string,
   values: Values,
 ): Footprinter {
-  const builder = fp.string(spec)
+  let builder = fp.string(spec)
   const selectedFn = (builder.params() as Values).fn
   if (selectedFn !== fn)
     throw new Error(
       `Expected a ${fn} footprint, but the spec selects ${String(selectedFn)}.`,
     )
+  if (values.num_pins !== undefined) {
+    // Several package variants read their count from the source string after
+    // parsing. Updating only the Proxy's num_pins leaves their old geometry.
+    const normalized = String((builder.params() as Values).string ?? spec)
+    const [, ...parts] = normalized.split(/_(?!metric)/)
+    if (/^\d+$/.test(parts[0] ?? "")) parts.shift()
+    const head =
+      /\d/.test(fn) || fn === "potentiometer"
+        ? `${fn}_${String(values.num_pins)}`
+        : `${fn}${String(values.num_pins)}`
+    builder = fp.string([head, ...parts].join("_"))
+  }
   applyValues(builder, fn, explicitValues(values))
   return builder
 }
@@ -162,13 +205,17 @@ function bestSpec(fn: string, raw: Values, resolved: Values): string {
 }
 
 function fluentCode(spec: string, configured: Footprinter): string {
-  const seeded = fp.string(spec)
-  const seededParameters = seeded.params() as Values
   const configuredParameters = configured.params() as Values
+  const codeSpec =
+    typeof configuredParameters.string === "string"
+      ? configuredParameters.string
+      : spec
+  const seeded = fp.string(codeSpec)
+  const seededParameters = seeded.params() as Values
   const lines = [
     'import { fp } from "@tscircuit/footprinter"',
     "",
-    `const footprint = fp.string(${JSON.stringify(spec)})`,
+    `const footprint = fp.string(${JSON.stringify(codeSpec)})`,
   ]
   // Show preset expansion explicitly, making the copied snippet independent of
   // this site's configuration helper and faithful to the generated copper.

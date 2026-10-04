@@ -29,6 +29,6 @@ export default defineConfig({
           : "bun run dev --port 5173",
         url: "http://127.0.0.1:5173",
         reuseExistingServer: !process.env.CI && !process.env.PLAYWRIGHT_PREVIEW,
-        timeout: 30_000,
+        timeout: 120_000,
       },
 })

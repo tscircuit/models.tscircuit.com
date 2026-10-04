@@ -53,7 +53,7 @@ export function ParameterField({
   if (kind === "boolean")
     return (
       <div className="parameter-field boolean-field">
-        <label htmlFor={id}>
+        <label htmlFor={id} title={parameter.description}>
           <span>{label}</span>
           <input
             id={id}
@@ -63,9 +63,6 @@ export function ParameterField({
           />
         </label>
         {reset}
-        {parameter.description && (
-          <p className="field-description">{parameter.description}</p>
-        )}
       </div>
     )
 
@@ -82,11 +79,14 @@ export function ParameterField({
   return (
     <div className="parameter-field">
       <div className="field-heading">
-        <label className="field-label" htmlFor={id}>
+        <label
+          className="field-label"
+          htmlFor={id}
+          title={parameter.description}
+        >
           {label}
         </label>
         {reset}
-        {parameter.optional && <span className="optional-label">optional</span>}
       </div>
       {kind === "enum" ? (
         <div className="field-input">
@@ -151,14 +151,6 @@ export function ParameterField({
           value={Number.isFinite(numericValue) ? numericValue : parameter.min}
           onChange={(event) => onChange(Number(event.target.value))}
         />
-      )}
-      {parameter.description && (
-        <p className="field-description">{parameter.description}</p>
-      )}
-      {kind === "length" && !parameter.description && (
-        <p className="field-description">
-          Millimeters, or enter a unit such as 0.2in.
-        </p>
       )}
     </div>
   )

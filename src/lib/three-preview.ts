@@ -4,10 +4,39 @@ import type { PreviewMesh, PreviewResult } from "./catalog-types"
 
 export type CameraView = "isometric" | "top" | "front"
 
+function createPreviewMesh(mesh: PreviewMesh) {
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(mesh.positions, 3),
+  )
+  geometry.computeVertexNormals()
+  const color = new THREE.Color()
+  if (typeof mesh.color === "string") color.set(mesh.color)
+  else {
+    const divisor = mesh.color.slice(0, 3).some((channel) => channel > 1)
+      ? 255
+      : 1
+    color.setRGB(
+      mesh.color[0] / divisor,
+      mesh.color[1] / divisor,
+      mesh.color[2] / divisor,
+      THREE.SRGBColorSpace,
+    )
+  }
+  const material = new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.43,
+    metalness: 0.12,
+    side: THREE.DoubleSide,
+  })
+  return new THREE.Mesh(geometry, material)
+}
+
 export function createThreePreview(host: HTMLElement) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
-  renderer.setClearColor("#f5f8f7")
+  renderer.setClearColor("#fafafa")
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.domElement.setAttribute(
     "aria-label",
@@ -27,7 +56,7 @@ export function createThreePreview(host: HTMLElement) {
   controls.enableDamping = false
   const group = new THREE.Group()
   scene.add(group)
-  scene.add(new THREE.HemisphereLight("#ffffff", "#bdc8c2", 2.4))
+  scene.add(new THREE.HemisphereLight("#ffffff", "#d4d4d8", 2.4))
   const key = new THREE.DirectionalLight("#ffffff", 2.8)
   key.position.set(70, -80, 150)
   scene.add(key)
@@ -102,32 +131,7 @@ export function createThreePreview(host: HTMLElement) {
       group.traverse(disposeObject)
       group.clear()
       for (const mesh of meshes) {
-        const geometry = new THREE.BufferGeometry()
-        geometry.setAttribute(
-          "position",
-          new THREE.BufferAttribute(mesh.positions, 3),
-        )
-        geometry.computeVertexNormals()
-        const color = new THREE.Color()
-        if (typeof mesh.color === "string") color.set(mesh.color)
-        else {
-          const divisor = mesh.color.slice(0, 3).some((channel) => channel > 1)
-            ? 255
-            : 1
-          color.setRGB(
-            mesh.color[0] / divisor,
-            mesh.color[1] / divisor,
-            mesh.color[2] / divisor,
-            THREE.SRGBColorSpace,
-          )
-        }
-        const material = new THREE.MeshStandardMaterial({
-          color,
-          roughness: 0.43,
-          metalness: 0.12,
-          side: THREE.DoubleSide,
-        })
-        group.add(new THREE.Mesh(geometry, material))
+        group.add(createPreviewMesh(mesh))
       }
       bounds = nextBounds
       if (grid) {
@@ -146,7 +150,7 @@ export function createThreePreview(host: HTMLElement) {
           100,
           Math.max(2, Math.round(gridSize / step)),
         )
-        grid = new THREE.GridHelper(gridSize, divisions, "#c7d7cd", "#e0e8e3")
+        grid = new THREE.GridHelper(gridSize, divisions, "#d4d4d8", "#e4e4e7")
         grid.rotation.x = Math.PI / 2
         grid.position.set(
           (bounds.min[0] + bounds.max[0]) / 2,
@@ -175,6 +179,66 @@ export function createThreePreview(host: HTMLElement) {
       renderer.dispose()
       renderer.forceContextLoss()
       renderer.domElement.remove()
+    },
+  }
+}
+
+/** One offscreen renderer produces real model snapshots for all visible example cards. */
+export function createThumbnailRenderer() {
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+  renderer.setSize(520, 390)
+  renderer.setPixelRatio(1)
+  renderer.setClearColor("#fafafa")
+  renderer.outputColorSpace = THREE.SRGBColorSpace
+  const camera = new THREE.PerspectiveCamera(34, 4 / 3, 0.01, 10000)
+  camera.up.set(0, 0, 1)
+  const scene = new THREE.Scene()
+  scene.add(new THREE.HemisphereLight("#ffffff", "#d4d4d8", 2.4))
+  const key = new THREE.DirectionalLight("#ffffff", 2.8)
+  key.position.set(70, -80, 150)
+  scene.add(key)
+  const fill = new THREE.DirectionalLight("#ffffff", 1.2)
+  fill.position.set(-60, 40, 30)
+  scene.add(fill)
+  const group = new THREE.Group()
+  scene.add(group)
+  const clear = () => {
+    group.children.forEach((object) => {
+      if (object instanceof THREE.Mesh) {
+        object.geometry.dispose()
+        object.material.dispose()
+      }
+    })
+    group.clear()
+  }
+  return {
+    render(result: PreviewResult): string {
+      if (!result.bounds || result.meshes.length === 0)
+        throw new Error("No model geometry")
+      clear()
+      for (const mesh of result.meshes) group.add(createPreviewMesh(mesh))
+      const min = new THREE.Vector3(...result.bounds.min)
+      const max = new THREE.Vector3(...result.bounds.max)
+      const center = min.clone().add(max).multiplyScalar(0.5)
+      const radius = Math.max(max.clone().sub(min).length() / 2, 0.001)
+      const distance =
+        (radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2))) * 1.13
+      camera.position
+        .copy(center)
+        .addScaledVector(new THREE.Vector3(1, -1.3, 0.95).normalize(), distance)
+      camera.near = Math.max(radius / 1000, 0.000001)
+      camera.far = Math.max(distance + radius * 1000, 100)
+      camera.updateProjectionMatrix()
+      camera.lookAt(center)
+      renderer.render(scene, camera)
+      const url = renderer.domElement.toDataURL("image/png")
+      clear()
+      return url
+    },
+    dispose() {
+      clear()
+      renderer.dispose()
+      renderer.forceContextLoss()
     },
   }
 }
