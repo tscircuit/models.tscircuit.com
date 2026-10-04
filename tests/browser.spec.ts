@@ -445,4 +445,19 @@ test("home searches build-time examples and opens the selected geometry", async 
   await expect(search).toBeInViewport()
   await expect(example).toBeVisible()
   await expect(page.getByTestId("model-preview")).toHaveCount(0)
+
+  await example.click()
+  await page.getByRole("button", { name: "Reset Teeth", exact: true }).click()
+  await page.getByRole("button", { name: "Reset Face width", exact: true }).click()
+  await expect(spec(page)).toHaveValue("spurgear24")
+  await expect(dimensions(page)).toContainText("26 × 26 × 5")
+  await settle(page)
+  await page.getByRole("button", { name: "Share", exact: true }).click()
+  const resetUrl = await page.evaluate(
+    () => (window as unknown as { copiedText: string }).copiedText,
+  )
+  await page.goto(resetUrl)
+  await expect(spec(page)).toHaveValue("spurgear24")
+  await expect(dimensions(page)).toContainText("26 × 26 × 5")
+  await settle(page)
 })

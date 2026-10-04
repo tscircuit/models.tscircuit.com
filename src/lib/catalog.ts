@@ -138,8 +138,8 @@ export function shareUrl(
   const url = new URL(window.location.href)
   url.search = ""
   url.searchParams.set("model", entry.id)
-  if (Object.keys(values).length)
-    url.searchParams.set("params", JSON.stringify(values))
+  // An empty override set is meaningful after resetting an imported example.
+  url.searchParams.set("params", JSON.stringify(values))
   if (spec !== entry.initialSpec) url.searchParams.set("spec", spec)
   return url.toString()
 }
