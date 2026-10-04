@@ -8,6 +8,7 @@ An interactive workbench for [ModelPrinter](https://github.com/tscircuit/modelpr
 - All 104 functions from Footprinter 0.0.430, with controls generated from the native parameter schemas.
 - 3D orbit, pan, zoom, camera presets, and fit; footprint SVG previews with pan and zoom.
 - Editable model strings, generated TypeScript, parameter JSON, and shareable configuration URLs.
+- Download the current 3D model as GLB or STEP from each configuration page. GLB uses Y-up meters; STEP preserves millimeters and exports the preview's faceted geometry, including available footprint bodies and copper.
 - Responsive catalog and parameter panels, keyboard search with Ctrl/Cmd+K, and validation that preserves the last valid preview.
 
 ![Spur gear configuration with a live 3D preview](docs/configurator.png)

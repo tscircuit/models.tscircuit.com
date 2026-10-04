@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { ExamplePreview } from "./components/ExamplePreview"
 import { ModelPreview } from "./components/ModelPreview"
+import { ModelDownload } from "./components/ModelDownload"
 import { ParameterField } from "./components/ParameterField"
 import {
   catalog,
@@ -510,6 +511,16 @@ export function App() {
               <Share2 size={14} />
               <span>{copied === "share" ? "Copied" : "Share"}</span>
             </button>
+            <ModelDownload
+              name={modelSpec}
+              preview={
+                !error && !busy && editedSpec === null &&
+                configured.result && request?.values === configured.result.values &&
+                preview?.id === request?.id && preview?.meshes.length
+                  ? preview
+                  : null
+              }
+            />
           </div>
           {(catalogOpen || parametersOpen) && (
             <button

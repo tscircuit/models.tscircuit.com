@@ -85,6 +85,13 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .apply-button { @apply rounded border border-zinc-200 bg-white px-2.5 text-[11px] font-medium text-zinc-700; height: 29px; }
 .apply-button:hover:not(:disabled) { @apply border-zinc-400 bg-zinc-100; }
 .share-button { flex-shrink: 0; }
+.model-download { position: relative; flex-shrink: 0; }
+.download-menu, .download-error { @apply rounded-md border border-zinc-200 bg-white p-1 shadow-lg; position: absolute; top: calc(100% + 6px); right: 0; z-index: 50; min-width: 152px; }
+.download-menu button { @apply rounded px-3 py-2 text-left text-xs text-zinc-700; display: block; width: 100%; border: 0; background: transparent; }
+.download-menu button:hover, .download-menu button:focus { @apply bg-zinc-100 text-zinc-950; }
+.download-error { @apply p-3 text-xs text-red-700; width: 260px; }
+.download-spinner { animation: download-spin 1s linear infinite; }
+@keyframes download-spin { to { transform: rotate(360deg); } }
 .workspace { display: grid; grid-template-columns: 218px minmax(0, 1fr) 304px; height: calc(100dvh - 124px); min-height: 540px; }
 .catalog-panel, .parameters-panel { @apply bg-white; display: flex; flex-direction: column; min-height: 0; }
 .catalog-panel { @apply border-r border-zinc-200; }
@@ -200,6 +207,8 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
   .workspace-topbar { height: 68px; padding: 0 12px; gap: 6px; }
   .back-button { min-width: 25px; padding: 0; margin: 0 2px 0 0; }
   .back-button > span, .share-button > span { display: none; }
+  .download-button > span { display: none; }
+  .download-button { padding: 0 7px; gap: 3px; }
   .workspace-topbar > .icon-button, .share-button { width: 30px; min-width: 30px; height: 33px; min-height: 33px; padding: 0; }
   .spec-editor { padding-left: 8px; gap: 4px; height: 36px; }
   .spec-editor input { font-size: 11px; }

@@ -1,5 +1,8 @@
 import { expect, test, type Page, type TestInfo } from "@playwright/test"
 import { join } from "node:path"
+import { readFile } from "node:fs/promises"
+import { Box3, Vector3 } from "three"
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 
 const browserErrors = new WeakMap<Page, string[]>()
 const canvas = (page: Page) => page.locator(".three-preview-host canvas")
@@ -81,6 +84,68 @@ test.beforeEach(async ({ page }) => {
 
 test.afterEach(async ({ page }) => {
   expect(browserErrors.get(page), "Browser errors").toEqual([])
+})
+
+test("downloads the current geometry as GLB and STEP, including after edits", async ({ page }) => {
+  await page.goto(workspaceUrl())
+  const downloadButton = page.getByRole("button", { name: "Download model", exact: true })
+  await expect(downloadButton).toBeEnabled()
+  await downloadButton.focus()
+  await page.keyboard.press("ArrowDown")
+  await expect(page.getByRole("menuitem", { name: "GLB (.glb)", exact: true })).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(page.getByRole("menuitem", { name: "STEP (.step)", exact: true })).toBeFocused()
+  await page.keyboard.press("Escape")
+  await expect(downloadButton).toBeFocused()
+  await expect(page.getByRole("menu")).toHaveCount(0)
+
+  const download = async (format: "GLB" | "STEP") => {
+    await downloadButton.click()
+    const pending = page.waitForEvent("download")
+    await page.getByRole("menuitem", { name: `${format} (.${format.toLowerCase()})`, exact: true }).click()
+    const file = await pending
+    expect(file.suggestedFilename()).toMatch(new RegExp(`^spurgear.*\\.${format.toLowerCase()}$`))
+    return readFile((await file.path())!)
+  }
+
+  const glbBounds = async (buffer: Buffer) => {
+    expect(buffer.toString("ascii", 0, 4)).toBe("glTF")
+    const gltf = await new GLTFLoader().parseAsync(new Uint8Array(buffer).buffer, "")
+    return new Box3().setFromObject(gltf.scene).getSize(new Vector3())
+  }
+  const initial = await glbBounds(await download("GLB"))
+  // Export retains real dimensions while converting Z-up millimeters to Y-up meters.
+  expect(initial.x).toBeCloseTo(0.026, 5)
+  expect(initial.y).toBeCloseTo(0.005, 5)
+  expect(initial.z).toBeCloseTo(0.026, 5)
+
+  await page.getByLabel("Face width", { exact: true }).fill("9mm")
+  await expect(downloadButton).toBeDisabled()
+  await expect(downloadButton).toBeEnabled()
+  const edited = await glbBounds(await download("GLB"))
+  expect(edited.y).toBeCloseTo(0.009, 5)
+  const step = (await download("STEP")).toString()
+  expect(step).toContain("ISO-10303-21;")
+  expect(step).toContain("FACETED_BREP")
+  expect(step).toContain("SI_UNIT(.MILLI.,.METRE.)")
+  expect(step).toContain("END-ISO-10303-21;")
+
+  await openGroup(page, "Bore and hub")
+  await page.getByLabel("Bore diameter", { exact: true }).fill("100mm")
+  await expect(page.getByRole("alert")).toBeVisible()
+  await expect(downloadButton).toBeDisabled()
+  await page.getByTestId("catalog-qfn").click()
+  await expect(downloadButton).toBeEnabled()
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(downloadButton).toBeInViewport()
+  await downloadButton.click()
+  await expect(page.getByRole("menuitem", { name: "STEP (.step)", exact: true })).toBeInViewport()
+  const pending = page.waitForEvent("download")
+  await page.getByRole("menuitem", { name: "GLB (.glb)", exact: true }).click()
+  const footprint = await pending
+  expect(footprint.suggestedFilename()).toMatch(/^qfn.*\.glb$/)
+  expect((await glbBounds(await readFile((await footprint.path())!))).x).toBeGreaterThan(0)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
 })
 
 test("spur controls regenerate real geometry and preserve the last valid preview", async ({
