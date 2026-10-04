@@ -4,7 +4,7 @@ import type { PreviewMesh, PreviewResult } from "./catalog-types"
 
 export type CameraView = "isometric" | "top" | "front"
 
-function createPreviewMesh(mesh: PreviewMesh) {
+export function createPreviewMesh(mesh: PreviewMesh) {
   const geometry = new THREE.BufferGeometry()
   geometry.setAttribute(
     "position",
