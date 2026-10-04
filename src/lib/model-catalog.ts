@@ -138,6 +138,15 @@ const orientationKeys = [
   "foldedToRightAngleBelowBoard",
 ]
 
+function isCanonicalParameter(fn: ModelName, key: string): boolean {
+  if (fn !== "flexscreen") return true
+  // The orientation enum and aspectRatio already cover these native aliases.
+  // Raw strings and shared configurations can still use the aliases.
+  return (
+    key !== "ratio" && (key === "orientation" || !orientationKeys.includes(key))
+  )
+}
+
 function group(fn: ModelName, key: string): string {
   if (placementKeys.includes(key) || key === "phase") return "Placement"
   if (/segments/i.test(key)) return "Resolution"
@@ -266,8 +275,10 @@ export const modelCatalog: CatalogEntry[] = modelprinter
       library: "modelprinter",
       fn,
       ...data,
-      parameters: Object.entries(shape).map(([key, field]) =>
-        describeParameter(fn, key, field, resolvedDefaults),
-      ),
+      parameters: Object.entries(shape)
+        .filter(([key]) => isCanonicalParameter(fn, key))
+        .map(([key, field]) =>
+          describeParameter(fn, key, field, resolvedDefaults),
+        ),
     }
   })

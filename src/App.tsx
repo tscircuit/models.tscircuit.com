@@ -1,22 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
+  ArrowLeft,
   Box,
-  ChevronRight,
   Check,
+  ChevronRight,
   Code2,
   Copy,
   Cpu,
   ExternalLink,
+  Github,
   Grid2X2,
   Layers3,
   Menu,
+  RotateCcw,
   Search,
-  Settings2,
   Share2,
   SlidersHorizontal,
   X,
-  RotateCcw,
 } from "lucide-react"
+import { ExamplePreview } from "./components/ExamplePreview"
 import { ModelPreview } from "./components/ModelPreview"
 import { ParameterField } from "./components/ParameterField"
 import {
@@ -28,10 +30,12 @@ import {
   shareUrl,
   updateValues,
 } from "./lib/catalog"
+import { modelExamples, searchExamples } from "./lib/examples"
 import { modelInputFromSpec } from "./lib/model-configuration"
 import { footprintInputFromSpec } from "./lib/footprint-configuration"
 import type {
   CatalogEntry,
+  Library,
   ParameterDefinition,
   PreviewRequest,
   PreviewResult,
@@ -66,13 +70,60 @@ function groupParameters(parameters: ParameterDefinition[]) {
   return Array.from(groups)
 }
 
+function inputFromSpec(spec: string, preferred: Library = "modelprinter") {
+  const libraries: Library[] = [
+    preferred,
+    preferred === "modelprinter" ? "footprinter" : "modelprinter",
+  ]
+  let problem: unknown
+  for (const library of libraries) {
+    try {
+      const definition =
+        library === "modelprinter"
+          ? modelInputFromSpec(spec)
+          : footprintInputFromSpec(spec)
+      const entry = catalog.find(
+        (item) => item.library === library && item.fn === definition.fn,
+      )
+      if (!entry) throw new Error("Choose a supported function")
+      return { entry, values: definition.values, spec }
+    } catch (error) {
+      problem ??= error
+    }
+  }
+  throw problem
+}
+
+function seedState() {
+  const query = new URLSearchParams(window.location.search)
+  if (query.has("spec") && !query.has("model")) {
+    try {
+      return inputFromSpec(query.get("spec")!)
+    } catch {
+      /* An invalid link falls back to the default configuration. */
+    }
+  }
+  return initialState()
+}
+
+const libraryOptions = [
+  ["all", "All"],
+  ["modelprinter", "Models"],
+  ["footprinter", "Footprints"],
+] as const
+
 export function App() {
-  const seed = useMemo(initialState, [])
+  const seed = useMemo(seedState, [])
   const [entry, setEntry] = useState(seed.entry)
   const [values, setValues] = useState<Record<string, unknown>>(seed.values)
   const [baseSpec, setBaseSpec] = useState(seed.spec ?? seed.entry.initialSpec)
+  const [workspaceOpen, setWorkspaceOpen] = useState(() => {
+    const query = new URLSearchParams(window.location.search)
+    return query.has("model") || query.has("spec")
+  })
   const [search, setSearch] = useState("")
-  const [library, setLibrary] = useState("all")
+  const [library, setLibrary] = useState<"all" | Library>("all")
+  const [visibleExamples, setVisibleExamples] = useState(24)
   const [view, setView] = useState<"3d" | "2d">(
     seed.entry.library === "modelprinter" ? "3d" : "2d",
   )
@@ -80,7 +131,7 @@ export function App() {
   const [request, setRequest] = useState<PreviewRequest | null>(null)
   const [preview, setPreview] = useState<PreviewResult | null>(null)
   const [busy, setBusy] = useState(false)
-  const [codeTab, setCodeTab] = useState<"string" | "code" | "json">("string")
+  const [codeTab, setCodeTab] = useState<"code" | "json" | null>(null)
   const [editedSpec, setEditedSpec] = useState<string | null>(null)
   const [editError, setEditError] = useState("")
   const [copied, setCopied] = useState("")
@@ -88,6 +139,11 @@ export function App() {
   const [parametersOpen, setParametersOpen] = useState(false)
   const id = useRef(0)
   const searchRef = useRef<HTMLInputElement>(null)
+  const copyTimer = useRef<number | undefined>(undefined)
+  const homeSearch = useRef<{ search: string; library: "all" | Library }>({
+    search: "",
+    library: "all",
+  })
 
   const configured = useMemo(() => {
     try {
@@ -104,7 +160,7 @@ export function App() {
   }, [entry, values, baseSpec])
 
   useEffect(() => {
-    if (!configured.result) return
+    if (!workspaceOpen || !configured.result) return
     const timer = window.setTimeout(() => {
       setRequest({
         id: ++id.current,
@@ -113,17 +169,20 @@ export function App() {
         spec: configured.result!.spec,
         values: configured.result!.values,
       })
-      setEditError("")
     }, 150)
     return () => window.clearTimeout(timer)
-  }, [configured, entry])
+  }, [configured, entry, workspaceOpen])
+
+  useEffect(() => {
+    setVisibleExamples(24)
+  }, [search, library])
 
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault()
-        setCatalogOpen(true)
-        searchRef.current?.focus()
+        if (workspaceOpen) setCatalogOpen(true)
+        window.requestAnimationFrame(() => searchRef.current?.focus())
       }
       if (event.key === "Escape") {
         setCatalogOpen(false)
@@ -132,7 +191,9 @@ export function App() {
     }
     window.addEventListener("keydown", key)
     return () => window.removeEventListener("keydown", key)
-  }, [])
+  }, [workspaceOpen])
+
+  useEffect(() => () => window.clearTimeout(copyTimer.current), [])
 
   const receivePreview = useCallback(
     (result: PreviewResult) => setPreview(result),
@@ -142,24 +203,39 @@ export function App() {
     () => searchCatalog(search, library),
     [search, library],
   )
+  const examples = useMemo(() => {
+    const matching = searchExamples(search, library)
+    if (search.trim()) return matching
+    const functions = new Set<string>()
+    const representatives: typeof modelExamples = []
+    const remaining: typeof modelExamples = []
+    for (const example of matching) {
+      const key = `${example.library}:${example.fn}`
+      if (functions.has(key)) remaining.push(example)
+      else {
+        functions.add(key)
+        representatives.push(example)
+      }
+    }
+    return [...representatives, ...remaining]
+  }, [search, library])
   const grouped = groupParameters(entry.parameters)
   const resolved =
     configured.result?.resolvedValues ?? configured.result?.values ?? {}
+  const modelSpec = configured.result?.spec ?? baseSpec
   const displayCode =
-    codeTab === "code"
-      ? (configured.result?.code ?? "")
-      : codeTab === "json"
-        ? JSON.stringify(
-            {
-              fn: entry.fn,
-              ...(configured.result?.resolvedValues ??
-                configured.result?.values ??
-                values),
-            },
-            null,
-            2,
-          )
-        : (configured.result?.spec ?? baseSpec)
+    codeTab === "json"
+      ? JSON.stringify(
+          {
+            fn: entry.fn,
+            ...(configured.result?.resolvedValues ??
+              configured.result?.values ??
+              values),
+          },
+          null,
+          2,
+        )
+      : (configured.result?.code ?? "")
   const dimensions = preview?.bounds
     ? preview.bounds.max.map((value, axis) =>
         Math.abs(value - preview.bounds!.min[axis]),
@@ -170,27 +246,73 @@ export function App() {
     editError ||
     (preview?.id === request?.id ? preview?.error : "")
 
-  const choose = (next: CatalogEntry) => {
-    setEntry(next)
-    setValues({ ...next.initialValues })
-    setBaseSpec(next.initialSpec)
+  const selectConfiguration = (next: {
+    entry: CatalogEntry
+    values: Record<string, unknown>
+    spec: string
+  }) => {
+    if (!workspaceOpen) {
+      homeSearch.current = { search, library }
+      setSearch("")
+      setLibrary("all")
+    }
+    setEntry(next.entry)
+    setValues(next.values)
+    setBaseSpec(next.spec)
     setEditedSpec(null)
     setEditError("")
     setPreview(null)
-    setView(next.library === "modelprinter" ? "3d" : "2d")
-    setCodeTab("string")
+    setRequest(null)
+    setBusy(false)
+    setView(next.entry.library === "modelprinter" ? "3d" : "2d")
+    setCodeTab(null)
     setCatalogOpen(false)
+    setParametersOpen(false)
+    setWorkspaceOpen(true)
+    window.history.replaceState(
+      null,
+      "",
+      shareUrl(next.entry, next.values, next.spec),
+    )
   }
-  const change = (key: string, value: unknown) =>
+  const choose = (next: CatalogEntry) =>
+    selectConfiguration({
+      entry: next,
+      values: { ...next.initialValues },
+      spec: next.initialSpec,
+    })
+  const chooseExample = (example: (typeof modelExamples)[number]) => {
+    try {
+      selectConfiguration(inputFromSpec(example.spec, example.library))
+    } catch (problem) {
+      setEditError(errorMessage(problem))
+    }
+  }
+  const backToSearch = () => {
+    setWorkspaceOpen(false)
+    setCatalogOpen(false)
+    setParametersOpen(false)
+    setSearch(homeSearch.current.search)
+    setLibrary(homeSearch.current.library)
+    setEditError("")
+    const url = new URL(window.location.href)
+    url.search = ""
+    window.history.replaceState(null, "", url)
+    window.requestAnimationFrame(() => searchRef.current?.focus())
+  }
+  const change = (key: string, value: unknown) => {
     setValues((previous) => updateValues(entry, previous, key, value))
+    setEditError("")
+  }
   const copy = async (value: string, kind: string) => {
     try {
       await navigator.clipboard.writeText(value)
+      window.clearTimeout(copyTimer.current)
       setCopied(kind)
-      window.setTimeout(() => setCopied(""), 1800)
+      copyTimer.current = window.setTimeout(() => setCopied(""), 1800)
     } catch {
       setEditError(
-        "Clipboard is unavailable. Select the model string below to copy it.",
+        "Clipboard is unavailable. Select the model string to copy it.",
       )
     }
   }
@@ -198,36 +320,67 @@ export function App() {
     const spec = editedSpec?.trim()
     if (!spec) return
     try {
-      if (entry.library === "modelprinter") {
-        const definition = modelInputFromSpec(spec)
-        const next = catalog.find(
-          (item) =>
-            item.library === "modelprinter" && item.fn === definition.fn,
-        )
-        if (!next) throw new Error("Choose a supported model function")
-        setEntry(next)
-        setValues(definition.values)
-        setBaseSpec(spec)
-      } else {
-        const definition = footprintInputFromSpec(spec)
-        const next = catalog.find(
-          (item) => item.library === "footprinter" && item.fn === definition.fn,
-        )
-        if (!next) throw new Error("Choose a supported footprint function")
-        setEntry(next)
-        setValues(definition.values)
-        setBaseSpec(spec)
-      }
+      const next = inputFromSpec(spec, entry.library)
+      setEntry(next.entry)
+      setValues(next.values)
+      setBaseSpec(next.spec)
+      setView(next.entry.library === "modelprinter" ? "3d" : "2d")
       setEditedSpec(null)
       setEditError("")
     } catch (problem) {
       setEditError(errorMessage(problem))
     }
   }
+  const resetDefaults = () => {
+    setValues({ ...entry.initialValues })
+    setBaseSpec(entry.initialSpec)
+    setEditedSpec(null)
+    setEditError("")
+  }
+
+  const filters = (
+    <div className="library-filters" aria-label="Filter library">
+      {libraryOptions.map(([value, label]) => (
+        <button
+          key={value}
+          className={library === value ? "is-active" : ""}
+          onClick={() => setLibrary(value)}
+          aria-pressed={library === value}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+  const searchInput = (
+    <label className="search-box">
+      <Search size={18} />
+      <input
+        ref={searchRef}
+        aria-label="Search functions"
+        placeholder={
+          workspaceOpen ? "Search functions…" : "Search models and footprints…"
+        }
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        autoComplete="off"
+      />
+      <kbd>⌘ K</kbd>
+      {search && (
+        <button
+          className="search-clear"
+          aria-label="Clear search"
+          onClick={() => setSearch("")}
+        >
+          <X size={15} />
+        </button>
+      )}
+    </label>
+  )
 
   return (
     <div
-      className={`app-shell ${catalogOpen ? "catalog-open" : ""} ${parametersOpen ? "parameters-open" : ""}`}
+      className={`app-shell ${workspaceOpen ? "workspace-open" : ""} ${catalogOpen ? "catalog-open" : ""} ${parametersOpen ? "parameters-open" : ""}`}
     >
       <header className="app-header">
         <a
@@ -236,146 +389,189 @@ export function App() {
           target="_blank"
           rel="noreferrer"
         >
-          <span className="brand-mark">
-            <Box size={23} strokeWidth={1.7} />
-          </span>
+          <img className="brand-mark" src="/logo.svg" alt="tscircuit" />
           <span className="brand-title">tscircuit</span>
         </a>
-        <span className="brand-divider" />
+        <span className="brand-divider">/</span>
         <span className="header-title">Models</span>
-        <div className="header-actions">
-          <span className="header-subtitle">
-            A playground for parametric models
-          </span>
-          <a
-            className="icon-button"
-            href="https://github.com/tscircuit/models.tscircuit.com"
-            target="_blank"
-            rel="noreferrer"
-            title="View source"
-            aria-label="View source"
-          >
-            <Code2 size={19} />
-          </a>
-        </div>
+        <a
+          className="icon-button header-source"
+          href="https://github.com/tscircuit/models.tscircuit.com"
+          target="_blank"
+          rel="noreferrer"
+          title="View source"
+          aria-label="View source"
+        >
+          <Github size={18} />
+        </a>
       </header>
-      {(catalogOpen || parametersOpen) && (
-        <button
-          className="drawer-backdrop"
-          aria-label="Close panel"
-          onClick={() => {
-            setCatalogOpen(false)
-            setParametersOpen(false)
-          }}
-        />
-      )}
-      <main className="workspace">
-        <aside className="catalog-panel" aria-label="Model catalog">
-          <div className="panel-heading">
-            <span>Explore models</span>
-            <button
-              className="icon-button mobile-close"
-              aria-label="Close catalog"
-              onClick={() => setCatalogOpen(false)}
-            >
-              <X size={16} />
-            </button>
+
+      {!workspaceOpen ? (
+        <main className="examples-page">
+          <h1>Models</h1>
+          <div className="examples-search">
+            {searchInput}
+            {filters}
           </div>
-          <label className="search-box">
-            <Search size={16} />
-            <input
-              ref={searchRef}
-              aria-label="Search functions"
-              placeholder="Search functions…"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            <kbd>⌘ K</kbd>
-          </label>
-          <div className="library-filters" aria-label="Filter library">
-            {[
-              ["all", "All"],
-              ["modelprinter", "Models"],
-              ["footprinter", "Footprints"],
-            ].map(([value, label]) => (
+          {editError && (
+            <div className="search-error" role="alert">
+              {editError}
+            </div>
+          )}
+          <div className="example-grid">
+            {examples.slice(0, visibleExamples).map((example) => (
               <button
-                key={value}
-                className={library === value ? "is-active" : ""}
-                onClick={() => setLibrary(value)}
-                aria-pressed={library === value}
+                className="example-card"
+                key={example.id}
+                data-testid={`example-${example.id}`}
+                aria-label={`Configure ${example.spec}`}
+                onClick={() => chooseExample(example)}
               >
-                {label}
+                <div className="example-preview">
+                  <ExamplePreview example={example} />
+                </div>
+                <div className="example-caption">
+                  <code>{example.spec}</code>
+                  <span className="example-library">{example.library}</span>
+                </div>
               </button>
             ))}
           </div>
-          <div className="catalog-count">
-            {filtered.length} functions <span>in two libraries</span>
+          {examples.length === 0 && (
+            <div className="catalog-empty">
+              <Search size={22} />
+              <strong>No functions found</strong>
+              <button
+                className="secondary-button"
+                onClick={() => setSearch("")}
+              >
+                Clear search
+              </button>
+            </div>
+          )}
+          {examples.length > visibleExamples && (
+            <div className="load-more">
+              <button
+                className="secondary-button"
+                onClick={() => setVisibleExamples((count) => count + 24)}
+              >
+                Load more
+              </button>
+            </div>
+          )}
+        </main>
+      ) : (
+        <>
+          <h1 className="sr-only">{entry.name}</h1>
+          <div className="workspace-topbar">
+            <button
+              className="back-button"
+              onClick={backToSearch}
+              aria-label="Back to search"
+              title="Back to search"
+            >
+              <ArrowLeft size={17} />
+              <span>Search</span>
+            </button>
+            <form
+              className="spec-editor"
+              onSubmit={(event) => {
+                event.preventDefault()
+                applySpec()
+              }}
+            >
+              <input
+                aria-label="Model string"
+                value={editedSpec ?? modelSpec}
+                onChange={(event) => setEditedSpec(event.target.value)}
+                spellCheck={false}
+                autoComplete="off"
+              />
+              <button
+                className="apply-button"
+                disabled={!editedSpec?.trim()}
+                type="submit"
+              >
+                Apply
+              </button>
+            </form>
+            <button
+              className="icon-button"
+              aria-label="Copy model string"
+              title="Copy model string"
+              onClick={() => copy(modelSpec, "spec")}
+            >
+              {copied === "spec" ? <Check size={16} /> : <Copy size={16} />}
+            </button>
+            <button
+              className="secondary-button share-button"
+              onClick={() => copy(shareUrl(entry, values, baseSpec), "share")}
+            >
+              <Share2 size={14} />
+              <span>{copied === "share" ? "Copied" : "Share"}</span>
+            </button>
           </div>
-          <div className="catalog-list">
-            {(["modelprinter", "footprinter"] as const).map((family) => {
-              const items = filtered.filter((item) => item.library === family)
-              return (
-                items.length > 0 && (
-                  <section key={family}>
-                    <div className="catalog-group-label">
-                      {family === "modelprinter" ? (
-                        <Box size={12} />
-                      ) : (
-                        <Cpu size={12} />
-                      )}
-                      {family}
-                      <span>{items.length}</span>
-                    </div>
-                    {items.map((item) => (
-                      <button
-                        className={`catalog-item ${entry.id === item.id ? "is-selected" : ""}`}
-                        key={item.id}
-                        onClick={() => choose(item)}
-                        aria-pressed={entry.id === item.id}
-                        data-testid={`catalog-${item.fn}`}
-                      >
-                        <span className="catalog-item-icon">
-                          {item.library === "modelprinter" ? (
-                            <Box size={17} />
-                          ) : (
-                            <Cpu size={17} />
-                          )}
-                        </span>
-                        <span>
-                          <span className="catalog-item-name">{item.fn}</span>
-                          <span className="catalog-item-description">
-                            {item.name}
-                          </span>
-                        </span>
-                        <ChevronRight
-                          className="catalog-item-arrow"
-                          size={14}
-                        />
-                      </button>
-                    ))}
-                  </section>
-                )
-              )
-            })}
-            {filtered.length === 0 && (
-              <div className="catalog-empty">
-                <Search size={24} />
-                <strong>No functions found</strong>
-                <span>Try “gear”, “connector”, or “qfn”.</span>
-                <button onClick={() => setSearch("")}>Clear search</button>
+          {(catalogOpen || parametersOpen) && (
+            <button
+              className="drawer-backdrop"
+              aria-label="Close panel"
+              onClick={() => {
+                setCatalogOpen(false)
+                setParametersOpen(false)
+              }}
+            />
+          )}
+          <main className="workspace">
+            <aside className="catalog-panel" aria-label="Model catalog">
+              <div className="panel-heading">
+                <span>Functions</span>
+                <button
+                  className="icon-button mobile-close"
+                  aria-label="Close catalog"
+                  onClick={() => setCatalogOpen(false)}
+                >
+                  <X size={16} />
+                </button>
               </div>
-            )}
-          </div>
-          <div className="catalog-footer">
-            <span className="status-dot" />
-            {catalog.length} functions. Infinite possibilities.
-          </div>
-        </aside>
+              {searchInput}
+              {filters}
+              <div className="catalog-list">
+                {filtered.map((item) => (
+                  <button
+                    className={`catalog-item ${entry.id === item.id ? "is-selected" : ""}`}
+                    key={item.id}
+                    onClick={() => choose(item)}
+                    aria-pressed={entry.id === item.id}
+                    data-testid={`catalog-${item.fn}`}
+                    title={item.description}
+                  >
+                    <span className="catalog-item-icon">
+                      {item.library === "modelprinter" ? (
+                        <Box size={15} />
+                      ) : (
+                        <Cpu size={15} />
+                      )}
+                    </span>
+                    <span className="catalog-item-name">{item.fn}</span>
+                    <ChevronRight className="catalog-item-arrow" size={13} />
+                  </button>
+                ))}
+                {filtered.length === 0 && (
+                  <div className="catalog-empty">
+                    <strong>No functions found</strong>
+                    <button
+                      className="secondary-button"
+                      onClick={() => setSearch("")}
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                )}
+              </div>
+            </aside>
 
-        <section className="model-panel" aria-label="Model workspace">
-          <div className="model-heading">
-            <div className="model-heading-copy">
-              <div className="model-eyebrow">
+            <section className="model-panel" aria-label="Model workspace">
+              <div className="preview-toolbar">
                 <button
                   className="icon-button mobile-catalog-toggle"
                   aria-label="Open catalog"
@@ -383,253 +579,205 @@ export function App() {
                 >
                   <Menu size={17} />
                 </button>
-                <span className="library-badge">{entry.library}</span>
-                <span>{entry.category}</span>
-              </div>
-              <h1 className="model-name">{entry.name}</h1>
-              <p className="model-description">{entry.description}</p>
-            </div>
-            <div className="model-heading-actions">
-              <button
-                className="secondary-button"
-                onClick={() => copy(shareUrl(entry, values, baseSpec), "share")}
-              >
-                <Share2 size={14} />
-                {copied === "share" ? "Copied link" : "Share"}
-              </button>
-              <button
-                className="icon-button mobile-parameters-toggle"
-                aria-label="Open parameters"
-                onClick={() => setParametersOpen(true)}
-              >
-                <SlidersHorizontal size={18} />
-              </button>
-            </div>
-          </div>
-          <div className="preview-toolbar">
-            <div className="view-tabs" aria-label="Preview view">
-              <button
-                className={view === "3d" ? "is-active" : ""}
-                onClick={() => setView("3d")}
-                aria-pressed={view === "3d"}
-              >
-                <Box size={14} />
-                3D model
-              </button>
-              <button
-                className={view === "2d" ? "is-active" : ""}
-                onClick={() => setView("2d")}
-                aria-pressed={view === "2d"}
-                disabled={entry.library !== "footprinter"}
-              >
-                <Layers3 size={14} />
-                Footprint
-              </button>
-            </div>
-            <div className="preview-toolbar-right">
-              <span className="preview-hint">
-                {view === "3d"
-                  ? "Drag to orbit · scroll to zoom"
-                  : "A precise, top-down view"}
-              </span>
-              <button
-                className={`icon-button ${showGrid ? "is-active" : ""}`}
-                aria-label="Toggle grid"
-                aria-pressed={showGrid}
-                title="Toggle grid"
-                onClick={() => setShowGrid((previous) => !previous)}
-              >
-                <Grid2X2 size={16} />
-              </button>
-            </div>
-          </div>
-          <div className="preview-stage">
-            <ModelPreview
-              request={request}
-              view={view}
-              showGrid={showGrid}
-              onResult={receivePreview}
-              onBusy={setBusy}
-            />
-            {busy && (
-              <span className="preview-loading">
-                <span className="loading-dot" />
-                Updating preview
-              </span>
-            )}
-            {error && (
-              <div className="preview-error" role="alert">
-                <strong>Check your parameters</strong>
-                <span>{error}</span>
-              </div>
-            )}
-          </div>
-          <div className="model-stats">
-            <span className="stat-item">
-              <span className={`status-dot ${error ? "status-error" : ""}`} />
-              {error
-                ? "Last valid preview"
-                : busy
-                  ? "Updating"
-                  : "Live preview"}
-            </span>
-            {dimensions && (
-              <span className="stat-item">
-                {dimensions
-                  .map((number) =>
-                    number.toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                    }),
-                  )
-                  .join(" × ")}
-                <span> mm</span>
-              </span>
-            )}
-            <span className="stat-item stat-function">
-              <Code2 size={12} />
-              {entry.fn}()
-            </span>
-          </div>
-          <section className="code-panel" aria-label="Generated code">
-            <div className="code-heading">
-              <div className="code-tabs">
-                {[
-                  ["string", "Model string"],
-                  ["code", "TypeScript"],
-                  ["json", "Parameters"],
-                ].map(([key, label]) => (
+                <div className="view-tabs" aria-label="Preview view">
                   <button
-                    key={key}
-                    className={codeTab === key ? "is-active" : ""}
-                    onClick={() => setCodeTab(key as typeof codeTab)}
+                    className={view === "3d" ? "is-active" : ""}
+                    onClick={() => setView("3d")}
+                    aria-pressed={view === "3d"}
                   >
-                    {label}
+                    <Box size={14} />
+                    3D model
                   </button>
-                ))}
-              </div>
-              <button
-                className="icon-button"
-                aria-label="Copy generated code"
-                title="Copy generated code"
-                onClick={() => copy(displayCode, "code")}
-              >
-                {copied === "code" ? <Check size={15} /> : <Copy size={15} />}
-              </button>
-            </div>
-            <div className="code-content">
-              {codeTab === "string" ? (
-                <div className="spec-editor">
-                  <input
-                    aria-label="Model string"
-                    value={editedSpec ?? displayCode}
-                    onChange={(event) => setEditedSpec(event.target.value)}
-                    spellCheck={false}
-                  />
+                  {entry.library === "footprinter" && (
+                    <button
+                      className={view === "2d" ? "is-active" : ""}
+                      onClick={() => setView("2d")}
+                      aria-pressed={view === "2d"}
+                    >
+                      <Layers3 size={14} />
+                      Footprint
+                    </button>
+                  )}
+                </div>
+                <div className="preview-toolbar-right">
                   <button
-                    className="secondary-button"
-                    disabled={!editedSpec?.trim()}
-                    onClick={applySpec}
+                    className={`icon-button ${showGrid ? "is-active" : ""}`}
+                    aria-label="Toggle grid"
+                    aria-pressed={showGrid}
+                    title="Toggle grid"
+                    onClick={() => setShowGrid((previous) => !previous)}
                   >
-                    Apply
+                    <Grid2X2 size={16} />
+                  </button>
+                  <button
+                    className="icon-button mobile-parameters-toggle"
+                    aria-label="Open parameters"
+                    onClick={() => setParametersOpen(true)}
+                  >
+                    <SlidersHorizontal size={18} />
                   </button>
                 </div>
-              ) : (
-                <pre tabIndex={0}>
-                  <code>{displayCode}</code>
-                </pre>
-              )}
-            </div>
-            <div className="code-note">
-              {configured.result?.warnings?.[0] ??
-                (entry.library === "modelprinter"
-                  ? "Use this string with cadModel or the ModelPrinter API."
-                  : "Use this string with footprint or the Footprinter API.")}
-              <a
-                href={
-                  entry.library === "modelprinter"
-                    ? "https://github.com/tscircuit/modelprinter"
-                    : "https://github.com/tscircuit/footprinter"
-                }
-                target="_blank"
-                rel="noreferrer"
-              >
-                Docs
-                <ExternalLink size={11} />
-              </a>
-            </div>
-          </section>
-        </section>
-
-        <aside className="parameters-panel" aria-label="Model parameters">
-          <div className="parameter-heading">
-            <span>
-              <Settings2 size={16} />
-              Parameters
-            </span>
-            <span className="parameter-count">{entry.parameters.length}</span>
-            <button
-              className="icon-button mobile-close"
-              aria-label="Close parameters"
-              onClick={() => setParametersOpen(false)}
-            >
-              <X size={16} />
-            </button>
-          </div>
-          <div className="parameter-scroll">
-            {grouped.map(([name, parameters], index) => (
-              <details
-                className="parameter-group"
-                key={`${entry.id}-${name}`}
-                open={
-                  index === 0 || name === "Geometry" || name === "Dimensions"
-                }
-              >
-                <summary>
-                  {name}
-                  <span>{parameters.length}</span>
-                </summary>
-                {parameters.map((parameter) => (
-                  <ParameterField
-                    key={parameter.key}
-                    parameter={parameter}
-                    value={values[parameter.key]}
-                    resolved={resolved[parameter.key]}
-                    resolvedAvailable={Boolean(configured.result)}
-                    onChange={(value) => change(parameter.key, value)}
-                    onReset={() =>
-                      change(
-                        parameter.key,
-                        parameter.optional
-                          ? undefined
-                          : entry.initialValues[parameter.key],
+              </div>
+              <div className="preview-stage">
+                <ModelPreview
+                  key={entry.id}
+                  request={request}
+                  view={view}
+                  showGrid={showGrid}
+                  onResult={receivePreview}
+                  onBusy={setBusy}
+                />
+                {busy && <span className="preview-loading">Updating…</span>}
+                {error && (
+                  <div className="preview-error" role="alert">
+                    <strong>Check your parameters</strong>
+                    <span>{error}</span>
+                  </div>
+                )}
+              </div>
+              <div className="model-stats">
+                <span className="stat-item">
+                  {error
+                    ? "Last valid preview"
+                    : busy
+                      ? "Updating"
+                      : "Live preview"}
+                </span>
+                {dimensions && (
+                  <span className="stat-item">
+                    {dimensions
+                      .map((number) =>
+                        number.toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                        }),
                       )
+                      .join(" × ")}{" "}
+                    mm
+                  </span>
+                )}
+                <a
+                  className="stat-library"
+                  href={`https://github.com/tscircuit/${entry.library}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {entry.library}
+                  <ExternalLink size={10} />
+                </a>
+              </div>
+              <section
+                className={`code-panel ${codeTab ? "is-expanded" : ""}`}
+                aria-label="Generated code"
+              >
+                <div className="code-heading">
+                  <div className="code-tabs">
+                    {(
+                      [
+                        ["code", "TypeScript"],
+                        ["json", "Parameters"],
+                      ] as const
+                    ).map(([key, label]) => (
+                      <button
+                        key={key}
+                        className={codeTab === key ? "is-active" : ""}
+                        onClick={() => setCodeTab(codeTab === key ? null : key)}
+                        aria-expanded={codeTab === key}
+                      >
+                        <Code2 size={13} />
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  {codeTab && (
+                    <button
+                      className="icon-button"
+                      aria-label="Copy generated code"
+                      title="Copy generated code"
+                      onClick={() => copy(displayCode, "code")}
+                    >
+                      {copied === "code" ? (
+                        <Check size={15} />
+                      ) : (
+                        <Copy size={15} />
+                      )}
+                    </button>
+                  )}
+                </div>
+                {codeTab && (
+                  <div className="code-content">
+                    <pre tabIndex={0}>
+                      <code>{displayCode}</code>
+                    </pre>
+                  </div>
+                )}
+                {configured.result?.warnings?.[0] && (
+                  <p className="code-warning">
+                    {configured.result.warnings[0]}
+                  </p>
+                )}
+              </section>
+            </section>
+
+            <aside className="parameters-panel" aria-label="Model parameters">
+              <div className="parameter-heading">
+                <span>Parameters</span>
+                <button
+                  className="icon-button mobile-close"
+                  aria-label="Close parameters"
+                  onClick={() => setParametersOpen(false)}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="parameter-scroll">
+                {grouped.map(([name, parameters], index) => (
+                  <details
+                    className="parameter-group"
+                    key={`${entry.id}-${name}`}
+                    open={
+                      index === 0 ||
+                      name === "Geometry" ||
+                      name === "Dimensions"
                     }
-                  />
+                  >
+                    <summary>{name}</summary>
+                    {parameters.map((parameter) => (
+                      <ParameterField
+                        key={parameter.key}
+                        parameter={parameter}
+                        value={values[parameter.key]}
+                        resolved={resolved[parameter.key]}
+                        resolvedAvailable={Boolean(configured.result)}
+                        onChange={(value) => change(parameter.key, value)}
+                        onReset={() =>
+                          change(
+                            parameter.key,
+                            parameter.optional
+                              ? undefined
+                              : entry.initialValues[parameter.key],
+                          )
+                        }
+                      />
+                    ))}
+                  </details>
                 ))}
-              </details>
-            ))}
-          </div>
-          <div className="parameter-footer">
-            <button
-              className="secondary-button"
-              onClick={() => {
-                setValues({ ...entry.initialValues })
-                setBaseSpec(entry.initialSpec)
-                setEditedSpec(null)
-                setEditError("")
-              }}
-            >
-              <RotateCcw size={14} />
-              Reset defaults
-            </button>
-            <span>Changes preview automatically</span>
-          </div>
-        </aside>
-      </main>
-      {copied === "share" && (
+              </div>
+              <div className="parameter-footer">
+                <button className="secondary-button" onClick={resetDefaults}>
+                  <RotateCcw size={13} />
+                  Reset defaults
+                </button>
+              </div>
+            </aside>
+          </main>
+        </>
+      )}
+      {copied && (
         <div className="toast" role="status">
           <Check size={14} />
-          Configuration link copied
+          {copied === "share"
+            ? "Configuration link copied"
+            : "Copied to clipboard"}
         </div>
       )}
     </div>

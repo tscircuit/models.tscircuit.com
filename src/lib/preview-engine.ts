@@ -126,7 +126,7 @@ export function geometryToMesh(
       }
     }
   }
-  return { positions, color: color ?? geometry.color ?? "#89939a" }
+  return { positions, color: color ?? geometry.color ?? "#a1a1aa" }
 }
 
 export function getMeshBounds(meshes: PreviewMesh[]): PreviewResult["bounds"] {
@@ -208,9 +208,10 @@ export function generatePreview(request: PreviewRequest): PreviewResult {
         backgroundColor: "transparent",
         includeVersion: false,
         colorOverrides: {
-          copper: { top: "#198467", bottom: "#317fbc" },
-          drill: "#f5f8f7",
-          silkscreen: { top: "#596d65" },
+          copper: { top: "#52525b", bottom: "#a1a1aa" },
+          drill: "#fafafa",
+          silkscreen: { top: "#a1a1aa" },
+          courtyard: { top: "#d4d4d8", bottom: "#e4e4e7" },
         },
       },
     )
@@ -241,7 +242,7 @@ export function generatePreview(request: PreviewRequest): PreviewResult {
       message =
         "3D copper is not available for this pad shape. The 2D footprint shows the complete configuration."
     }
-    const meshes = [...meshGeometries(body), ...meshGeometries(pads, "#198467")]
+    const meshes = [...meshGeometries(body), ...meshGeometries(pads, "#71717a")]
     return {
       id: request.id,
       meshes,

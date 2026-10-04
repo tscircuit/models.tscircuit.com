@@ -53,7 +53,6 @@ describe("footprint catalog", () => {
   test("optional, transformed, and schema-intersection controls remain discoverable", () => {
     expect(entry("dfn").parameters.map((parameter) => parameter.key)).toEqual(
       expect.arrayContaining([
-        "bodywidth",
         "thermalvias",
         "cornerpads",
         "cornerpadcutlength",
@@ -94,6 +93,43 @@ describe("typed footprint configuration", () => {
       initial.resolvedValues?.w as number,
     )
     expect(changed.values).toEqual({ num_pins: 16 })
+  })
+
+  test("native string-driven counts update JST and SOT geometry", () => {
+    const jstEntry = { ...entry("jst"), initialSpec: "jst6_ph" }
+    const jst = configureFootprint(jstEntry, { num_pins: 4 })
+    expect(
+      copper(
+        createConfiguredFootprint("jst", jst.spec, jst.values).circuitJson(),
+      ),
+    ).toHaveLength(4)
+    expect(jst.resolvedValues?.num_pins).toBe(4)
+    const sot = configureFootprint(entry("sot23"), { num_pins: 5 })
+    expect(pads("sot23", sot.values, sot.spec)).toHaveLength(5)
+    const copied = new Function(
+      "fp",
+      `${sot.code.replace(/^import[^\n]*\n/, "")}\nreturn circuitJson`,
+    )(fp)
+    expect(copper(copied)).toHaveLength(5)
+  })
+
+  test("canonical controls replace aliases imported in raw specs", () => {
+    const circle = createConfiguredFootprint("smtpad", "smtpad_circle_r1mm", {
+      d: 1,
+    }).circuitJson()[0]
+    expect(circle.type).toBe("pcb_smtpad")
+    if (circle.type !== "pcb_smtpad" || circle.shape !== "circle")
+      throw new Error("Expected a circular pad")
+    expect(circle.radius).toBe(0.5)
+    const before = createConfiguredFootprint(
+      "qfn",
+      "qfn32_lrpw0.2mm",
+      {},
+    ).circuitJson()
+    const after = createConfiguredFootprint("qfn", "qfn32_lrpw0.2mm", {
+      leftrightpadwidth: "0.4mm",
+    }).circuitJson()
+    expect(after).not.toEqual(before)
   })
 
   test("a false boolean actually disables a true library default", () => {

@@ -110,7 +110,7 @@ describe("real library preview generation", () => {
     expect(visible.svg).not.toBe(hidden.svg)
     expect(visible.message).toContain("package body is not available")
     expect(visible.meshes.length).toBeGreaterThan(0)
-    expect(visible.meshes.every((mesh) => mesh.color === "#198467")).toBe(true)
+    expect(visible.meshes.every((mesh) => mesh.color === "#71717a")).toBe(true)
   })
 
   test("unsupported model generators return an actionable error", () => {
