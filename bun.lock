@@ -13,7 +13,7 @@
         "circuit-to-svg": "^0.0.393",
         "jscad-electronics": "0.0.186",
         "jscad-fiber": "^0.0.85",
-        "jscad-to-parasolid": "github:tscircuit/jscad-to-parasolid#5b1c264f115041be8938a44f0552e29e0d1d9d34",
+        "jscad-to-parasolid": "0.0.2",
         "lucide-react": "^0.468.0",
         "react": "19.1.0",
         "react-dom": "19.1.0",
@@ -30,7 +30,7 @@
         "@types/three": "^0.179.0",
         "@vitejs/plugin-react": "^4.5.0",
         "occt-import-js": "0.0.23",
-        "parasolidts": "github:tscircuit/parasolidts#ef5a5cf4fad36291105a1fe6841492455783524f",
+        "parasolidts": "0.0.2",
         "tailwindcss": "^4",
         "typescript": "^5.9.0",
         "vite": "^7.1.0",
@@ -350,7 +350,7 @@
 
     "jscad-planner": ["jscad-planner@0.0.18", "", { "dependencies": { "gl-matrix": "^3.4.4" }, "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-PkVg4kc59/d8mfx22k2S2QPXL6K4xN+Etn6BvK3lCne5yH+jgN9F4JHpucASwPrwFVh/V4KvMVs4oZ8BZUFY8A=="],
 
-    "jscad-to-parasolid": ["jscad-to-parasolid@github:tscircuit/jscad-to-parasolid#5b1c264", { "dependencies": { "@jscad/modeling": "^2.12.6", "jscad-planner": "^0.0.18", "parasolidts": "github:tscircuit/parasolidts#ef5a5cf4fad36291105a1fe6841492455783524f" } }, "tscircuit-jscad-to-parasolid-5b1c264", "sha512-n4Aa/7HVrzviZF46LQH9X1bRvAVDEU+aARqF4dkbm9J1zznL1XchWw+Eh4gsusnwA0OKRMHundugSl/z25mwfw=="],
+    "jscad-to-parasolid": ["jscad-to-parasolid@0.0.2", "", { "dependencies": { "@jscad/modeling": "^2.12.6", "jscad-planner": "^0.0.18", "parasolidts": "^0.0.2" } }, "sha512-pqCTaC7OkXujA5B5v89bykeDjgmz7IZ9IlEA4fJg45MDYf7lF0MCROJfi6gcvbbix9PaRsIyFSN8PdG3sJZ+Gg=="],
 
     "jsesc": ["jsesc@3.1.0", "", { "bin": { "jsesc": "bin/jsesc" } }, "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="],
 
@@ -398,7 +398,7 @@
 
     "occt-import-js": ["occt-import-js@0.0.23", "", {}, "sha512-RFfYQXYFX5C1mB1Aywm0ShcUKzXOr/VzTnlzhBSDJOR6YCAPt1HYCzeXWg1vwwjn/cUxwqRNhhtf1dlewoZYCQ=="],
 
-    "parasolidts": ["parasolidts@github:tscircuit/parasolidts#ef5a5cf", {}, "tscircuit-parasolidts-ef5a5cf", "sha512-ppbkNwAnFs35VA2qQVzMzb4CNERBHY6B6r5LRhXqvCedPJagKUKK/eVAgemhHQ2L7utLuvwGsO4MwsjuR9+y6g=="],
+    "parasolidts": ["parasolidts@0.0.2", "", {}, "sha512-qlZ2mFIcN/D7WI3C7qN5TyHy6hxHhhDMuO96xPpFbf080HvIUxAm3jWOfgPON9OO2ycmK0TJsjfXICVYw8dnQQ=="],
 
     "parsel-js": ["parsel-js@1.2.3", "", {}, "sha512-kJHFmSNnujpusFfVEXjNaoJ09VYHF8Ih0aVUn7Clu+Ug8AFoA2wx7Ezh17JfW4+vhm/lauAd9A+//uFkmydZtQ=="],
 
@@ -485,8 +485,6 @@
     "circuit-json-to-connectivity-map/@tscircuit/math-utils": ["@tscircuit/math-utils@0.0.9", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-sPzfXndijet8z29X6f5vnSZddiso2tRg7m6rB+268bVj60mxnxUMD14rKuMlLn6n84fMOpD/X7pRTZUfi6M+Tg=="],
 
     "jscad-electronics/@tscircuit/modelprinter": ["@tscircuit/modelprinter@https://pkg.pr.new/tscircuit/modelprinter/@tscircuit/modelprinter@b55f869", { "dependencies": { "@tscircuit/mm": "^0.0.9" }, "peerDependencies": { "zod": "^3.25.67" } }, "sha512-/PJlIormHy86TW4YZ6GVIJZkzFNyo0PEnLDFMwEJddkRpIRKj9gq1ATFFwGTMqYQ6a/ncAMCY6B1mvsZRajjgg=="],
-
-    "jscad-to-parasolid/parasolidts": ["parasolidts@github:tscircuit/parasolidts#ef5a5cf", {}, "tscircuit-parasolidts-ef5a5cf", "sha512-ppbkNwAnFs35VA2qQVzMzb4CNERBHY6B6r5LRhXqvCedPJagKUKK/eVAgemhHQ2L7utLuvwGsO4MwsjuR9+y6g=="],
 
     "react-reconciler/scheduler": ["scheduler@0.28.0", "", {}, "sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw=="],
 
