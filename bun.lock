@@ -11,7 +11,7 @@
         "@tscircuit/modelprinter": "0.0.8",
         "circuit-json-to-connectivity-map": "^0.0.33",
         "circuit-to-svg": "^0.0.393",
-        "jscad-electronics": "0.0.186",
+        "jscad-electronics": "0.0.187",
         "jscad-fiber": "^0.0.85",
         "jscad-to-parasolid": "0.0.2",
         "lucide-react": "^0.468.0",
@@ -344,7 +344,7 @@
 
     "js-tokens": ["js-tokens@4.0.0", "", {}, "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="],
 
-    "jscad-electronics": ["jscad-electronics@0.0.186", "", { "dependencies": { "@tscircuit/mm": "^0.0.8", "@tscircuit/modelprinter": "https://pkg.pr.new/tscircuit/modelprinter/@tscircuit/modelprinter@b55f869", "earcut": "^3.2.3" }, "peerDependencies": { "@jscad/modeling": "^2.12.5", "@tscircuit/alphabet": "^0.0.24", "@tscircuit/footprinter": "*", "circuit-json": "^0.0.426", "jscad-fiber": "^0.0.85", "react": "19.1.0", "react-dom": "19.1.0", "three": "^0.179.1" }, "optionalPeers": ["jscad-fiber"] }, "sha512-9N0UmPvBz8aUaxhbf2Bc3UJnLalBNiQwHlLz06bE5I3unJL7xBh+5fkM8zmj4oNramwHjVtfsjf3qmAjFMMOlg=="],
+    "jscad-electronics": ["jscad-electronics@0.0.187", "", { "dependencies": { "@tscircuit/mm": "^0.0.8", "@tscircuit/modelprinter": "https://pkg.pr.new/tscircuit/modelprinter/@tscircuit/modelprinter@b55f869", "earcut": "^3.2.3" }, "peerDependencies": { "@jscad/modeling": "^2.12.5", "@tscircuit/alphabet": "^0.0.24", "@tscircuit/footprinter": "*", "circuit-json": "^0.0.426", "jscad-fiber": "^0.0.85", "react": "19.1.0", "react-dom": "19.1.0", "three": "^0.179.1" }, "optionalPeers": ["jscad-fiber"] }, "sha512-ckWE5wPVODy80V7bpH6muXB4eSC5ilwP9bfvYdFUEKD4baP10nz+rXV6LXKXNqdXC4ksxHAIqIE/uSrSgpFKzA=="],
 
     "jscad-fiber": ["jscad-fiber@0.0.85", "", { "dependencies": { "color": "^4.2.3" }, "peerDependencies": { "@jscad/modeling": "*", "react": "19.1.0", "react-dom": "19.1.0", "react-reconciler": "*", "three": "*" }, "optionalPeers": ["@jscad/modeling", "three"] }, "sha512-SJlLZAmLpyGMM34vxuJx1Ffoi69OhLvUZUECbPnTxIUYCinOlo/rjw/aQ7DCUn09uBzu2YviLleVulS0cU/VMg=="],
 

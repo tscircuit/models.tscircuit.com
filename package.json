@@ -20,7 +20,7 @@
     "@tscircuit/modelprinter": "0.0.8",
     "circuit-json-to-connectivity-map": "^0.0.33",
     "circuit-to-svg": "^0.0.393",
-    "jscad-electronics": "0.0.186",
+    "jscad-electronics": "0.0.187",
     "jscad-fiber": "^0.0.85",
     "jscad-to-parasolid": "0.0.2",
     "lucide-react": "^0.468.0",
