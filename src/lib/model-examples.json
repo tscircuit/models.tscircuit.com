@@ -3,12 +3,12 @@
     {
       "library": "modelprinter",
       "package": "@tscircuit/modelprinter",
-      "version": "0.0.8",
+      "version": "0.0.10",
       "repository": "tscircuit/modelprinter",
-      "commit": "acb1af3e013eca07ba6f671b6d63d9ee43f410ce",
-      "testFiles": 12,
-      "scannedStrings": 408,
-      "examples": 44
+      "commit": "b9dbfeee44cc9d09a848488d12c8187392a44fa9",
+      "testFiles": 27,
+      "scannedStrings": 898,
+      "examples": 58
     },
     {
       "library": "footprinter",
@@ -29,6 +29,26 @@
       "spec": "flexscreen",
       "sources": [
         {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 33
+        },
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 50
+        },
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 54
+        },
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 70
+        },
+        {
+          "file": "tests/fixtures/assert-model-registration.ts",
+          "line": 18
+        },
+        {
           "file": "tests/fixtures/assert-modelprinter.ts",
           "line": 16
         },
@@ -39,6 +59,62 @@
         {
           "file": "tests/fixtures/assert-modelprinter.ts",
           "line": 76
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 101
+        },
+        {
+          "file": "tests/fixtures/registration-types.ts",
+          "line": 147
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:9761e9d629294966",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen_conductorcount30_conductorpitch0.5",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:d9235ef065cfe31a",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen_p0.02in_pincount30",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:bac8b283adcaee7f",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen_pincount30_p0.5",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:27b872c9355d7d30",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen_w16_h10_flex5_sitsflat",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 69
         }
       ]
     },
@@ -55,11 +131,87 @@
       ]
     },
     {
+      "id": "modelprinter:1a35d1be9cc639d7",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_p0.5_pw0.3_pl1.25_tail3_taper2",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:141fe0c9c37176e5",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_p0.5mm_pw0.3mm_pl1.25mm_tail3mm_taper2mm",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 52
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:ae442e9c29881008",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_pitch0.5",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:5d6de4f202b532d2",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_pitch0.5_padwidth0.3_padlength1.25_taillength3_taperlength2",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:19e568edf698a180",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_w16_h10_flex5_p0.5mm_sitsflat",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-flex-screen-pitch.ts",
+          "line": 31
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 99
+        }
+      ]
+    },
+    {
       "id": "modelprinter:9a0605cfb861343f",
       "library": "modelprinter",
       "fn": "helicalgear",
       "spec": "helicalgear",
       "sources": [
+        {
+          "file": "tests/fixtures/assert-model-registration.ts",
+          "line": 15
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 31
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 33
+        },
         {
           "file": "tests/helical-gears.test.ts",
           "line": 21
@@ -123,6 +275,54 @@
       ]
     },
     {
+      "id": "modelprinter:177a23430e095820",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "HEXBOLT_M6_length2.5cm_STANDARD(ISO4017:2014)_DRIVE(HEX)",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-hex-bolt.ts",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:66ea23e4a8b9bfe9",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "hexbolt_metricsize(m6)_l25mm_threadpitch1mm_threadhand(left)_nothreads",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-hex-bolt.ts",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:119e4430e7ee69d4",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "hexbolt_standard(iso4017)_m6_l25mm_drive(hex)",
+      "sources": [
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:e44dae66dbe213bd",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "hexbolt_standard(iso4017)_m6_l25mm_thread(full)_drive(hex)",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-hex-bolt.ts",
+          "line": 14
+        }
+      ]
+    },
+    {
       "id": "modelprinter:4405908092a8a86c",
       "library": "modelprinter",
       "fn": "hexsocketbolt",
@@ -143,6 +343,10 @@
         {
           "file": "tests/fixtures/assert-hex-socket-bolt.ts",
           "line": 13
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 111
         }
       ]
     },
@@ -219,6 +423,18 @@
         {
           "file": "tests/nema-motor-wire-references.test.ts",
           "line": 34
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:d8ba934a22c173de",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_l40mm_round",
+      "sources": [
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 51
         }
       ]
     },
@@ -491,6 +707,10 @@
         {
           "file": "tests/fixtures/assert-sheet-metal.ts",
           "line": 6
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 86
         }
       ]
     },
@@ -535,6 +755,26 @@
         {
           "file": "tests/fixtures/assert-gears.ts",
           "line": 141
+        },
+        {
+          "file": "tests/fixtures/assert-model-registration.ts",
+          "line": 20
+        },
+        {
+          "file": "tests/fixtures/assert-model-registration.ts",
+          "line": 178
+        },
+        {
+          "file": "tests/fixtures/assert-model-registration.ts",
+          "line": 179
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 120
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 122
         }
       ]
     },
@@ -599,6 +839,18 @@
         {
           "file": "tests/fixtures/assert-gears.ts",
           "line": 265
+        },
+        {
+          "file": "tests/fixtures/assert-model-registration.ts",
+          "line": 21
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 137
+        },
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 139
         }
       ]
     },
