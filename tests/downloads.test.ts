@@ -1,7 +1,7 @@
 import { beforeAll, expect, test } from "bun:test"
 import { createRequire } from "node:module"
 import jscad from "@jscad/modeling"
-import { Face, Plane, parseRepository } from "parasolidts"
+import { Face, Plane, Region, parseRepository } from "parasolidts"
 import { exportStep } from "../src/lib/export-step"
 import { exportParasolid } from "../src/lib/export-parasolid"
 import { inspectParasolid } from "./parasolid-helpers"
@@ -81,6 +81,37 @@ test("Parasolid exports a single planar gear cap with its bore loop", () => {
   expect(hole.nextLoop).toBeNull()
   expect(hole.finRef).not.toBeNull()
 }, 30_000)
+
+test("Parasolid helical gear regions start with the exterior void for native CAD edits", () => {
+  const entry = modelCatalog.find((entry) => entry.fn === "helicalgear")!
+  const config = configureModel(entry, {
+    ...entry.initialValues,
+    toothCount: 16,
+    faceWidth: 4,
+    segmentsPerTooth: 4,
+    segmentsPerTurn: 12,
+  })
+  const repo = parseRepository(
+    exportParasolid({
+      id: 1,
+      library: "modelprinter",
+      fn: "helicalgear",
+      ...config,
+    }),
+  )
+  expect(repo.bodies).toHaveLength(1)
+  const body = repo.bodies[0]!
+  const exterior = body.regionHead!.resolve(repo)
+  expect(exterior).toBeInstanceOf(Region)
+  expect(exterior.regionKind).toBe("V")
+  expect(exterior.previousRegion).toBeNull()
+  const solid = exterior.nextRegion!.resolve(repo)
+  expect(solid.regionKind).toBe("S")
+  expect(solid.previousRegion!.id).toBe(exterior.id)
+  expect(solid.nextRegion).toBeNull()
+  expect(body.legacyShell!.id).toBe(solid.shellHead!.id)
+  expect(body.geometryState).toBe(1)
+}, 60_000)
 
 test("Parasolid exports NEMA solids without collapsing small faces to Float32", () => {
   const entry = modelCatalog.find((entry) => entry.fn === "nema")!

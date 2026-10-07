@@ -22,7 +22,7 @@
     "circuit-to-svg": "^0.0.393",
     "jscad-electronics": "0.0.190",
     "jscad-fiber": "^0.0.89",
-    "jscad-to-parasolid": "0.0.3",
+    "jscad-to-parasolid": "0.0.4",
     "lucide-react": "^0.468.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
