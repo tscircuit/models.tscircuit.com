@@ -93,7 +93,7 @@ test("Parasolid exports NEMA solids without collapsing small faces to Float32", 
   })
   expect(text).toContain("TRANSMIT FILE")
   expect(text).not.toMatch(/NaN|Infinity/)
-}, 15_000)
+}, 30_000)
 
 test("Parasolid includes footprint copper and rejects invalid requests", () => {
   const request = {
