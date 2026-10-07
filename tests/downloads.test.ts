@@ -1,6 +1,7 @@
 import { beforeAll, expect, test } from "bun:test"
 import { createRequire } from "node:module"
 import jscad from "@jscad/modeling"
+import { Face, Plane, parseRepository } from "parasolidts"
 import { exportStep } from "../src/lib/export-step"
 import { exportParasolid } from "../src/lib/export-parasolid"
 import { inspectParasolid } from "./parasolid-helpers"
@@ -40,6 +41,46 @@ for (const [fn, edits] of [
     }
   }, 30_000)
 }
+
+test("Parasolid exports a single planar gear cap with its bore loop", () => {
+  const entry = modelCatalog.find((entry) => entry.fn === "spurgear")!
+  const config = configureModel(entry, {
+    ...entry.initialValues,
+    toothCount: 16,
+    module: 1,
+    faceWidth: 4,
+    boreDiameter: 4,
+    hubDiameter: 0,
+    hubLength: 0,
+    segmentsPerTooth: 4,
+  })
+  const repo = parseRepository(
+    exportParasolid({
+      id: 1,
+      library: "modelprinter",
+      fn: "spurgear",
+      ...config,
+    }),
+  )
+  const caps = repo.getChildren().filter((entity): entity is Face => {
+    if (!(entity instanceof Face)) return false
+    const surface = entity.surfaceRef?.resolve(repo)
+    return surface instanceof Plane && Math.abs(surface.normal.z) > 1 - 1e-10
+  })
+  expect(caps).toHaveLength(2)
+  const topZ = Math.max(
+    ...caps.map((face) => (face.surfaceRef!.resolve(repo) as Plane).origin.z),
+  )
+  const top = caps.filter(
+    (face) => (face.surfaceRef!.resolve(repo) as Plane).origin.z === topZ,
+  )
+  expect(top).toHaveLength(1)
+  const outer = top[0]!.loopHead!.resolve(repo)
+  const hole = outer.nextLoop!.resolve(repo)
+  expect(hole.faceRef!.id).toBe(top[0]!.id)
+  expect(hole.nextLoop).toBeNull()
+  expect(hole.finRef).not.toBeNull()
+}, 30_000)
 
 test("Parasolid exports NEMA solids without collapsing small faces to Float32", () => {
   const entry = modelCatalog.find((entry) => entry.fn === "nema")!
