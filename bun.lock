@@ -13,7 +13,7 @@
         "circuit-to-svg": "^0.0.393",
         "jscad-electronics": "0.0.190",
         "jscad-fiber": "^0.0.89",
-        "jscad-to-parasolid": "0.0.2",
+        "jscad-to-parasolid": "0.0.3",
         "lucide-react": "^0.468.0",
         "react": "19.1.0",
         "react-dom": "19.1.0",
@@ -350,7 +350,7 @@
 
     "jscad-planner": ["jscad-planner@https://pkg.pr.new/jscad-planner@49da3c2", { "dependencies": { "gl-matrix": "^3.4.4" }, "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-uFG41sSorMdT5nYkgjNh6hj3TvrfUXqnhX5P3Sr+UnCc1oXkzNFrK4jKl8Y4N4OJdFcfmQ1rSUgSyPrl7ospQQ=="],
 
-    "jscad-to-parasolid": ["jscad-to-parasolid@0.0.2", "", { "dependencies": { "@jscad/modeling": "^2.12.6", "jscad-planner": "^0.0.18", "parasolidts": "^0.0.2" } }, "sha512-pqCTaC7OkXujA5B5v89bykeDjgmz7IZ9IlEA4fJg45MDYf7lF0MCROJfi6gcvbbix9PaRsIyFSN8PdG3sJZ+Gg=="],
+    "jscad-to-parasolid": ["jscad-to-parasolid@0.0.3", "", { "dependencies": { "@jscad/modeling": "^2.12.6", "jscad-planner": "^0.0.18", "parasolidts": "^0.0.2 || ^0.0.3" } }, "sha512-4pbrrB7Tdwdc2mSTNM5aNxCI99tV9LJUrT5Zak5sdJqNAd5tqBJdDu+leol5N+AYs6pPLIyBAIPH1+fwgitrtw=="],
 
     "jsesc": ["jsesc@3.1.0", "", { "bin": { "jsesc": "bin/jsesc" } }, "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="],
 
