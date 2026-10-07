@@ -2,6 +2,7 @@ import {
   flexScreenModelPropsSchema,
   nemaMotorModelPropsSchema,
   hexSocketBoltModelPropsSchema,
+  hexBoltModelPropsSchema,
   sheetMetalModelPropsSchema,
   spurGearModelPropsSchema,
   helicalGearModelPropsSchema,
@@ -14,6 +15,7 @@ export const modelSchemas = {
   flexscreen: flexScreenModelPropsSchema,
   nema: nemaMotorModelPropsSchema,
   hexsocketbolt: hexSocketBoltModelPropsSchema,
+  hexbolt: hexBoltModelPropsSchema,
   sheetmetal: sheetMetalModelPropsSchema,
   spurgear: spurGearModelPropsSchema,
   helicalgear: helicalGearModelPropsSchema,
@@ -49,6 +51,19 @@ export const lengthTokens: Record<ModelName, Record<string, string>> = {
     clearance: "clearance",
   },
   hexsocketbolt: { length: "l" },
+  hexbolt: {
+    length: "l",
+    diameter: "diameter",
+    threadPitch: "threadpitch",
+    headAcrossFlats: "headacrossflats",
+    headHeight: "headheight",
+    underHeadRadius: "underheadradius",
+    tipChamfer: "tipchamfer",
+    threadRootDiameter: "threadrootdiameter",
+    threadPitchDiameter: "threadpitchdiameter",
+    headCornerDiameter: "headcornerdiameter",
+    headChamferDiameter: "headchamferdiameter",
+  },
   sheetmetal: {
     width: "w",
     baseLength: "l",
@@ -115,6 +130,11 @@ export const lengthTokens: Record<ModelName, Record<string, string>> = {
   },
 }
 const numberTokens: Partial<Record<ModelName, Record<string, string>>> = {
+  hexbolt: {
+    headChamferAngle: "headchamferangle",
+    tipChamferAngle: "tipchamferangle",
+    threadFlankAngle: "threadflankangle",
+  },
   helicalgear: {
     pressureAngle: "pa",
     helixAngle: "ha",
@@ -148,6 +168,20 @@ const numberTokens: Partial<Record<ModelName, Record<string, string>>> = {
 const enumTokens: Partial<
   Record<ModelName, Record<string, Record<string, string>>>
 > = {
+  hexbolt: {
+    standard: {
+      iso4017: "standard(iso4017)",
+      "iso4017:2014": "standard(iso4017:2014)",
+    },
+    thread: { full: "thread(full)" },
+    drive: { hex: "drive(hex)" },
+    threadHand: {
+      right: "threadhand(right)",
+      left: "threadhand(left)",
+    },
+    threadClass: { "6g": "threadclass(6g)" },
+    threadGender: { male: "threadgender(male)" },
+  },
   nema: {
     backFace: {
       plain: "plainbackface",
@@ -177,6 +211,7 @@ const booleanTokens: Partial<
 > = {
   nema: { mountingHoleThrough: ["throughholes", "blindholes"] },
   hexsocketbolt: { showThreads: ["threads", "nothreads"] },
+  hexbolt: { showThreads: ["threads", "nothreads"] },
   flexscreen: {
     showScreen: ["showscreen", "hidescreen"],
     showFlexCable: ["showflex", "hideflex"],
@@ -216,6 +251,13 @@ const inputAliases: Partial<Record<ModelName, Record<string, string>>> = {
   },
   spurgear: { teeth: "toothCount", width: "faceWidth" },
   hexsocketbolt: { m: "metricSize" },
+  hexbolt: {
+    m: "metricSize",
+    metricsize: "metricSize",
+    d: "diameter",
+    headh: "headHeight",
+    af: "headAcrossFlats",
+  },
   sheetmetal: {
     plate: "profile",
     angle: "profile",
@@ -271,6 +313,7 @@ export function modelInputFromSpec(spec: string): {
     for (const flag of flags) tokenToProperty[flag] = key
   }
   for (const [key, options] of Object.entries(enumTokens[fn] ?? {})) {
+    tokenToProperty[key.toLowerCase()] = key
     for (const token of Object.values(options))
       tokenToProperty[token.replace(/\d+$/, "")] = key
   }
@@ -343,7 +386,9 @@ export function serializeModelInput(
     else if (numeric) tokens.push(`${numeric}${decimal(value)}`)
     else if (flag) tokens.push(flag[value ? 0 : 1])
     else if (selection) tokens.push(selection[String(value)]!)
-    else if (fn === "hexsocketbolt" && key === "metricSize")
+    else if (
+      (fn === "hexsocketbolt" || fn === "hexbolt") && key === "metricSize"
+    )
       tokens.push(`m${value.slice(1)}`)
     else if (fn === "nema" && key === "backFaceScrewSize")
       tokens.push(`backscrewm${value.slice(1)}`)
@@ -410,6 +455,7 @@ const componentNames: Record<ModelName, string> = {
   flexscreen: "FlexScreen",
   nema: "NemaMotor",
   hexsocketbolt: "HexSocketBolt",
+  hexbolt: "HexBolt",
   sheetmetal: "SheetMetal",
   spurgear: "SpurGear",
   helicalgear: "HelicalGear",

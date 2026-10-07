@@ -122,6 +122,15 @@ const metadata: Record<
     initialSpec: "hexsocketbolt_m3_l12mm",
     initialValues: { metricSize: "M3", length: 12 },
   },
+  hexbolt: {
+    name: "Hex bolt",
+    category: "Fasteners",
+    tags: ["bolt", "hex", "metric", "iso4017", "fastener"],
+    description:
+      "An ISO 4017 hex head bolt with configurable metric size, length, and thread handedness.",
+    initialSpec: "hexbolt_standard(iso4017)_m3_l12mm",
+    initialValues: { metricSize: "M3", length: 12 },
+  },
   flexscreen: {
     name: "Flex screen",
     category: "Displays",
@@ -190,6 +199,7 @@ function inferKind(schema: RuntimeSchema): ParameterDefinition["kind"] {
     case "ZodBoolean":
       return "boolean"
     case "ZodEnum":
+    case "ZodLiteral":
       return "enum"
     case "ZodString":
       return "text"
@@ -231,7 +241,9 @@ function describeParameter(
   if (kind === "enum") {
     const values =
       schema._def.values ??
-      schema._def.options!.map((option) => unwrap(option)._def.value!)
+      (schema._def.value !== undefined
+        ? [schema._def.value]
+        : schema._def.options!.map((option) => unwrap(option)._def.value!))
     parameter.options = values.map((value) => ({
       value,
       label: typeof value === "string" ? friendly(value) : String(value),

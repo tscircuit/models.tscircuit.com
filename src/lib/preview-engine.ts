@@ -5,6 +5,7 @@ import {
   ExtrudedPads,
   FlexScreen,
   HexSocketBolt,
+  HexBolt,
   HelicalGear,
   NemaMotor,
   SheetMetal,
@@ -35,6 +36,7 @@ const BODY_UNAVAILABLE =
 const modelComponents: Record<string, ComponentType<any>> = {
   nema: NemaMotor,
   hexsocketbolt: HexSocketBolt,
+  hexbolt: HexBolt,
   sheetmetal: SheetMetal,
   spurgear: SpurGear,
   helicalgear: HelicalGear,
