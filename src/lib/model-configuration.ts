@@ -1,3 +1,9 @@
+import { modelAdapters } from "./model-adapters"
+import {
+  adapterFor,
+  adapterInput,
+  serializeAdapter,
+} from "./model-adapters/configuration"
 import {
   flexScreenModelPropsSchema,
   nemaMotorModelPropsSchema,
@@ -12,6 +18,14 @@ import {
 import type { CatalogEntry, Configuration } from "./catalog-types"
 
 export const modelSchemas = {
+  ...(Object.fromEntries(
+    Object.entries(modelAdapters).map(([name, adapter]) => [
+      name,
+      adapter.schema,
+    ]),
+  ) as {
+    [Name in keyof typeof modelAdapters]: (typeof modelAdapters)[Name]["schema"]
+  }),
   flexscreen: flexScreenModelPropsSchema,
   nema: nemaMotorModelPropsSchema,
   hexsocketbolt: hexSocketBoltModelPropsSchema,
@@ -24,6 +38,12 @@ export const modelSchemas = {
 export type ModelName = keyof typeof modelSchemas
 
 export const lengthTokens: Record<ModelName, Record<string, string>> = {
+  ...(Object.fromEntries(
+    Object.entries(modelAdapters).map(([name, adapter]) => [
+      name,
+      adapterFor(name)!.lengths ?? {},
+    ]),
+  ) as Record<keyof typeof modelAdapters, Record<string, string>>),
   helicalgear: {
     module: "m",
     faceWidth: "w",
@@ -173,14 +193,14 @@ const enumTokens: Partial<
       iso4017: "standard(iso4017)",
       "iso4017:2014": "standard(iso4017:2014)",
     },
-    thread: { full: "thread(full)" },
-    drive: { hex: "drive(hex)" },
+    thread: { full: "fullthread" },
+    drive: { hex: "hex" },
     threadHand: {
-      right: "threadhand(right)",
-      left: "threadhand(left)",
+      right: "",
+      left: "lefthanded",
     },
     threadClass: { "6g": "threadclass(6g)" },
-    threadGender: { male: "threadgender(male)" },
+    threadGender: { male: "" },
   },
   nema: {
     backFace: {
@@ -299,6 +319,8 @@ export function modelInputFromSpec(spec: string): {
   const builder = modelprinter.string(spec)
   const { fn: name, ...parsed } = builder.json()
   const fn = name as ModelName
+  const adapter = adapterFor(fn)
+  if (adapter) return { fn, values: adapterInput(spec, adapter) }
   const raw = builder.params()
   const definition = parsed as Record<string, unknown>
   const tokenToProperty: Record<string, string> = { ...inputAliases[fn] }
@@ -359,6 +381,8 @@ export function serializeModelInput(
   fn: ModelName,
   input: Record<string, unknown>,
 ): string {
+  const adapter = adapterFor(fn)
+  if (adapter) return serializeAdapter(fn, input, adapter, decimal)
   const props = modelSchemas[fn].parse(input) as Record<string, any>
   const tokens = [
     fn === "nema"
@@ -385,14 +409,21 @@ export function serializeModelInput(
     if (length) tokens.push(`${length}${decimal(value)}mm`)
     else if (numeric) tokens.push(`${numeric}${decimal(value)}`)
     else if (flag) tokens.push(flag[value ? 0 : 1])
-    else if (selection) tokens.push(selection[String(value)]!)
-    else if (
-      (fn === "hexsocketbolt" || fn === "hexbolt") && key === "metricSize"
+    else if (selection) {
+      const token = selection[String(value)]!
+      if (token) tokens.push(token)
+    } else if (
+      (fn === "hexsocketbolt" || fn === "hexbolt") &&
+      key === "metricSize"
     )
       tokens.push(`m${value.slice(1)}`)
     else if (fn === "nema" && key === "backFaceScrewSize")
       tokens.push(`backscrewm${value.slice(1)}`)
-    else if ((fn === "wormgear" || fn === "helicalgear") && key === "handedness") tokens.push(value)
+    else if (
+      (fn === "wormgear" || fn === "helicalgear") &&
+      key === "handedness"
+    )
+      tokens.push(value)
     else if (fn === "sheetmetal" && key === "profile") tokens.push(value)
     else if (fn === "sheetmetal" && key === "holes") {
       for (const [index, hole] of value.entries()) {
@@ -452,6 +483,12 @@ export function serializeModelInput(
 }
 
 const componentNames: Record<ModelName, string> = {
+  ...(Object.fromEntries(
+    Object.entries(modelAdapters).map(([name, adapter]) => [
+      name,
+      adapter.componentName,
+    ]),
+  ) as Record<keyof typeof modelAdapters, string>),
   flexscreen: "FlexScreen",
   nema: "NemaMotor",
   hexsocketbolt: "HexSocketBolt",

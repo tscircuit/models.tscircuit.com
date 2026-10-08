@@ -241,7 +241,43 @@ test("helical gear strings preserve tooth count, helix angle, handedness, and re
     segmentsPerTurn: 48,
   })
   const configured = configureModel(entry("helicalgear"), imported.values)
-  expect(parseSpec(configured.spec)).toEqual({ fn: "helicalgear", ...configured.values })
+  expect(parseSpec(configured.spec)).toEqual({
+    fn: "helicalgear",
+    ...configured.values,
+  })
   expect(configured.spec).toContain("helicalgear32")
   expect(configured.code).toContain(configured.spec)
+})
+
+test("mechanical flag imports remain editable without reverting to enum syntax", () => {
+  for (const spec of [
+    "shaftcollar_bore8mm_od16mm_w8mm_m4_setscrew_lefthanded",
+    "compressionspring_wire1mm_od8mm_l20mm_turns8_lefthanded_closedground",
+    "hexbolt_m3_length12mm_lefthanded_fullthread",
+  ]) {
+    const imported = modelInputFromSpec(spec)
+    const configured = configureModel(entry(imported.fn), imported.values)
+    expect(parseSpec(configured.spec)).toEqual(parseSpec(spec))
+    expect(configured.spec).not.toContain("threadhand(")
+    expect(configured.spec).not.toContain("mount(")
+    expect(configured.spec).not.toContain("ends(")
+  }
+})
+
+test("bearing code imports preserve asymmetric face controls through editing", () => {
+  const imported = modelInputFromSpec(
+    "ballbearing625_topsideopen_bottomsidesealed",
+  )
+  const configured = configureModel(entry(imported.fn), imported.values)
+  expect(parseSpec(configured.spec)).toEqual(
+    parseSpec("ballbearing625_topsideopen_bottomsidesealed"),
+  )
+  const changed = configureModel(entry(imported.fn), {
+    ...imported.values,
+    topSideOpen: false,
+    topSideShielded: true,
+  })
+  expect(changed.values.topSideShielded).toBe(true)
+  expect(changed.values.bottomSideSealed).toBe(true)
+  expect(changed.values.topSideOpen).toBe(false)
 })

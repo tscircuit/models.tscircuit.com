@@ -654,3 +654,32 @@ test("hex bolt controls import selectors, regenerate geometry, and survive a ref
   await expect(canvas(page)).toBeVisible()
   await settle(page)
 })
+
+test("mechanical flags and asymmetric bearings load, apply, and survive refresh", async ({
+  page,
+}) => {
+  for (const [fn, modelSpec] of [
+    ["ballbearing", "ballbearing625_topsideopen_bottomsidesealed"],
+    ["shaftcollar", "shaftcollar_bore8mm_od16mm_w8mm_m4_setscrew_lefthanded"],
+    [
+      "compressionspring",
+      "compressionspring_od8mm_wire1mm_l20mm_turns8_closedground_lefthanded",
+    ],
+  ]) {
+    await page.goto(workspaceUrl(`modelprinter:${fn}`))
+    await settle(page)
+    await spec(page).fill(modelSpec!)
+    await page.getByRole("button", { name: "Apply", exact: true }).click()
+    await settle(page)
+    await expect(canvas(page)).toBeVisible()
+    await expect(dimensions(page)).not.toContainText("0 × 0 × 0")
+    const applied = await spec(page).inputValue()
+    expect(applied).toContain(fn!)
+    expect(applied).not.toContain("threadhand(")
+    const address = page.url()
+    await page.reload()
+    await settle(page)
+    await expect(spec(page)).toHaveValue(applied)
+    expect(page.url()).toBe(address)
+  }
+})
