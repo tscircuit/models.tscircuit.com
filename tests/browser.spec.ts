@@ -86,28 +86,17 @@ test.afterEach(async ({ page }) => {
   expect(browserErrors.get(page), "Browser errors").toEqual([])
 })
 
-test("downloads the current geometry as GLB, STEP, and Parasolid, including after edits", async ({
-  page,
-}) => {
+test("downloads the current geometry as GLB, STEP, and Parasolid, including after edits", async ({ page }) => {
   await page.goto(workspaceUrl())
-  const downloadButton = page.getByRole("button", {
-    name: "Download model",
-    exact: true,
-  })
+  const downloadButton = page.getByRole("button", { name: "Download model", exact: true })
   await expect(downloadButton).toBeEnabled()
   await downloadButton.focus()
   await page.keyboard.press("ArrowDown")
-  await expect(
-    page.getByRole("menuitem", { name: "GLB (.glb)", exact: true }),
-  ).toBeFocused()
+  await expect(page.getByRole("menuitem", { name: "GLB (.glb)", exact: true })).toBeFocused()
   await page.keyboard.press("ArrowDown")
-  await expect(
-    page.getByRole("menuitem", { name: "STEP (.step)", exact: true }),
-  ).toBeFocused()
+  await expect(page.getByRole("menuitem", { name: "STEP (.step)", exact: true })).toBeFocused()
   await page.keyboard.press("ArrowDown")
-  await expect(
-    page.getByRole("menuitem", { name: "Parasolid (.x_t)", exact: true }),
-  ).toBeFocused()
+  await expect(page.getByRole("menuitem", { name: "Parasolid (.x_t)", exact: true })).toBeFocused()
   await page.keyboard.press("Escape")
   await expect(downloadButton).toBeFocused()
   await expect(page.getByRole("menu")).toHaveCount(0)
@@ -116,22 +105,15 @@ test("downloads the current geometry as GLB, STEP, and Parasolid, including afte
     const extension = format === "Parasolid" ? "x_t" : format.toLowerCase()
     await downloadButton.click()
     const pending = page.waitForEvent("download")
-    await page
-      .getByRole("menuitem", { name: `${format} (.${extension})`, exact: true })
-      .click()
+    await page.getByRole("menuitem", { name: `${format} (.${extension})`, exact: true }).click()
     const file = await pending
-    expect(file.suggestedFilename()).toMatch(
-      new RegExp(`^spurgear.*\\.${extension}$`),
-    )
+    expect(file.suggestedFilename()).toMatch(new RegExp(`^spurgear.*\\.${extension}$`))
     return readFile((await file.path())!)
   }
 
   const glbBounds = async (buffer: Buffer) => {
     expect(buffer.toString("ascii", 0, 4)).toBe("glTF")
-    const gltf = await new GLTFLoader().parseAsync(
-      new Uint8Array(buffer).buffer,
-      "",
-    )
+    const gltf = await new GLTFLoader().parseAsync(new Uint8Array(buffer).buffer, "")
     return new Box3().setFromObject(gltf.scene).getSize(new Vector3())
   }
   const initial = await glbBounds(await download("GLB"))
@@ -164,22 +146,14 @@ test("downloads the current geometry as GLB, STEP, and Parasolid, including afte
   await page.setViewportSize({ width: 390, height: 844 })
   await expect(downloadButton).toBeInViewport()
   await downloadButton.click()
-  await expect(
-    page.getByRole("menuitem", { name: "STEP (.step)", exact: true }),
-  ).toBeInViewport()
-  await expect(
-    page.getByRole("menuitem", { name: "Parasolid (.x_t)", exact: true }),
-  ).toBeInViewport()
+  await expect(page.getByRole("menuitem", { name: "STEP (.step)", exact: true })).toBeInViewport()
+  await expect(page.getByRole("menuitem", { name: "Parasolid (.x_t)", exact: true })).toBeInViewport()
   const pending = page.waitForEvent("download")
   await page.getByRole("menuitem", { name: "GLB (.glb)", exact: true }).click()
   const footprint = await pending
   expect(footprint.suggestedFilename()).toMatch(/^qfn.*\.glb$/)
-  expect(
-    (await glbBounds(await readFile((await footprint.path())!))).x,
-  ).toBeGreaterThan(0)
-  expect(
-    await page.evaluate(() => document.documentElement.scrollWidth),
-  ).toBeLessThanOrEqual(390)
+  expect((await glbBounds(await readFile((await footprint.path())!))).x).toBeGreaterThan(0)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
 })
 
 test("spur controls regenerate real geometry and preserve the last valid preview", async ({
@@ -401,9 +375,7 @@ test("mobile drawers support configuration and keyboard dismissal", async ({
   const homeSearch = page.getByRole("textbox", { name: "Search functions" })
   await expect(homeSearch).toBeInViewport()
   await homeSearch.fill("wormgear")
-  await page
-    .getByRole("button", { name: "Configure wormgear", exact: true })
-    .click()
+  await page.getByRole("button", { name: "Configure wormgear", exact: true }).click()
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Worm gear")
   await expect(
     page.getByRole("textbox", { name: "Search functions" }),
@@ -434,13 +406,9 @@ test("mobile drawers support configuration and keyboard dismissal", async ({
   await expect(
     page.getByRole("textbox", { name: "Search functions" }),
   ).not.toBeVisible()
-  await page
-    .getByRole("button", { name: "Back to search", exact: true })
-    .click()
+  await page.getByRole("button", { name: "Back to search", exact: true }).click()
   await expect(homeSearch).toBeInViewport()
-  await expect(
-    page.getByRole("button", { name: "Configure wormgear", exact: true }),
-  ).toBeVisible()
+  await expect(page.getByRole("button", { name: "Configure wormgear", exact: true })).toBeVisible()
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(390)
@@ -495,12 +463,8 @@ test("home searches build-time examples and opens the selected geometry", async 
   await page.goto("/")
   const search = page.getByRole("textbox", { name: "Search functions" })
   await expect(search).toBeInViewport()
-  await expect(
-    page.getByRole("textbox", { name: "Model string", exact: true }),
-  ).toHaveCount(0)
-  await expect(
-    page.getByRole("complementary", { name: "Model parameters" }),
-  ).toHaveCount(0)
+  await expect(page.getByRole("textbox", { name: "Model string", exact: true })).toHaveCount(0)
+  await expect(page.getByRole("complementary", { name: "Model parameters" })).toHaveCount(0)
   await expect(page.getByTestId("model-preview")).toHaveCount(0)
   await expect(page.locator(".example-card").first()).toBeVisible()
   await expect(page.locator(".example-card img").first()).toBeVisible()
@@ -526,23 +490,14 @@ test("home searches build-time examples and opens the selected geometry", async 
   await search.fill("missing-example-239847")
   await expect(page.locator(".example-card")).toHaveCount(0)
   await search.fill("spurgear6 width2mm")
-  const example = page.getByRole("button", {
-    name: "Configure spurgear6_width2mm",
-    exact: true,
-  })
+  const example = page.getByRole("button", { name: "Configure spurgear6_width2mm", exact: true })
   await expect(example).toBeVisible()
   const modelImage = example.getByRole("img")
   await expect(modelImage).toBeVisible()
   await expect(modelImage).toHaveAttribute("src", /^data:image\/png/)
-  await expect
-    .poll(async () =>
-      modelImage.evaluate(
-        (image) =>
-          (image as HTMLImageElement).complete &&
-          (image as HTMLImageElement).naturalWidth > 0,
-      ),
-    )
-    .toBe(true)
+  await expect.poll(async () => modelImage.evaluate((image) =>
+    (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0,
+  )).toBe(true)
   await expect(page.locator(".example-card canvas")).toHaveCount(0)
   await page.screenshot({
     path: screenshotPath(testInfo, "models-example-search.png"),
@@ -551,9 +506,7 @@ test("home searches build-time examples and opens the selected geometry", async 
   await example.click()
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Spur gear")
   await expect(page.getByLabel("Teeth", { exact: true })).toHaveValue("6")
-  await expect(page.getByLabel("Face width", { exact: true })).toHaveValue(
-    /^2(?:mm)?$/,
-  )
+  await expect(page.getByLabel("Face width", { exact: true })).toHaveValue(/^2(?:mm)?$/)
   await expect(dimensions(page)).toContainText("× 2")
   await settle(page)
   await expectTopSpec(page)
@@ -561,18 +514,14 @@ test("home searches build-time examples and opens the selected geometry", async 
   await expect(spec(page)).toHaveValue(/w4mm/)
   await expect(dimensions(page)).toContainText("× 4")
   await settle(page)
-  await page
-    .getByRole("button", { name: "Back to search", exact: true })
-    .click()
+  await page.getByRole("button", { name: "Back to search", exact: true }).click()
   await expect(search).toBeInViewport()
   await expect(example).toBeVisible()
   await expect(page.getByTestId("model-preview")).toHaveCount(0)
 
   await example.click()
   await page.getByRole("button", { name: "Reset Teeth", exact: true }).click()
-  await page
-    .getByRole("button", { name: "Reset Face width", exact: true })
-    .click()
+  await page.getByRole("button", { name: "Reset Face width", exact: true }).click()
   await expect(spec(page)).toHaveValue("spurgear24")
   await expect(dimensions(page)).toContainText("26 × 26 × 5")
   await settle(page)
@@ -586,70 +535,45 @@ test("home searches build-time examples and opens the selected geometry", async 
   await settle(page)
 })
 
-test("parameter edits keep the address shareable without adding history entries", async ({
-  page,
-}) => {
+test("parameter edits keep the address shareable without adding history entries", async ({ page }) => {
   await page.goto("/?spec=spurgear20_m0.5mm_w3mm")
   await expect(dimensions(page)).toContainText("11 × 11 × 3")
   const historyLength = await page.evaluate(() => history.length)
   await page.getByLabel("Teeth", { exact: true }).fill("32")
   await page.getByLabel("Face width", { exact: true }).fill("4.5mm")
-  await expect
-    .poll(() => JSON.parse(new URL(page.url()).searchParams.get("params")!))
+  await expect.poll(() => JSON.parse(new URL(page.url()).searchParams.get("params")!))
     .toMatchObject({ toothCount: 32, faceWidth: "4.5mm" })
   const editedUrl = page.url()
   await page.reload()
   await expect(page.getByLabel("Teeth", { exact: true })).toHaveValue("32")
-  await expect(page.getByLabel("Face width", { exact: true })).toHaveValue(
-    "4.5mm",
-  )
+  await expect(page.getByLabel("Face width", { exact: true })).toHaveValue("4.5mm")
   await expect(dimensions(page)).toContainText("17 × 17 × 4.5")
   await settle(page)
   await page.getByRole("button", { name: "Share", exact: true }).click()
-  expect(
-    await page.evaluate(
-      () => (window as unknown as { copiedText: string }).copiedText,
-    ),
-  ).toBe(editedUrl)
+  expect(await page.evaluate(() => (window as unknown as { copiedText: string }).copiedText)).toBe(editedUrl)
   expect(await page.evaluate(() => history.length)).toBe(historyLength)
 
   await page.getByRole("button", { name: "Reset Teeth", exact: true }).click()
-  await expect
-    .poll(
-      () =>
-        JSON.parse(new URL(page.url()).searchParams.get("params")!).toothCount,
-    )
-    .toBeUndefined()
+  await expect.poll(() => JSON.parse(new URL(page.url()).searchParams.get("params")!).toothCount).toBeUndefined()
   await page.reload()
   await expect(spec(page)).toHaveValue(/^spurgear24/)
-  await page
-    .getByRole("button", { name: "Reset defaults", exact: true })
-    .click()
-  await expect
-    .poll(() => new URL(page.url()).searchParams.get("params"))
-    .toBe("{}")
+  await page.getByRole("button", { name: "Reset defaults", exact: true }).click()
+  await expect.poll(() => new URL(page.url()).searchParams.get("params")).toBe("{}")
   await page.reload()
   await expect(dimensions(page)).toContainText("26 × 26 × 5")
   await settle(page)
-  await page
-    .getByRole("button", { name: "Back to search", exact: true })
-    .click()
+  await page.getByRole("button", { name: "Back to search", exact: true }).click()
   await expect.poll(() => new URL(page.url()).search).toBe("")
   await page.reload()
   await expect(page.getByTestId("model-preview")).toHaveCount(0)
 })
 
-test("the address restores JSON-only settings and applied model strings", async ({
-  page,
-}) => {
+test("the address restores JSON-only settings and applied model strings", async ({ page }) => {
   await page.goto(workspaceUrl("modelprinter:flexscreen"))
   const placement = page.getByLabel("Offset", { exact: true })
   await openGroup(page, "Placement")
   await placement.fill('{"x":5,"y":10,"z":15}')
-  await expect
-    .poll(
-      () => JSON.parse(new URL(page.url()).searchParams.get("params")!).offset,
-    )
+  await expect.poll(() => JSON.parse(new URL(page.url()).searchParams.get("params")!).offset)
     .toBe('{"x":5,"y":10,"z":15}')
   const editedUrl = page.url()
   await page.goto("/")
@@ -660,9 +584,7 @@ test("the address restores JSON-only settings and applied model strings", async 
 
   await spec(page).fill("nema17_length50mm")
   await page.getByRole("button", { name: "Apply", exact: true }).click()
-  await expect
-    .poll(() => new URL(page.url()).searchParams.get("model"))
-    .toBe("modelprinter:nema")
+  await expect.poll(() => new URL(page.url()).searchParams.get("model")).toBe("modelprinter:nema")
   await page.getByLabel("NEMA frame", { exact: true }).selectOption("8")
   await page.reload()
   await expect(page.getByLabel("NEMA frame", { exact: true })).toHaveValue("8")
@@ -671,82 +593,52 @@ test("the address restores JSON-only settings and applied model strings", async 
   await settle(page)
 })
 
-test("the address restores footprint overrides that cannot be encoded in its string", async ({
-  page,
-}) => {
+test("the address restores footprint overrides that cannot be encoded in its string", async ({ page }) => {
   await page.goto(workspaceUrl("footprinter:bga"))
   await openGroup(page, "Pads & holes")
   await page.getByLabel("Use circular pads", { exact: true }).uncheck()
-  await expect
-    .poll(
-      () =>
-        JSON.parse(new URL(page.url()).searchParams.get("params")!)
-          .circularpads,
-    )
-    .toBe(false)
+  await expect.poll(() => JSON.parse(new URL(page.url()).searchParams.get("params")!).circularpads).toBe(false)
   await page.reload()
   await openGroup(page, "Pads & holes")
-  await expect(
-    page.getByLabel("Use circular pads", { exact: true }),
-  ).not.toBeChecked()
+  await expect(page.getByLabel("Use circular pads", { exact: true })).not.toBeChecked()
   await expect.poll(async () => (await svgPads(page)).circles).toBe(0)
-  await expect
-    .poll(async () => (await svgPads(page)).rectangles)
-    .toBeGreaterThan(0)
+  await expect.poll(async () => (await svgPads(page)).rectangles).toBeGreaterThan(0)
   await settle(page)
 })
 
-test("helical gear controls regenerate geometry and survive a refresh", async ({
-  page,
-}) => {
+
+test("helical gear controls regenerate geometry and survive a refresh", async ({ page }) => {
   await page.goto("/?spec=helicalgear16_m0.5mm_w3mm")
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Helical gear",
-  )
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Helical gear")
   await expect(canvas(page)).toBeVisible()
   await settle(page)
   const before = await canvas(page).screenshot()
   await page.getByLabel(/^Helix angle$/i).fill("35")
   await page.getByLabel("Handedness", { exact: true }).selectOption("left")
   await expect(spec(page)).toHaveValue(/ha35_left/)
-  await expect
-    .poll(
-      () =>
-        JSON.parse(new URL(page.url()).searchParams.get("params")!).helixAngle,
-    )
-    .toBe(35)
+  await expect.poll(() => JSON.parse(new URL(page.url()).searchParams.get("params")!).helixAngle).toBe(35)
   await settle(page)
   expect((await canvas(page).screenshot()).equals(before)).toBe(false)
   await page.reload()
   await expect(page.getByLabel(/^Helix angle$/i)).toHaveValue("35")
-  await expect(page.getByLabel("Handedness", { exact: true })).toHaveValue(
-    "left",
-  )
+  await expect(page.getByLabel("Handedness", { exact: true })).toHaveValue("left")
   await expect(canvas(page)).toBeVisible()
   await settle(page)
 })
 
-test("hex bolt controls import selectors, regenerate geometry, and survive a refresh", async ({
-  page,
-}) => {
+test("hex bolt controls import selectors, regenerate geometry, and survive a refresh", async ({ page }) => {
   await page.goto(workspaceUrl("modelprinter:hexbolt"))
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hex bolt")
   await expect(canvas(page)).toBeVisible()
   await settle(page)
   const before = await canvas(page).screenshot()
 
-  await spec(page).fill(
-    "hexbolt_standard(iso4017)_m4_l25mm_thread(full)_drive(hex)_threadhand(left)_nothreads",
-  )
+  await spec(page).fill("hexbolt_standard(iso4017)_m4_l25mm_thread(full)_drive(hex)_threadhand(left)_nothreads")
   await page.getByRole("button", { name: "Apply", exact: true }).click()
-  await expect(page.getByLabel("Metric size", { exact: true })).toHaveValue(
-    "M4",
-  )
+  await expect(page.getByLabel("Metric size", { exact: true })).toHaveValue("M4")
   await expect(page.getByLabel("Length", { exact: true })).toHaveValue("25")
   await expect(page.getByLabel(/^Thread hand$/i)).toHaveValue("left")
-  await expect(
-    page.getByLabel("Show threads", { exact: true }),
-  ).not.toBeChecked()
+  await expect(page.getByLabel("Show threads", { exact: true })).not.toBeChecked()
   await expect(dimensions(page)).toContainText("27.8")
   await settle(page)
   expect((await canvas(page).screenshot()).equals(before)).toBe(false)
@@ -758,9 +650,7 @@ test("hex bolt controls import selectors, regenerate geometry, and survive a ref
   await page.reload()
   await expect(page.getByLabel("Length", { exact: true })).toHaveValue("30mm")
   await expect(page.getByLabel(/^Thread hand$/i)).toHaveValue("left")
-  await expect(
-    page.getByLabel("Show threads", { exact: true }),
-  ).not.toBeChecked()
+  await expect(page.getByLabel("Show threads", { exact: true })).not.toBeChecked()
   await expect(canvas(page)).toBeVisible()
   await settle(page)
 })
