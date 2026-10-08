@@ -1,3 +1,4 @@
+import { modelAdapters } from "./model-adapters"
 import jscad from "@jscad/modeling"
 import { fp } from "@tscircuit/footprinter"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
@@ -34,6 +35,12 @@ const BODY_UNAVAILABLE =
   "Showing the footprint; this package body is not available for these settings."
 
 const modelComponents: Record<string, ComponentType<any>> = {
+  ...Object.fromEntries(
+    Object.entries(modelAdapters).map(([name, adapter]) => [
+      name,
+      adapter.component,
+    ]),
+  ),
   nema: NemaMotor,
   hexsocketbolt: HexSocketBolt,
   hexbolt: HexBolt,

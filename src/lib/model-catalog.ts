@@ -1,3 +1,5 @@
+import { modelAdapters } from "./model-adapters"
+import { adapterInput } from "./model-adapters/configuration"
 import { modelprinter } from "@tscircuit/modelprinter"
 import type { CatalogEntry, ParameterDefinition } from "./catalog-types"
 import { modelSchemas, type ModelName } from "./model-configuration"
@@ -70,11 +72,35 @@ const metadata: Record<
     initialValues: Record<string, unknown>
   }
 > = {
+  ...(Object.fromEntries(
+    Object.entries(modelAdapters).map(([name, adapter]) => [
+      name,
+      {
+        name: adapter.name,
+        description: adapter.description,
+        category: adapter.category,
+        tags: adapter.tags,
+        initialSpec: adapter.spec,
+        initialValues: adapterInput(adapter.spec, adapter),
+      },
+    ]),
+  ) as Record<
+    keyof typeof modelAdapters,
+    {
+      name: string
+      description: string
+      category: string
+      tags: string[]
+      initialSpec: string
+      initialValues: Record<string, unknown>
+    }
+  >),
   helicalgear: {
     name: "Helical gear",
     category: "Gears",
     tags: ["gear", "helical", "teeth", "mechanical"],
-    description: "An involute gear with configurable helix angle and handedness.",
+    description:
+      "An involute gear with configurable helix angle and handedness.",
     initialSpec: "helicalgear",
     initialValues: {},
   },
