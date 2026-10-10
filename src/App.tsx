@@ -97,6 +97,13 @@ function inputFromSpec(spec: string, preferred: Library = "modelprinter") {
 
 function seedState() {
   const query = new URLSearchParams(window.location.search)
+  if (window.location.pathname !== "/" && !query.has("model")) {
+    try {
+      return inputFromSpec(decodeURIComponent(window.location.pathname.slice(1)))
+    } catch {
+      /* An invalid path falls back to the default configuration. */
+    }
+  }
   if (query.has("spec") && !query.has("model")) {
     try {
       return inputFromSpec(query.get("spec")!)
@@ -120,7 +127,7 @@ export function App() {
   const [baseSpec, setBaseSpec] = useState(seed.spec ?? seed.entry.initialSpec)
   const [workspaceOpen, setWorkspaceOpen] = useState(() => {
     const query = new URLSearchParams(window.location.search)
-    return query.has("model") || query.has("spec")
+    return window.location.pathname !== "/" || query.has("model") || query.has("spec")
   })
   const [search, setSearch] = useState("")
   const [library, setLibrary] = useState<"all" | Library>("all")
@@ -301,6 +308,7 @@ export function App() {
     setEditError("")
     const url = new URL(window.location.href)
     url.search = ""
+    url.pathname = "/"
     window.history.replaceState(null, "", url)
     window.requestAnimationFrame(() => searchRef.current?.focus())
   }

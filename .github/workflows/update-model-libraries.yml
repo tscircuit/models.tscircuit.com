@@ -42,7 +42,7 @@ jobs:
         run: bun run test:browser
         env:
           PLAYWRIGHT_PREVIEW: "1"
-      - name: Commit validated updates and trigger Vercel deployment
+      - name: Commit validated updates and trigger deployment
         if: steps.update.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
