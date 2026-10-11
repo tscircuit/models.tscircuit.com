@@ -66,16 +66,15 @@ Successful exports are stored as binary KV values with `expirationTtl: 604800` (
 
 ```sh
 bunx wrangler login
-bunx wrangler kv namespace create MODEL_CACHE
-# Put the returned namespace id in wrangler.jsonc.
+# MODEL_CACHE is already provisioned in wrangler.jsonc.
 bun run deploy
 ```
 
-Select the `tscircuit` Cloudflare account when prompted. The custom-domain route in `wrangler.jsonc` assigns `models.tscircuit.com` to this Worker. If an existing DNS record points to Vercel, remove that record before assigning the Worker custom domain. The Worker includes static assets and SPA fallback; model extensions run through the Worker first. The configured CPU budget requires Workers Paid for complex CAD exports.
+The `tscircuit` account and production `MODEL_CACHE` namespace are pinned in `wrangler.jsonc`. The custom-domain route in `wrangler.jsonc` assigns `models.tscircuit.com` to this Worker. If an existing DNS record points to Vercel, remove that record before assigning the Worker custom domain. The Worker includes static assets and SPA fallback; model extensions run through the Worker first. The configured CPU budget requires Workers Paid for complex CAD exports.
 
 For local end-to-end tests, run `bun run dev:worker`. This uses local KV and serves model URLs from the actual Workers runtime. `bun run dev` remains the browser-only configurator development server.
 
-GitHub Actions deployment requires repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts Edit, Workers KV Storage Edit, account access and the domain permissions needed for custom domains) and `CLOUDFLARE_ACCOUNT_ID`, plus the committed KV namespace id. The deploy workflow follows successful validation on main, including scheduled library updates. Set up those secrets before enabling automatic deployment. The previous Vercel deployment can remain available during migration.
+GitHub Actions deployment requires repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts Edit, Workers KV Storage Edit, account access and the domain permissions needed for custom domains) and `CLOUDFLARE_ACCOUNT_ID`, plus the committed KV namespace id. The deploy workflow follows successful validation on main, including scheduled library updates. Those repository secrets are configured. After deployment, the workflow verifies the live model page, all three file signatures, seven-day cache headers, and identical KV cache hits. The previous Vercel deployment can remain available during migration.
 
 ## Daily library updates
 
