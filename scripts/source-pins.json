@@ -1,14 +1,14 @@
 {
   "footprinter": {
     "package": "@tscircuit/footprinter",
-    "version": "0.0.430",
+    "version": "0.0.437",
     "repository": "tscircuit/footprinter",
-    "commit": "69b6d99f65c30afc0e1c578a7754dce5d1dbcdfe"
+    "commit": "4fa6ec92f88963597832677d231d180a96df4e70"
   },
   "modelprinter": {
     "package": "@tscircuit/modelprinter",
-    "version": "0.0.31",
+    "version": "0.0.33",
     "repository": "tscircuit/modelprinter",
-    "commit": "4ce262df68efd9c0bd527cbfd6944feb32e941b7"
+    "commit": "88cb190cde54ca77357071f50e67c9cfbf3d5865"
   }
 }

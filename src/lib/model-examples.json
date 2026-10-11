@@ -3,22 +3,22 @@
     {
       "library": "modelprinter",
       "package": "@tscircuit/modelprinter",
-      "version": "0.0.31",
+      "version": "0.0.33",
       "repository": "tscircuit/modelprinter",
-      "commit": "4ce262df68efd9c0bd527cbfd6944feb32e941b7",
-      "testFiles": 103,
-      "scannedStrings": 3792,
-      "examples": 257
+      "commit": "88cb190cde54ca77357071f50e67c9cfbf3d5865",
+      "testFiles": 130,
+      "scannedStrings": 3982,
+      "examples": 267
     },
     {
       "library": "footprinter",
       "package": "@tscircuit/footprinter",
-      "version": "0.0.430",
+      "version": "0.0.437",
       "repository": "tscircuit/footprinter",
-      "commit": "69b6d99f65c30afc0e1c578a7754dce5d1dbcdfe",
-      "testFiles": 242,
-      "scannedStrings": 3610,
-      "examples": 473
+      "commit": "4fa6ec92f88963597832677d231d180a96df4e70",
+      "testFiles": 251,
+      "scannedStrings": 4400,
+      "examples": 512
     }
   ],
   "examples": [
@@ -899,6 +899,58 @@
       ]
     },
     {
+      "id": "modelprinter:d599e094579c2bf7",
+      "library": "modelprinter",
+      "fn": "flatcableclip",
+      "spec": "flatcableclip_iw25mm_ih3mm_d10mm_t2mm_feet5mm_holes2_hole3mm_hp34mm",
+      "sources": [
+        {
+          "file": "tests/fixtures/flatcableclip-case.ts",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:0cb0dc7dc3181ed4",
+      "library": "modelprinter",
+      "fn": "flatgasket",
+      "spec": "flatgasket_id20mm_od35mm_t2mm_flatannulus",
+      "sources": [
+        {
+          "file": "tests/flatgasket-contract-01.test.ts",
+          "line": 10
+        },
+        {
+          "file": "tests/flatgasket-contract-02.test.ts",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:03b5faba66585263",
+      "library": "modelprinter",
+      "fn": "flatgasket",
+      "spec": "FLATGASKET_ID20MM_OD35MM_T2MM_FLATANNULUS",
+      "sources": [
+        {
+          "file": "tests/flatgasket-contract-02.test.ts",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:00cb849f8a92580f",
+      "library": "modelprinter",
+      "fn": "flatgasket",
+      "spec": "flatgasket_id20mm_od35mm_t2mm_profile(flatannulus)",
+      "sources": [
+        {
+          "file": "tests/flatgasket-contract-01.test.ts",
+          "line": 14
+        }
+      ]
+    },
+    {
       "id": "modelprinter:61943055d0df3b52",
       "library": "modelprinter",
       "fn": "flatheadscrew",
@@ -1143,6 +1195,18 @@
         {
           "file": "tests/fixtures/registration-baselines.json",
           "line": 99
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:9faee066036582fe",
+      "library": "modelprinter",
+      "fn": "hatsection",
+      "spec": "hatsection_crownw40mm_h20mm_lip10mm_t2mm_bendr2mm_l80mm",
+      "sources": [
+        {
+          "file": "tests/fixtures/hatsection.ts",
+          "line": 1
         }
       ]
     },
@@ -2623,6 +2687,18 @@
       ]
     },
     {
+      "id": "modelprinter:a3a8a7f9f6eb1817",
+      "library": "modelprinter",
+      "fn": "perforatedangle",
+      "spec": "perforatedangle_w25mm_h25mm_t3mm_l80mm_innerr3mm_holes3_hole6mm_pitch25mm_end15mm_legoffset12.5mm",
+      "sources": [
+        {
+          "file": "tests/fixtures/perforatedangle.ts",
+          "line": 2
+        }
+      ]
+    },
+    {
       "id": "modelprinter:8557e0c2a3ab918f",
       "library": "modelprinter",
       "fn": "perforatedsheet",
@@ -3535,6 +3611,62 @@
       ]
     },
     {
+      "id": "modelprinter:6f305ebb18a266f0",
+      "library": "modelprinter",
+      "fn": "ufl",
+      "spec": "ufl",
+      "sources": [
+        {
+          "file": "tests/ufl.test.ts",
+          "line": 11
+        },
+        {
+          "file": "tests/ufl.test.ts",
+          "line": 19
+        },
+        {
+          "file": "tests/ufl.test.ts",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:49edb1bce4fe9625",
+      "library": "modelprinter",
+      "fn": "ufl",
+      "spec": "UFL_P0.3cm_SIGNALX-0.125cm",
+      "sources": [
+        {
+          "file": "tests/ufl.test.ts",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:203375269df5a46f",
+      "library": "modelprinter",
+      "fn": "ufl",
+      "spec": "ufl_p3.2mm_pw2mm_signalw1.4mm_signalx-1.3mm",
+      "sources": [
+        {
+          "file": "tests/ufl.test.ts",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:8094a1099aed151b",
+      "library": "modelprinter",
+      "fn": "ufl",
+      "spec": "ufl3",
+      "sources": [
+        {
+          "file": "tests/ufl.test.ts",
+          "line": 20
+        }
+      ]
+    },
+    {
       "id": "modelprinter:f2a09b3a84407434",
       "library": "modelprinter",
       "fn": "wormgear",
@@ -3611,6 +3743,26 @@
       ]
     },
     {
+      "id": "footprinter:7671186edb83b48c",
+      "library": "footprinter",
+      "fn": "axial",
+      "spec": "axial",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 75
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 77
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 80
+        }
+      ]
+    },
+    {
       "id": "footprinter:28e56842db6edf31",
       "library": "footprinter",
       "fn": "axial",
@@ -3639,6 +3791,18 @@
         {
           "file": "tests/kicad-parity/axial_kicad_parity.test.ts",
           "line": 12
+        }
+      ]
+    },
+    {
+      "id": "footprinter:8b7486821e57710f",
+      "library": "footprinter",
+      "fn": "bga",
+      "spec": "bga",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 81
         }
       ]
     },
@@ -5423,6 +5587,10 @@
         {
           "file": "tests/lga-body-parameters.test.ts",
           "line": 41
+        },
+        {
+          "file": "tests/lga-numbering-spacing.test.ts",
+          "line": 107
         }
       ]
     },
@@ -5459,6 +5627,18 @@
         {
           "file": "tests/lga.test.ts",
           "line": 13
+        }
+      ]
+    },
+    {
+      "id": "footprinter:a8acb7548452dd84",
+      "library": "footprinter",
+      "fn": "lga",
+      "spec": "lga16_grid5x3_p0.5mm_lrendpitch0.725mm_w2.8mm_h2.8mm_pl0.35mm_pw0.25mm",
+      "sources": [
+        {
+          "file": "tests/lga-numbering-spacing.test.ts",
+          "line": 55
         }
       ]
     },
@@ -5527,6 +5707,18 @@
       ]
     },
     {
+      "id": "footprinter:b02674d1d18bef9c",
+      "library": "footprinter",
+      "fn": "lga",
+      "spec": "lga16_grid5x3_px0.7mm_py0.4mm_lrendpitch0.8mm_tbendpitch0.9mm_pl0.3mm_pw0.2mm",
+      "sources": [
+        {
+          "file": "tests/lga-numbering-spacing.test.ts",
+          "line": 81
+        }
+      ]
+    },
+    {
       "id": "footprinter:6be9ca38a294b221",
       "library": "footprinter",
       "fn": "lga",
@@ -5535,6 +5727,18 @@
         {
           "file": "tests/lga.test.ts",
           "line": 48
+        }
+      ]
+    },
+    {
+      "id": "footprinter:be6da05d88cf1863",
+      "library": "footprinter",
+      "fn": "lga",
+      "spec": "lga8_grid4x0_p0.65mm_w2.3mm_h2.3mm_pl0.35mm_pw0.35mm_cw_startingpin(rightside,toppin)",
+      "sources": [
+        {
+          "file": "tests/lga-numbering-spacing.test.ts",
+          "line": 22
         }
       ]
     },
@@ -6107,6 +6311,30 @@
       ]
     },
     {
+      "id": "footprinter:7c0206d86fc68e49",
+      "library": "footprinter",
+      "fn": "pinrow",
+      "spec": "pinrow12_rows2",
+      "sources": [
+        {
+          "file": "tests/pinrow-numbering.test.ts",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "id": "footprinter:ad6ff7b5f37e3a43",
+      "library": "footprinter",
+      "fn": "pinrow",
+      "spec": "pinrow12_rows2_female_pinnumbering(columnmajor)_id1.04_od1.64_nosquareplating_pin1location(bottomside,right)_cyw16.25_cyh5.45",
+      "sources": [
+        {
+          "file": "tests/pinrow-numbering.test.ts",
+          "line": 9
+        }
+      ]
+    },
+    {
       "id": "footprinter:a282e649aba593c1",
       "library": "footprinter",
       "fn": "pinrow",
@@ -6367,6 +6595,18 @@
       ]
     },
     {
+      "id": "footprinter:9f059854af63ad92",
+      "library": "footprinter",
+      "fn": "pinrow",
+      "spec": "pinrow5_rows2_cols3_missing(2)_pinnumbering(columnmajor)",
+      "sources": [
+        {
+          "file": "tests/pinrow-numbering.test.ts",
+          "line": 86
+        }
+      ]
+    },
+    {
       "id": "footprinter:84233966224bf482",
       "library": "footprinter",
       "fn": "pinrow",
@@ -6451,6 +6691,18 @@
         {
           "file": "tests/kicad-parity/pinrow_kicad_parity.test.ts",
           "line": 12
+        }
+      ]
+    },
+    {
+      "id": "footprinter:3641f6c44057664c",
+      "library": "footprinter",
+      "fn": "pinrow",
+      "spec": "pinrow6_rows6_p1.27mm_od1mm_id0.65mm_cyw3.1mm_cyh8.63mm",
+      "sources": [
+        {
+          "file": "tests/kicad-parity/pinrow_kicad_parity.test.ts",
+          "line": 36
         }
       ]
     },
@@ -6671,6 +6923,114 @@
       ]
     },
     {
+      "id": "footprinter:b03ce6d8092663ba",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "id": "footprinter:84f36ce691c98933",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-nrf52840-missing",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "id": "footprinter:b38c92b8836cdd2d",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-nrf52840-scaled",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 184
+        }
+      ]
+    },
+    {
+      "id": "footprinter:8626ff123c6ac3ee",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-rectangular-automatic-body-independent-pitches",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 222
+        }
+      ]
+    },
+    {
+      "id": "footprinter:a3a04e07b402ef54",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-rectangular-default-square-independent-pitches",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 222
+        }
+      ]
+    },
+    {
+      "id": "footprinter:989cd88a606cf96d",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-rectangular-ordinary-independent-pitches",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 222
+        }
+      ]
+    },
+    {
+      "id": "footprinter:ffb5af8c6d0aba20",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-rectangular-staggered-independent-pitches",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 222
+        }
+      ]
+    },
+    {
+      "id": "footprinter:862850f54ea91965",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-rectangular-two-row-missing",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 160
+        }
+      ]
+    },
+    {
+      "id": "footprinter:10b3630b8c7a0f2f",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn-single-row-missing",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 128
+        }
+      ]
+    },
+    {
       "id": "footprinter:46184bd25918ddb5",
       "library": "footprinter",
       "fn": "qfn",
@@ -6691,6 +7051,42 @@
         {
           "file": "tests/qfn.test.ts",
           "line": 179
+        }
+      ]
+    },
+    {
+      "id": "footprinter:c1c5e92020f62e9b",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn16_grid4x4_thermalpad1.5x1.5mm",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 111
+        }
+      ]
+    },
+    {
+      "id": "footprinter:55d0d766eba0feed",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn16_grid4x4_thermalpad1.5x1.5mm_missing(2,7)",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 112
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 118
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 122
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 126
         }
       ]
     },
@@ -6819,6 +7215,94 @@
       ]
     },
     {
+      "id": "footprinter:b4232a33bfe3ddc5",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn48_grid8x6_rows2_p0.5mm_px0.6mm_py0.4mm_rowspan4mm_rowgap0.5mm_w5.4mm_h4.4mm_pw0.2mm_pl0.3mm_pinnumbering(ballcoords)",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 189
+        }
+      ]
+    },
+    {
+      "id": "footprinter:de42177d70f10fef",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn48_grid8x6_rows2_p0.5mm_px0.6mm_py0.4mm_rowspan4mm_rowgap0.5mm_w5.4mm_h4.4mm_pw0.2mm_pl0.3mm_pinnumbering(ballcoords)_staggered",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 191
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 214
+        }
+      ]
+    },
+    {
+      "id": "footprinter:c37571d189facc34",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn48_grid8x6_rows2_px1mm_py0.4mm",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 204
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 210
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 215
+        }
+      ]
+    },
+    {
+      "id": "footprinter:111260c79466a68f",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn48_grid8x6_rows2_staggered_p0.5mm_rowspan4mm_rowgap0.5mm_w5.4mm_h4.4mm_pw0.25mm_pl0.35mm",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 133
+        }
+      ]
+    },
+    {
+      "id": "footprinter:1f7c4705501f9734",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn48_grid8x6_rows2_staggered_p0.5mm_rowspan4mm_rowgap0.5mm_w5.4mm_h4.4mm_pw0.25mm_pl0.35mm_missing(3,47)",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 135
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 158
+        }
+      ]
+    },
+    {
+      "id": "footprinter:885cce69af7cf162",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn48_grid8x6_rows2_staggered_p0.5mm_rowspan4mm_rowgap0.5mm_w5.4mm_h4.4mm_pw0.25mm_pl0.35mm_pinnumbering(ballcoords)",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 151
+        }
+      ]
+    },
+    {
       "id": "footprinter:0a6c9dd5f67d54bb",
       "library": "footprinter",
       "fn": "qfn",
@@ -6827,6 +7311,46 @@
         {
           "file": "tests/qfn.test.ts",
           "line": 64
+        }
+      ]
+    },
+    {
+      "id": "footprinter:82152a337f045863",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn88_grid12x12_rows2",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 211
+        },
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 216
+        }
+      ]
+    },
+    {
+      "id": "footprinter:0fb6fcd65eb3d1f3",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn88_grid12x12_rows2_staggered_p0.5mm_rowspan6.5mm_rowgap0.5mm_circularpads_pw0.35mm_w7mm_h7mm_thermalpad4.85x4.85mm_pinnumbering(ballcoords)_missing(A2,A4,A6,E1,AA1,AC1,C24,G24,B21,AC3,AC7,V2,K23,M23,AB23)",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "id": "footprinter:9eb0be6cf82dd3b7",
+      "library": "footprinter",
+      "fn": "qfn",
+      "spec": "qfn88_grid12x12_rows2_staggered_p0.5mm_rowspan6.5mm_rowgap0.5mm_circularpads_pw0.35mm_w7mm_h7mm_thermalpad4.85x4.85mm_pinnumbering(ballcoords)_missing(A2,A4,A6,E1,AA1,AC1,C24,G24,B21,AC3,AC7,V2,K23,M23,AB23)_thermalvias2x2_thermalpadcenteroffsetx0.1mm_thermalpadcenteroffsety-0.1mm",
+      "sources": [
+        {
+          "file": "tests/qfn-missing.test.ts",
+          "line": 87
         }
       ]
     },
@@ -11347,6 +11871,74 @@
       ]
     },
     {
+      "id": "footprinter:b0882f74ba70ab02",
+      "library": "footprinter",
+      "fn": "usba",
+      "spec": "usba",
+      "sources": [
+        {
+          "file": "tests/usba.test.ts",
+          "line": 103
+        },
+        {
+          "file": "tests/usba.test.ts",
+          "line": 136
+        }
+      ]
+    },
+    {
+      "id": "footprinter:97d8f3c990570021",
+      "library": "footprinter",
+      "fn": "usba",
+      "spec": "usba4_tht",
+      "sources": [
+        {
+          "file": "tests/usba.test.ts",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "id": "footprinter:c2e9d275ecbaae40",
+      "library": "footprinter",
+      "fn": "usba",
+      "spec": "usba4_tht_norefdes",
+      "sources": [
+        {
+          "file": "tests/usba.test.ts",
+          "line": 118
+        }
+      ]
+    },
+    {
+      "id": "footprinter:92c376ad7b2fef1d",
+      "library": "footprinter",
+      "fn": "usba",
+      "spec": "usba4_tht_nosilkscreen",
+      "sources": [
+        {
+          "file": "tests/usba.test.ts",
+          "line": 109
+        }
+      ]
+    },
+    {
+      "id": "footprinter:de1fb8cb61028273",
+      "library": "footprinter",
+      "fn": "usba",
+      "spec": "usba4_tht_p3mm_centerp2500um_id1mm_ring0.4mm_shieldspan14mm_shieldy-3mm_shieldid2.4mm_shieldring0.4mm_pinstart11_reverse",
+      "sources": [
+        {
+          "file": "tests/usba.test.ts",
+          "line": 46
+        },
+        {
+          "file": "tests/usba.test.ts",
+          "line": 130
+        }
+      ]
+    },
+    {
       "id": "footprinter:b50abaa9fce79b5a",
       "library": "footprinter",
       "fn": "usbcmidmount",
@@ -11407,6 +11999,74 @@
         {
           "file": "tests/fixtures/usbcmidmount-jlcpcb.ts",
           "line": 184
+        }
+      ]
+    },
+    {
+      "id": "footprinter:8ec31b2d7b4b2e8a",
+      "library": "footprinter",
+      "fn": "usbmicro",
+      "spec": "usbmicro",
+      "sources": [
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 91
+        },
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 125
+        }
+      ]
+    },
+    {
+      "id": "footprinter:8dce1d585b4e2ebd",
+      "library": "footprinter",
+      "fn": "usbmicro",
+      "spec": "usbmicro5_frontflange",
+      "sources": [
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "id": "footprinter:56d2daf27a5787c0",
+      "library": "footprinter",
+      "fn": "usbmicro",
+      "spec": "usbmicro5_frontflange_p700um_rearspan5.2mm_frontspan7.4mm_tabspan2.2mm_pinstart21_reverse",
+      "sources": [
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 31
+        },
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 119
+        }
+      ]
+    },
+    {
+      "id": "footprinter:b68597dc117918f8",
+      "library": "footprinter",
+      "fn": "usbmicro",
+      "spec": "usbmicro5_norefdes",
+      "sources": [
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 104
+        }
+      ]
+    },
+    {
+      "id": "footprinter:86a22687bf78b9a0",
+      "library": "footprinter",
+      "fn": "usbmicro",
+      "spec": "usbmicro5_nosilkscreen",
+      "sources": [
+        {
+          "file": "tests/usbmicro.test.ts",
+          "line": 100
         }
       ]
     },

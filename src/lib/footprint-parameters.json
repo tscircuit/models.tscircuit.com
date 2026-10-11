@@ -1,8 +1,8 @@
 {
   "source": {
     "package": "@tscircuit/footprinter",
-    "version": "0.0.430",
-    "commit": "69b6d99f65c30afc0e1c578a7754dce5d1dbcdfe"
+    "version": "0.0.437",
+    "commit": "4fa6ec92f88963597832677d231d180a96df4e70"
   },
   "functions": [
     {
@@ -1951,6 +1951,7 @@
         "num_pins",
         "rows",
         "cols",
+        "pinnumbering",
         "p",
         "py",
         "id",
@@ -1963,6 +1964,8 @@
         "rightangle",
         "pw",
         "pl",
+        "cyw",
+        "cyh",
         "pinlabeltextalignleft",
         "pinlabeltextaligncenter",
         "pinlabeltextalignright",
@@ -2028,6 +2031,16 @@
           "key": "cols",
           "kind": "number",
           "description": "number of nominal columns in a sparse grid",
+          "required": false
+        },
+        {
+          "key": "pinnumbering",
+          "kind": "enum",
+          "options": [
+            "rowmajor",
+            "columnmajor"
+          ],
+          "description": "rowmajor or columnmajor grid numbering; omitted preserves the existing traversal",
           "required": false
         },
         {
@@ -2118,6 +2131,20 @@
           "sourceDefault": "2.0mm",
           "required": false,
           "resolvedDefault": 2
+        },
+        {
+          "key": "cyw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "explicit courtyard width",
+          "required": false
+        },
+        {
+          "key": "cyh",
+          "kind": "length",
+          "unit": "mm",
+          "description": "explicit courtyard height",
+          "required": false
         },
         {
           "key": "pinlabeltextalignleft",
@@ -3083,6 +3110,13 @@
         "num_pins",
         "grid",
         "p",
+        "px",
+        "py",
+        "lrendpitch",
+        "tbendpitch",
+        "cw",
+        "ccw",
+        "startingpin",
         "w",
         "h",
         "pw",
@@ -3164,6 +3198,45 @@
           "sourceDefault": 0.5,
           "required": false,
           "resolvedDefault": 0.5
+        },
+        {
+          "key": "px",
+          "kind": "length",
+          "unit": "mm",
+          "description": "top and bottom row pitch",
+          "required": false
+        },
+        {
+          "key": "py",
+          "kind": "length",
+          "unit": "mm",
+          "description": "left and right row pitch",
+          "required": false
+        },
+        {
+          "key": "lrendpitch",
+          "kind": "length",
+          "unit": "mm",
+          "description": "first and last gaps on left and right rows",
+          "required": false
+        },
+        {
+          "key": "tbendpitch",
+          "kind": "length",
+          "unit": "mm",
+          "description": "first and last gaps on top and bottom rows",
+          "required": false
+        },
+        {
+          "key": "cw",
+          "kind": "boolean",
+          "required": false
+        },
+        {
+          "key": "startingpin",
+          "kind": "list",
+          "placeholder": "(1,2,3)",
+          "required": false
         },
         {
           "key": "w",
@@ -4953,6 +5026,7 @@
         "num_pins",
         "rows",
         "cols",
+        "pinnumbering",
         "p",
         "py",
         "id",
@@ -4965,6 +5039,8 @@
         "rightangle",
         "pw",
         "pl",
+        "cyw",
+        "cyh",
         "pinlabeltextalignleft",
         "pinlabeltextaligncenter",
         "pinlabeltextalignright",
@@ -5030,6 +5106,16 @@
           "key": "cols",
           "kind": "number",
           "description": "number of nominal columns in a sparse grid",
+          "required": false
+        },
+        {
+          "key": "pinnumbering",
+          "kind": "enum",
+          "options": [
+            "rowmajor",
+            "columnmajor"
+          ],
+          "description": "rowmajor or columnmajor grid numbering; omitted preserves the existing traversal",
           "required": false
         },
         {
@@ -5120,6 +5206,20 @@
           "sourceDefault": "2.0mm",
           "required": false,
           "resolvedDefault": 2
+        },
+        {
+          "key": "cyw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "explicit courtyard width",
+          "required": false
+        },
+        {
+          "key": "cyh",
+          "kind": "length",
+          "unit": "mm",
+          "description": "explicit courtyard height",
+          "required": false
         },
         {
           "key": "pinlabeltextalignleft",
@@ -5515,6 +5615,14 @@
         "thermalviapitch",
         "thermalviaid",
         "thermalviaod",
+        "rows",
+        "grid",
+        "rowgap",
+        "rowspan",
+        "staggered",
+        "circularpads",
+        "pinnumbering",
+        "missing",
         "origin"
       ],
       "parameters": [
@@ -5719,6 +5827,60 @@
           "unit": "mm",
           "description": "thermal via outer diameter",
           "required": false
+        },
+        {
+          "key": "rows",
+          "kind": "number",
+          "sourceDefault": 1,
+          "required": false,
+          "resolvedDefault": 1
+        },
+        {
+          "key": "grid",
+          "kind": "dimensions",
+          "allowBoolean": false,
+          "placeholder": "2x3",
+          "description": "outer row sites: top/bottom by left/right",
+          "required": false
+        },
+        {
+          "key": "rowgap",
+          "kind": "length",
+          "unit": "mm",
+          "description": "center gap between outer and inner rows",
+          "required": false
+        },
+        {
+          "key": "rowspan",
+          "kind": "length",
+          "unit": "mm",
+          "description": "opposing outer-row center span, on both axes",
+          "required": false
+        },
+        {
+          "key": "staggered",
+          "kind": "boolean",
+          "description": "shift the inner rows left and down by half their pitch",
+          "sourceDefault": false,
+          "required": false,
+          "resolvedDefault": false
+        },
+        {
+          "key": "circularpads",
+          "kind": "boolean",
+          "description": "circular lands with diameter pw",
+          "sourceDefault": false,
+          "required": false,
+          "resolvedDefault": false
+        },
+        {
+          "key": "missing",
+          "kind": "list",
+          "placeholder": "(1,2,3)",
+          "description": "omit nominal pin numbers or package-coordinate sites",
+          "sourceDefault": [],
+          "required": false,
+          "resolvedDefault": []
         },
         {
           "key": "origin",
@@ -13920,6 +14082,188 @@
       ]
     },
     {
+      "name": "usba",
+      "example": "usba",
+      "acceptedParameters": [
+        "norefdes",
+        "invert",
+        "faceup",
+        "nosilkscreen",
+        "rounded",
+        "pin1location",
+        "cathodepin",
+        "anodepin",
+        "fn",
+        "num_pins",
+        "tht",
+        "smd",
+        "pinstart",
+        "reverse",
+        "p",
+        "centerp",
+        "id",
+        "ring",
+        "shieldspan",
+        "shieldy",
+        "shieldid",
+        "shieldring",
+        "w",
+        "h",
+        "bodybottom",
+        "origin"
+      ],
+      "parameters": [
+        {
+          "key": "norefdes",
+          "kind": "boolean",
+          "description": "disable reference designator label",
+          "required": false
+        },
+        {
+          "key": "nosilkscreen",
+          "kind": "boolean",
+          "description": "omit all silkscreen elements from the footprint",
+          "required": false
+        },
+        {
+          "key": "pin1location",
+          "kind": "text",
+          "placeholder": "(leftside,top)",
+          "description": "rotate the footprint to place pin 1 on a requested side",
+          "required": false
+        },
+        {
+          "key": "pinstart",
+          "kind": "number",
+          "integer": true,
+          "min": 0,
+          "sourceDefault": 1,
+          "required": false,
+          "resolvedDefault": 1
+        },
+        {
+          "key": "reverse",
+          "kind": "boolean",
+          "sourceDefault": false,
+          "required": false,
+          "resolvedDefault": false
+        },
+        {
+          "key": "p",
+          "kind": "length",
+          "unit": "mm",
+          "description": "pitch within each outer contact pair",
+          "sourceDefault": "2.5mm",
+          "required": false,
+          "resolvedDefault": 2.5
+        },
+        {
+          "key": "centerp",
+          "kind": "length",
+          "unit": "mm",
+          "description": "pitch between the two inner contacts",
+          "sourceDefault": "2mm",
+          "required": false,
+          "resolvedDefault": 2
+        },
+        {
+          "key": "id",
+          "kind": "length",
+          "unit": "mm",
+          "description": "electrical contact drill diameter",
+          "sourceDefault": "0.92mm",
+          "required": false,
+          "resolvedDefault": 0.92
+        },
+        {
+          "key": "ring",
+          "kind": "length",
+          "unit": "mm",
+          "description": "electrical contact annular ring",
+          "sourceDefault": "0.3mm",
+          "required": false,
+          "resolvedDefault": 0.3
+        },
+        {
+          "key": "shieldspan",
+          "kind": "length",
+          "unit": "mm",
+          "description": "shell mounting-hole center span",
+          "sourceDefault": "13.14mm",
+          "required": false,
+          "resolvedDefault": 13.14
+        },
+        {
+          "key": "shieldy",
+          "kind": "length",
+          "unit": "mm",
+          "description": "signed shell row offset from the contact row",
+          "sourceDefault": "-2.71mm",
+          "required": false,
+          "resolvedDefault": -2.71
+        },
+        {
+          "key": "shieldid",
+          "kind": "length",
+          "unit": "mm",
+          "description": "shell mounting-hole drill diameter",
+          "sourceDefault": "2.3mm",
+          "required": false,
+          "resolvedDefault": 2.3
+        },
+        {
+          "key": "shieldring",
+          "kind": "length",
+          "unit": "mm",
+          "description": "shell mounting-hole annular ring",
+          "sourceDefault": "0.3mm",
+          "required": false,
+          "resolvedDefault": 0.3
+        },
+        {
+          "key": "w",
+          "kind": "length",
+          "unit": "mm",
+          "description": "body width",
+          "sourceDefault": "13.1mm",
+          "required": false,
+          "resolvedDefault": 13.1
+        },
+        {
+          "key": "h",
+          "kind": "length",
+          "unit": "mm",
+          "description": "body length toward mating edge",
+          "sourceDefault": "13.85mm",
+          "required": false,
+          "resolvedDefault": 13.85
+        },
+        {
+          "key": "bodybottom",
+          "kind": "length",
+          "unit": "mm",
+          "description": "mating-edge distance from contact row",
+          "sourceDefault": "12.99mm",
+          "required": false,
+          "resolvedDefault": 12.99
+        },
+        {
+          "key": "origin",
+          "kind": "enum",
+          "options": [
+            "center",
+            "bottomleft",
+            "pin1",
+            "bottomcenter",
+            "topcenter",
+            "leftcenter",
+            "rightcenter"
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "usbcmidmount",
       "example": "usbcmidmount",
       "acceptedParameters": [
@@ -14178,6 +14522,285 @@
           "sourceDefault": "5.225mm",
           "required": false,
           "resolvedDefault": 5.225
+        },
+        {
+          "key": "origin",
+          "kind": "enum",
+          "options": [
+            "center",
+            "bottomleft",
+            "pin1",
+            "bottomcenter",
+            "topcenter",
+            "leftcenter",
+            "rightcenter"
+          ],
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "usbmicro",
+      "example": "usbmicro",
+      "acceptedParameters": [
+        "norefdes",
+        "invert",
+        "faceup",
+        "nosilkscreen",
+        "rounded",
+        "pin1location",
+        "cathodepin",
+        "anodepin",
+        "fn",
+        "num_pins",
+        "frontflange",
+        "noflange",
+        "pinstart",
+        "reverse",
+        "p",
+        "pw",
+        "ph",
+        "rowy",
+        "rearspan",
+        "reary",
+        "rearhw",
+        "rearhh",
+        "rearring",
+        "frontspan",
+        "fronthw",
+        "fronthh",
+        "frontpw",
+        "frontph",
+        "tabspan",
+        "tabpw",
+        "tabph",
+        "w",
+        "bodytop",
+        "bodybottom",
+        "origin"
+      ],
+      "parameters": [
+        {
+          "key": "norefdes",
+          "kind": "boolean",
+          "description": "disable reference designator label",
+          "required": false
+        },
+        {
+          "key": "nosilkscreen",
+          "kind": "boolean",
+          "description": "omit all silkscreen elements from the footprint",
+          "required": false
+        },
+        {
+          "key": "rounded",
+          "kind": "length",
+          "unit": "mm",
+          "description": "corner radius applied to all rectangular copper pads",
+          "required": false
+        },
+        {
+          "key": "pin1location",
+          "kind": "text",
+          "placeholder": "(leftside,top)",
+          "description": "rotate the footprint to place pin 1 on a requested side",
+          "required": false
+        },
+        {
+          "key": "pinstart",
+          "kind": "number",
+          "integer": true,
+          "min": 0,
+          "sourceDefault": 1,
+          "required": false,
+          "resolvedDefault": 1
+        },
+        {
+          "key": "reverse",
+          "kind": "boolean",
+          "sourceDefault": false,
+          "required": false,
+          "resolvedDefault": false
+        },
+        {
+          "key": "p",
+          "kind": "length",
+          "unit": "mm",
+          "description": "electrical contact pitch",
+          "sourceDefault": "0.65mm",
+          "required": false,
+          "resolvedDefault": 0.65
+        },
+        {
+          "key": "pw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "electrical contact pad width",
+          "sourceDefault": "0.4mm",
+          "required": false,
+          "resolvedDefault": 0.4
+        },
+        {
+          "key": "ph",
+          "kind": "length",
+          "unit": "mm",
+          "description": "electrical contact pad height",
+          "sourceDefault": "1.35mm",
+          "required": false,
+          "resolvedDefault": 1.35
+        },
+        {
+          "key": "rowy",
+          "kind": "length",
+          "unit": "mm",
+          "description": "contact row from front slots",
+          "sourceDefault": "2.675mm",
+          "required": false,
+          "resolvedDefault": 2.675
+        },
+        {
+          "key": "rearspan",
+          "kind": "length",
+          "unit": "mm",
+          "description": "rear shell slot center span",
+          "sourceDefault": "5mm",
+          "required": false,
+          "resolvedDefault": 5
+        },
+        {
+          "key": "reary",
+          "kind": "length",
+          "unit": "mm",
+          "description": "rear shell row from front slots",
+          "sourceDefault": "2.7mm",
+          "required": false,
+          "resolvedDefault": 2.7
+        },
+        {
+          "key": "rearhw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "rear shell slot width",
+          "sourceDefault": "0.85mm",
+          "required": false,
+          "resolvedDefault": 0.85
+        },
+        {
+          "key": "rearhh",
+          "kind": "length",
+          "unit": "mm",
+          "description": "rear shell slot height",
+          "sourceDefault": "0.55mm",
+          "required": false,
+          "resolvedDefault": 0.55
+        },
+        {
+          "key": "rearring",
+          "kind": "length",
+          "unit": "mm",
+          "description": "rear shell annular ring",
+          "sourceDefault": "0.2mm",
+          "required": false,
+          "resolvedDefault": 0.2
+        },
+        {
+          "key": "frontspan",
+          "kind": "length",
+          "unit": "mm",
+          "description": "front shell slot center span",
+          "sourceDefault": "7mm",
+          "required": false,
+          "resolvedDefault": 7
+        },
+        {
+          "key": "fronthw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "front shell slot width",
+          "sourceDefault": "0.5mm",
+          "required": false,
+          "resolvedDefault": 0.5
+        },
+        {
+          "key": "fronthh",
+          "kind": "length",
+          "unit": "mm",
+          "description": "front shell slot height",
+          "sourceDefault": "1.15mm",
+          "required": false,
+          "resolvedDefault": 1.15
+        },
+        {
+          "key": "frontpw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "centered front shell land width",
+          "sourceDefault": "1mm",
+          "required": false,
+          "resolvedDefault": 1
+        },
+        {
+          "key": "frontph",
+          "kind": "length",
+          "unit": "mm",
+          "description": "centered front shell land height",
+          "sourceDefault": "1.55mm",
+          "required": false,
+          "resolvedDefault": 1.55
+        },
+        {
+          "key": "tabspan",
+          "kind": "length",
+          "unit": "mm",
+          "description": "inner shell SMT tab center span",
+          "sourceDefault": "2mm",
+          "required": false,
+          "resolvedDefault": 2
+        },
+        {
+          "key": "tabpw",
+          "kind": "length",
+          "unit": "mm",
+          "description": "inner shell SMT tab pad width",
+          "sourceDefault": "1.5mm",
+          "required": false,
+          "resolvedDefault": 1.5
+        },
+        {
+          "key": "tabph",
+          "kind": "length",
+          "unit": "mm",
+          "description": "inner shell SMT tab pad height",
+          "sourceDefault": "1.55mm",
+          "required": false,
+          "resolvedDefault": 1.55
+        },
+        {
+          "key": "w",
+          "kind": "length",
+          "unit": "mm",
+          "description": "body width including front flange",
+          "sourceDefault": "8mm",
+          "required": false,
+          "resolvedDefault": 8
+        },
+        {
+          "key": "bodytop",
+          "kind": "length",
+          "unit": "mm",
+          "description": "body extent behind front slots",
+          "sourceDefault": "2.7mm",
+          "required": false,
+          "resolvedDefault": 2.7
+        },
+        {
+          "key": "bodybottom",
+          "kind": "length",
+          "unit": "mm",
+          "description": "body extent toward mating edge",
+          "sourceDefault": "2.3mm",
+          "required": false,
+          "resolvedDefault": 2.3
         },
         {
           "key": "origin",
