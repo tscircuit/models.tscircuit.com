@@ -13,7 +13,7 @@ for (const extension of ["glb", "step", "x_t"]) {
     throw new Error("GLB signature missing")
   if (extension === "step" && !text.startsWith("ISO-10303-21;"))
     throw new Error("STEP signature missing")
-  if (extension === "x_t" && !text.includes("**"))
+  if (extension === "x_t" && !text.startsWith("T51 : TRANSMIT FILE"))
     throw new Error("Parasolid header missing")
   if (!first.headers.get("cache-control")?.includes("max-age=604800"))
     throw new Error("Seven-day cache header missing")
