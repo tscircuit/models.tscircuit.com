@@ -62,7 +62,7 @@ The Cloudflare Worker serves the Vite site and generates direct downloads using 
 - Footprinter strings also work. URL-encode strings containing `#`, `/`, or other reserved characters.
 - Existing query-based share links remain supported. Share links use model paths and retain explicit `params` overrides so JSON-only placement and footprint settings survive reloads. These overrides can also be appended to download URLs.
 
-Successful exports are stored as binary KV values with `expirationTtl: 604800` (seven days). Keys include format, resolved parameters, library identity, and bundled library versions. Cache hits do not extend expiration. Invalid requests and export errors are never cached. Files above KV's 25 MiB value limit are served without KV caching. `X-Model-Cache` reports `HIT`, `MISS`, or `BYPASS`. The current site does not use ModelCDN; no existing ModelCDN integration is replaced.
+Successful exports are stored as binary KV values with `expirationTtl: 15552000` (180 days). Keys include format, resolved parameters, library identity, and bundled library versions. Each GET or HEAD cache hit rewrites the same binary value in the background, renewing its expiration to 180 days from that request. Renewal failures are logged while the cached download remains available. Invalid requests and export errors are never cached. Files above KV's 25 MiB value limit are served without KV caching. `X-Model-Cache` reports `HIT`, `MISS`, or `BYPASS`. The current site does not use ModelCDN; no existing ModelCDN integration is replaced.
 
 ```sh
 bunx wrangler login
@@ -74,7 +74,7 @@ The `tscircuit` account and production `MODEL_CACHE` namespace are pinned in `wr
 
 For local end-to-end tests, run `bun run dev:worker`. This uses local KV and serves model URLs from the actual Workers runtime. `bun run dev` remains the browser-only configurator development server.
 
-GitHub Actions deployment requires repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts Edit, Workers KV Storage Edit, account access and the domain permissions needed for custom domains) and `CLOUDFLARE_ACCOUNT_ID`, plus the committed KV namespace id. The deploy workflow follows successful validation on main, including scheduled library updates. Those repository secrets are configured. After deployment, the workflow verifies the live model page, all three file signatures, seven-day cache headers, and identical KV cache hits. The previous Vercel deployment can remain available during migration.
+GitHub Actions deployment requires repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts Edit, Workers KV Storage Edit, account access and the domain permissions needed for custom domains) and `CLOUDFLARE_ACCOUNT_ID`, plus the committed KV namespace id. The deploy workflow follows successful validation on main, including scheduled library updates. Those repository secrets are configured. After deployment, the workflow verifies the live model page, all three file signatures, 180-day cache headers, and identical KV cache hits. The previous Vercel deployment can remain available during migration.
 
 ## Daily library updates
 

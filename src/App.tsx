@@ -314,6 +314,7 @@ export function App() {
   }
   const change = (key: string, value: unknown) => {
     setValues((previous) => updateValues(entry, previous, key, value))
+    setEditedSpec(null)
     setEditError("")
   }
   const copy = async (value: string, kind: string) => {

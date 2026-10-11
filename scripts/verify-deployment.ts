@@ -15,8 +15,8 @@ for (const extension of ["glb", "step", "x_t"]) {
     throw new Error("STEP signature missing")
   if (extension === "x_t" && !text.startsWith("T51 : TRANSMIT FILE"))
     throw new Error("Parasolid header missing")
-  if (!first.headers.get("cache-control")?.includes("max-age=604800"))
-    throw new Error("Seven-day cache header missing")
+  if (!first.headers.get("cache-control")?.includes("max-age=15552000"))
+    throw new Error("180-day cache header missing")
   let hit = false
   for (let attempt = 0; attempt < 15; attempt++) {
     const second = await fetch(url)
@@ -30,6 +30,6 @@ for (const extension of ["glb", "step", "x_t"]) {
     await Bun.sleep(5000)
   }
   if (!hit) throw new Error(`${extension}: no KV HIT after retries`)
-  console.log(`${extension}: valid export, seven-day caching, identical KV HIT`)
+  console.log(`${extension}: valid export, 180-day caching, identical KV HIT`)
 }
 console.log("Live model page and all export routes passed.")

@@ -6,7 +6,7 @@ import { exportStep } from "./lib/export-step"
 import { exportParasolid } from "./lib/export-parasolid"
 import { exportGlb } from "./lib/export-glb"
 
-const CACHE_TTL = 7 * 24 * 60 * 60
+const CACHE_TTL = 180 * 24 * 60 * 60
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> }
   MODEL_CACHE: {
@@ -20,6 +20,18 @@ interface Env {
 }
 interface Context {
   waitUntil(promise: Promise<unknown>): void
+}
+async function storeModel(env: Env, key: string, data: ArrayBuffer) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await env.MODEL_CACHE.put(key, data, { expirationTtl: CACHE_TTL })
+      return
+    } catch (error) {
+      // KV permits one write per second per key. Retry rapid repeated requests.
+      if (attempt >= 2 || !/\b429\b/.test(String(error))) throw error
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt))
+    }
+  }
 }
 const types = {
   glb: "model/gltf-binary",
@@ -122,10 +134,17 @@ export default {
     } catch (error) {
       console.error("KV read failed", error)
     }
-    if (cached)
+    if (cached) {
+      // Rewriting the same bytes renews KV expiration from the latest request.
+      ctx.waitUntil(
+        storeModel(env, key, cached).catch(
+          (error) => console.error("KV cache renewal failed", error),
+        ),
+      )
       return new Response(request.method === "HEAD" ? null : cached, {
         headers: { ...headers, "X-Model-Cache": "HIT" },
       })
+    }
     try {
       const job = {
         id: 1,
@@ -148,7 +167,7 @@ export default {
       // KV values have a 25 MiB limit; larger successful exports are still downloadable.
       if (data.byteLength <= 25 * 1024 * 1024)
         ctx.waitUntil(
-          env.MODEL_CACHE.put(key, data, { expirationTtl: CACHE_TTL }).catch(
+          storeModel(env, key, data).catch(
             (error) => console.error("KV write failed", error),
           ),
         )
