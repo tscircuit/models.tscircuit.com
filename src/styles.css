@@ -36,7 +36,7 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .brand-title { @apply text-sm font-semibold; letter-spacing: -.3px; }
 .brand-divider { @apply text-sm text-zinc-300; margin-left: 3px; }
 .header-title { @apply text-sm text-zinc-500; }
-.header-download-hint { @apply text-xs text-zinc-500; margin-left: auto; text-align: right; }
+.header-download-hint { @apply text-zinc-500; font-size: 11px; margin-left: auto; text-align: right; }
 .header-source { flex-shrink: 0; }
 .icon-button { @apply inline-flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-500; width: 34px; height: 34px; padding: 0; }
 .icon-button:hover { @apply bg-zinc-50 text-zinc-900; }

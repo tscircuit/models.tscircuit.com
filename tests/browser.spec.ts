@@ -637,7 +637,7 @@ test("hex bolt controls import selectors, regenerate geometry, and survive a ref
   await page.goto(legacy.pathname + legacy.search)
   await expect.poll(() => new URL(page.url()).search).toBe("")
   expect(decodeURIComponent(new URL(page.url()).pathname)).toBe("/hexbolt_m6_l25mm_standard(iso4017:2014)_drive(hex)")
-  await expect(page.locator(".header-download-hint")).toHaveText("want to use a model? Add glb, step or x_t to the end of the url!")
+  await expect(page.locator(".header-download-hint")).toHaveText("Add .glb, .step or .x_t to the end of any url")
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hex bolt")
   await expect(canvas(page)).toBeVisible()
   await settle(page)

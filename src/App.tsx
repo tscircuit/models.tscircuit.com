@@ -407,7 +407,7 @@ export function App() {
         <span className="brand-divider">/</span>
         <span className="header-title">Models</span>
         <span className="header-download-hint">
-          want to use a model? Add glb, step or x_t to the end of the url!
+          Add .glb, .step or .x_t to the end of any url
         </span>
         <a
           className="icon-button header-source"
