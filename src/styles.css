@@ -36,7 +36,8 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .brand-title { @apply text-sm font-semibold; letter-spacing: -.3px; }
 .brand-divider { @apply text-sm text-zinc-300; margin-left: 3px; }
 .header-title { @apply text-sm text-zinc-500; }
-.header-source { margin-left: auto; }
+.header-download-hint { @apply text-xs text-zinc-500; margin-left: auto; text-align: right; }
+.header-source { flex-shrink: 0; }
 .icon-button { @apply inline-flex items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-500; width: 34px; height: 34px; padding: 0; }
 .icon-button:hover { @apply bg-zinc-50 text-zinc-900; }
 .icon-button.is-active { @apply border-zinc-300 bg-zinc-100 text-zinc-700; }
@@ -195,6 +196,8 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 }
 @media (max-width: 700px) {
   .app-header { padding: 0 16px; gap: 10px; }
+  .header-download-hint { font-size: 10px; }
+  .brand-title { display: none; }
   .examples-page { padding: 32px 18px 36px; }
   .examples-page > h1 { font-size: 25px; margin-bottom: 20px; }
   .examples-search .search-box { height: 45px; padding: 0 12px; }

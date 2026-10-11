@@ -169,7 +169,7 @@ export function App() {
 
   useEffect(() => {
     if (!workspaceOpen) return
-    // Save explicit inputs, including JSON-only settings, without freezing defaults.
+    // Keep the address on the model string as parameters change.
     const url = shareUrl(entry, values, baseSpec)
     if (url !== window.location.href)
       window.history.replaceState(window.history.state, "", url)
@@ -406,6 +406,9 @@ export function App() {
         </a>
         <span className="brand-divider">/</span>
         <span className="header-title">Models</span>
+        <span className="header-download-hint">
+          want to use a model? Add glb, step or x_t to the end of the url!
+        </span>
         <a
           className="icon-button header-source"
           href="https://github.com/tscircuit/models.tscircuit.com"

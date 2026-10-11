@@ -137,16 +137,18 @@ export function shareUrl(
 ) {
   const url = new URL(window.location.href)
   url.search = ""
+  url.hash = ""
   try {
     const configuration = configure(
       { ...entry, initialSpec: spec },
       prepareValues(entry, values),
     )
     url.pathname = "/" + encodeURIComponent(configuration.spec)
+    if (!configuration.warnings?.length) return url.toString()
   } catch {
     url.pathname = "/"
   }
-  url.hash = ""
+  // Only settings the model string cannot represent need explicit overrides.
   url.searchParams.set("model", entry.id)
   // An empty override set is meaningful after resetting an imported example.
   url.searchParams.set("params", JSON.stringify(values))
