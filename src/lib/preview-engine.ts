@@ -1,3 +1,4 @@
+import * as modelComponentsLibrary from "jscad-electronics"
 import jscad from "@jscad/modeling"
 import { fp } from "@tscircuit/footprinter"
 import { convertCircuitJsonToPcbSvg } from "circuit-to-svg"
@@ -34,6 +35,18 @@ const BODY_UNAVAILABLE =
   "Showing the footprint; this package body is not available for these settings."
 
 const modelComponents: Record<string, ComponentType<any>> = {
+  adhesivemountelectricalcomponentheatsink: (props) => {
+    const { width, length, height, baseThickness, finThickness, finCount } = props
+    const gap = finCount > 1 ? (width - finThickness) / (finCount - 1) : 0
+    return createElement(Fragment, {},
+      createElement("translate", { args: [0, 0, baseThickness / 2] },
+        createElement("cuboid", { size: [width, length, baseThickness] })),
+      ...Array.from({ length: finCount }, (_, index) => createElement("translate", {
+        key: index,
+        args: [finCount === 1 ? 0 : -width / 2 + finThickness / 2 + index * gap, 0, (height + baseThickness) / 2],
+      }, createElement("cuboid", { size: [finThickness, length, height - baseThickness] }))),
+    )
+  },
   nema: NemaMotor,
   hexsocketbolt: HexSocketBolt,
   hexbolt: HexBolt,
@@ -187,7 +200,7 @@ export function generatePreview(
 ): PreviewResult {
   try {
     if (request.library === "modelprinter") {
-      const component = modelComponents[request.fn]
+      const component = modelComponents[request.fn] ?? Object.entries(modelComponentsLibrary).find(([name, value]) => name.toLowerCase() === request.fn && typeof value === "function")?.[1] as ComponentType<any> | undefined
       if (!component)
         throw new Error(`No geometry generator is available for ${request.fn}.`)
       const geometries = renderComponent(component, request.values)

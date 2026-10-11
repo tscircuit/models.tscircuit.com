@@ -457,6 +457,17 @@ test("imported NEMA strings retain automatic frame dimensions and required reset
   await settle(page)
 })
 
+test("home loads more models automatically as you scroll", async ({ page }) => {
+  await page.goto("/")
+  await expect(page.locator(".example-card")).toHaveCount(24)
+  await expect(page.getByRole("button", { name: "Load more", exact: true })).toHaveCount(0)
+  await page.getByTestId("catalog-load-sentinel").scrollIntoViewIfNeeded()
+  await expect.poll(() => page.locator(".example-card").count()).toBeGreaterThan(24)
+  const count = await page.locator(".example-card").count()
+  await page.getByTestId("catalog-load-sentinel").scrollIntoViewIfNeeded()
+  await expect.poll(() => page.locator(".example-card").count()).toBeGreaterThan(count)
+})
+
 test("home searches build-time examples and opens the selected geometry", async ({
   page,
 }, testInfo) => {
@@ -466,6 +477,10 @@ test("home searches build-time examples and opens the selected geometry", async 
   await expect(page.getByRole("textbox", { name: "Model string", exact: true })).toHaveCount(0)
   await expect(page.getByRole("complementary", { name: "Model parameters" })).toHaveCount(0)
   await expect(page.getByTestId("model-preview")).toHaveCount(0)
+  await expect(page.getByRole("button", { name: "Models", exact: true })).toHaveClass(/is-active/)
+  for (const size of [8, 17, 34, 23])
+    await expect(page.getByRole("button", { name: `Configure nema${size}`, exact: true })).toBeVisible()
+  await expect(page.locator(".example-library").filter({ hasText: "footprinter" })).toHaveCount(0)
   await expect(page.locator(".example-card").first()).toBeVisible()
   await expect(page.locator(".example-card img").first()).toBeVisible()
   await page.screenshot({
@@ -473,6 +488,7 @@ test("home searches build-time examples and opens the selected geometry", async 
     fullPage: false,
   })
 
+  await page.getByRole("button", { name: "Footprints", exact: true }).click()
   await search.fill("qfn")
   const footprintExample = page.locator(".example-card").first()
   const footprintImage = footprintExample.getByRole("img")
@@ -489,6 +505,7 @@ test("home searches build-time examples and opens the selected geometry", async 
 
   await search.fill("missing-example-239847")
   await expect(page.locator(".example-card")).toHaveCount(0)
+  await page.getByRole("button", { name: "Models", exact: true }).click()
   await search.fill("spurgear6 width2mm")
   const example = page.getByRole("button", { name: "Configure spurgear6_width2mm", exact: true })
   await expect(example).toBeVisible()
@@ -638,7 +655,7 @@ test("hex bolt controls import selectors, regenerate geometry, and survive a ref
   legacy.searchParams.set("spec", "HEXBOLT_M6_length2.5cm_STANDARD(ISO4017:2014)_DRIVE(HEX)")
   await page.goto(legacy.pathname + legacy.search)
   await expect.poll(() => new URL(page.url()).search).toBe("")
-  expect(decodeURIComponent(new URL(page.url()).pathname)).toBe("/hexbolt_m6_l25mm_standard(iso4017:2014)_drive(hex)")
+  expect(decodeURIComponent(new URL(page.url()).pathname)).toBe("/hexbolt_m6_l25mm_drive(hex)_iso4017")
   await expect(page.locator(".header-download-hint")).toHaveText("Add .glb, .step or .x_t to the end of any url")
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hex bolt")
   await expect(canvas(page)).toBeVisible()

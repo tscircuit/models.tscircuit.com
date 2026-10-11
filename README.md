@@ -4,7 +4,7 @@ An interactive workbench for [ModelPrinter](https://github.com/tscircuit/modelpr
 
 ![Searchable model and footprint examples](docs/examples.png)
 
-- Seven ModelPrinter functions: NEMA motors, sheet metal, flexible screens, socket bolts, spur gears, helical gears, and worm screws.
+- 49 ModelPrinter families, including NEMA8/17/23/34 motors, bearings, fasteners, springs, T-slot profiles, bushings, heatsinks, and flexible screens. The landing page defaults to 3D parts; footprints remain available through their filter.
 - All functions from the installed Footprinter version, with controls generated from the native parameter schemas.
 - 3D orbit, pan, zoom, camera presets, and fit; footprint SVG previews with pan and zoom.
 - Editable model strings, generated TypeScript, parameter JSON, and shareable configuration URLs.

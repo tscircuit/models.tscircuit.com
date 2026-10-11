@@ -58,7 +58,7 @@ test("the updated catalog configures, imports, and renders ISO hex bolts", () =>
         expect(configured.values).toMatchObject({
           ...hexBoltDimensions[metricSize],
           length: 12.7,
-          standard: "iso4017:2014",
+          iso4017: true,
           threadHand,
           showThreads,
         })

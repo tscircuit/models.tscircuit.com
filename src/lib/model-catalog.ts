@@ -1,3 +1,5 @@
+import * as modelLibraryNames from "@tscircuit/modelprinter"
+import generatedExamples from "./model-examples.json"
 import { modelprinter } from "@tscircuit/modelprinter"
 import type { CatalogEntry, ParameterDefinition } from "./catalog-types"
 import { modelSchemas, type ModelName } from "./model-configuration"
@@ -99,9 +101,9 @@ const metadata: Record<
   nema: {
     name: "NEMA motor",
     category: "Motors",
-    tags: ["stepper", "motor", "nema8", "nema17", "nema23"],
+    tags: ["stepper", "motor", "nema8", "nema17", "nema23", "nema34"],
     description:
-      "A NEMA 8, 17, or 23 stepper motor with configurable shaft, mounts, and wires.",
+      "A NEMA 8, 17, 23, or 34 stepper motor with configurable shaft, mounts, and wires.",
     initialSpec: "nema17",
     initialValues: { nemaSize: 17 },
   },
@@ -128,7 +130,7 @@ const metadata: Record<
     tags: ["bolt", "hex", "metric", "iso4017", "fastener"],
     description:
       "An ISO 4017 hex head bolt with configurable metric size, length, and thread handedness.",
-    initialSpec: "hexbolt_standard(iso4017)_m3_l12mm",
+    initialSpec: "hexbolt_iso4017_m3_l12mm",
     initialValues: { metricSize: "M3", length: 12 },
   },
   flexscreen: {
@@ -280,11 +282,17 @@ export const modelCatalog: CatalogEntry[] = modelprinter
   .getModelNames()
   .map((name) => {
     const fn = name as ModelName
-    const data = metadata[fn]
+    const exportedName = Object.keys(modelLibraryNames).find(key => key.toLowerCase() === `${fn}modelpropsschema`)
+    const title = exportedName?.replace(/ModelPropsSchema$/, "").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, letter => letter.toUpperCase()) ?? fn
+    let initialSpec = fn
+    try { modelprinter.string(initialSpec).json() } catch {
+      initialSpec = generatedExamples.examples.find(example => example.library === "modelprinter" && example.fn === fn)?.spec ?? fn
+    }
+    const data = metadata[fn] ?? { name: title, category: "Parts", tags: [title.toLowerCase()], description: `A configurable ${title.toLowerCase()} 3D model.`, initialSpec, initialValues: {} }
     const schema = modelSchemas[fn]
     if (!data || !schema) throw new Error(`Missing catalog adapter for ${name}`)
     const shape = unwrap(schema as unknown as RuntimeSchema).shape!
-    const defaults = schema.parse(data.initialValues) as Record<string, unknown>
+    const defaults = (metadata[fn] ? schema.parse(data.initialValues) : modelprinter.string(data.initialSpec).json()) as Record<string, unknown>
     // Seed inputs are examples, not upstream defaults. Optional fields remain absent,
     // which lets a NEMA frame change resolve its own dimensions again.
     const resolvedDefaults = Object.fromEntries(

@@ -38,7 +38,7 @@ test("schema controls expose dimensions, enums, resolution, and JSON placement",
     entry("nema")
       .parameters.find((parameter) => parameter.key === "nemaSize")
       ?.options?.map((option) => option.value),
-  ).toEqual([8, 17, 23])
+  ).toEqual([8, 17, 23, 34])
   expect(
     entry("flexscreen").parameters.find(
       (parameter) => parameter.key === "offset",
@@ -244,4 +244,29 @@ test("helical gear strings preserve tooth count, helix angle, handedness, and re
   expect(parseSpec(configured.spec)).toEqual({ fn: "helicalgear", ...configured.values })
   expect(configured.spec).toContain("helicalgear32")
   expect(configured.code).toContain(configured.spec)
+})
+
+
+test("new part dimensions roundtrip through native model strings", () => {
+  for (const [fn, key, value] of [
+    ["tslotextrusion", "length", 100],
+    ["ballbearing", "width", 8],
+    ["threadedrod", "length", 40],
+    ["rectangularbar", "width", 30],
+    ["adhesivemountelectricalcomponentheatsink", "width", 30],
+  ] as const) {
+    const configured = configureModel(entry(fn), { [key]: `${value}mm` })
+    expect(configured.warnings).toBeUndefined()
+    expect(parseSpec(configured.spec)[key]).toBe(value)
+    expect(configured.values[key]).toBe(value)
+  }
+})
+
+test("NEMA34 and JST connectors retain their native dimensions and strings", () => {
+  const configured = configureModel(entry("nema"), { nemaSize: 34, wireConnection: "jst-sh-4", cornerProfile: "stepped" })
+  expect(configured.spec).toBe("nema34_jstsh4_stepped")
+  expect(configured.values.bodyWidth).toBe(86)
+  expect(configured.values.shaftDiameter).toBe(14)
+  const input = modelInputFromSpec(configured.spec)
+  expect(configureModel(entry("nema"), input.values).values).toEqual(configured.values)
 })

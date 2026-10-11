@@ -10,8 +10,10 @@ import {
   modelprinter,
 } from "@tscircuit/modelprinter"
 import type { CatalogEntry, Configuration } from "./catalog-types"
+import * as modelLibrary from "@tscircuit/modelprinter"
+import tokenAliases from "./model-token-aliases.json"
 
-export const modelSchemas = {
+const legacySchemas = {
   flexscreen: flexScreenModelPropsSchema,
   nema: nemaMotorModelPropsSchema,
   hexsocketbolt: hexSocketBoltModelPropsSchema,
@@ -21,7 +23,22 @@ export const modelSchemas = {
   helicalgear: helicalGearModelPropsSchema,
   wormgear: wormGearModelPropsSchema,
 }
-export type ModelName = keyof typeof modelSchemas
+export type ModelName = string
+type Schema = {
+  parse(value: unknown): Record<string, unknown>
+  safeParse(value: unknown):
+    | { success: true; data: Record<string, unknown> }
+    | { success: false; error: { issues: { path: (string | number)[]; message: string }[] } }
+}
+export const modelSchemas: Record<string, Schema> = { ...legacySchemas }
+for (const name of modelprinter.getModelNames()) {
+  if (modelSchemas[name]) continue
+  const schema = Object.entries(modelLibrary).find(
+    ([key]) => key.toLowerCase() === `${name}modelpropsschema`,
+  )?.[1] as Schema | undefined
+  if (!schema) throw new Error(`Missing ModelPrinter schema for ${name}`)
+  modelSchemas[name] = schema
+}
 
 export const lengthTokens: Record<ModelName, Record<string, string>> = {
   helicalgear: {
@@ -92,6 +109,7 @@ export const lengthTokens: Record<ModelName, Record<string, string>> = {
     rearCapLength: "rearcap",
     faceCornerChamfer: "facechamfer",
     bodyCornerChamfer: "bodychamfer",
+    rearCornerChamfer: "rearchamfer",
   },
   flexscreen: {
     width: "w",
@@ -183,6 +201,7 @@ const enumTokens: Partial<
     threadGender: { male: "threadgender(male)" },
   },
   nema: {
+    cornerProfile: { stepped: "stepped", chamfered: "chamfered" },
     backFace: {
       plain: "plainbackface",
       holes: "backfaceholes",
@@ -211,7 +230,7 @@ const booleanTokens: Partial<
 > = {
   nema: { mountingHoleThrough: ["throughholes", "blindholes"] },
   hexsocketbolt: { showThreads: ["threads", "nothreads"] },
-  hexbolt: { showThreads: ["threads", "nothreads"] },
+  hexbolt: { showThreads: ["threads", "nothreads"], iso4017: ["iso4017", "iso4017"] },
   flexscreen: {
     showScreen: ["showscreen", "hidescreen"],
     showFlexCable: ["showflex", "hideflex"],
@@ -248,12 +267,15 @@ const inputAliases: Partial<Record<ModelName, Record<string, string>>> = {
     l: "bodyLength",
     length: "bodyLength",
     backscrewm: "backFaceScrewSize",
+    jstph: "wireConnection",
+    jstsh: "wireConnection",
   },
   spurgear: { teeth: "toothCount", width: "faceWidth" },
   hexsocketbolt: { m: "metricSize" },
   hexbolt: {
     m: "metricSize",
     metricsize: "metricSize",
+    iso: "iso4017",
     d: "diameter",
     headh: "headHeight",
     af: "headAcrossFlats",
@@ -296,7 +318,7 @@ export function modelInputFromSpec(spec: string): {
   fn: ModelName
   values: Record<string, unknown>
 } {
-  const builder = modelprinter.string(spec)
+  const builder = modelprinter.string(spec.replace(/_standard\(iso4017(?::2014)?\)/gi, "_iso4017"))
   const { fn: name, ...parsed } = builder.json()
   const fn = name as ModelName
   const raw = builder.params()
@@ -327,6 +349,8 @@ export function modelInputFromSpec(spec: string): {
           : "distanceBelowBoard"
   }
   const values: Record<string, unknown> = {}
+  // New families keep their native string as the base, just like footprints.
+  if (!(fn in legacySchemas)) return { fn, values }
   if (fn === "nema") values.nemaSize = definition.nemaSize
   if ((fn === "spurgear" || fn === "helicalgear") && raw.num_pins !== undefined)
     values.toothCount = definition.toothCount
@@ -378,13 +402,15 @@ export function serializeModelInput(
       continue
     if (value === undefined || ["nemaSize", "toothCount"].includes(key))
       continue
-    const length = lengthTokens[fn][key]
+    const length = lengthTokens[fn]?.[key]
     const numeric = numberTokens[fn]?.[key]
     const flag = booleanTokens[fn]?.[key]
     const selection = enumTokens[fn]?.[key]
     if (length) tokens.push(`${length}${decimal(value)}mm`)
     else if (numeric) tokens.push(`${numeric}${decimal(value)}`)
     else if (flag) tokens.push(flag[value ? 0 : 1])
+    else if (fn === "nema" && key === "wireConnection" && /^jst-(ph|sh)-\d+$/.test(String(value)))
+      tokens.push(String(value).replace(/^jst-(ph|sh)-(\d+)$/, "jst$1$2"))
     else if (selection) tokens.push(selection[String(value)]!)
     else if (
       (fn === "hexsocketbolt" || fn === "hexbolt") && key === "metricSize"
@@ -469,6 +495,7 @@ export function configureModel(
   values: Record<string, unknown>,
 ): Configuration {
   const fn = entry.fn as ModelName
+  if (!(fn in legacySchemas)) return configureRegisteredModel(entry, values)
   const schema = modelSchemas[fn]
   if (!schema) throw new Error(`Unsupported model function: ${entry.fn}`)
   const input = Object.fromEntries(
@@ -476,6 +503,11 @@ export function configureModel(
       ([, value]) => value !== undefined && value !== "",
     ),
   )
+  if (fn === "hexbolt" && input.standard !== undefined) {
+    if (!["iso4017", "iso4017:2014"].includes(String(input.standard).toLowerCase())) throw new Error("Unsupported hex bolt standard")
+    delete input.standard
+    input.iso4017 = true
+  }
   for (const parameter of entry.parameters) {
     if (parameter.kind === "json" && typeof input[parameter.key] === "string") {
       try {
@@ -506,7 +538,7 @@ export function configureModel(
   if (!result.success) {
     throw new Error(
       result.error.issues
-        .map((issue) => {
+        .map((issue: { path: (string | number)[]; message: string }) => {
           const [key, ...nested] = issue.path
           const label = entry.parameters.find(
             (parameter) => parameter.key === key,
@@ -551,5 +583,52 @@ export function configureModel(
     values: parsed,
     code,
     ...(warnings.length ? { warnings } : {}),
+  }
+}
+
+/** Keep native ModelPrinter strings authoritative for newly registered families. */
+function configureRegisteredModel(entry: CatalogEntry, input: Record<string, unknown>): Configuration {
+  const { fn: _, ...base } = modelprinter.string(entry.initialSpec).json()
+  const overrides = Object.fromEntries(Object.entries(input).filter(([, value]) => value !== undefined && value !== ""))
+  const values = modelSchemas[entry.fn]!.parse({ ...base, ...overrides })
+  const aliases = (tokenAliases as Record<string, Record<string, string[]>>)[entry.fn] ?? {}
+  let spec = entry.initialSpec
+  let exact = true
+  for (const key of Object.keys(overrides)) {
+    const value = values[key]
+    const names = [...new Set([...(aliases[key] ?? []), key.toLowerCase(), ...(key === "metricSize" ? ["m"] : [])])]
+    const parts = spec.split(/_(?![^()]*\))/)
+    const kept = parts.filter((part, index) => index === 0 || !names.some(name => new RegExp(`^${name}(?=[(\\d.+-])`, "i").test(part)))
+    const encoded = typeof value === "number"
+      ? [`${decimal(value)}mm`, decimal(value), `${decimal(value)}deg`]
+      : typeof value === "string" ? [value, `(${value})`, value.replace(/^M/, "")]
+      : typeof value === "boolean" ? ["", `(${value})`]
+      : Array.isArray(value) ? [`(${value.join(",")})`] : []
+    let found = false
+    for (const name of names) {
+      for (const suffix of encoded) {
+        const candidate = [...kept, `${name}${suffix}`].join("_")
+        try {
+          const parsed = modelprinter.string(candidate).json() as Record<string, unknown>
+          if (JSON.stringify(parsed[key]) === JSON.stringify(value)) {
+            spec = candidate
+            found = true
+            break
+          }
+        } catch { /* Try the next native token spelling. */ }
+      }
+      if (found) break
+    }
+    if (!found) exact = false
+  }
+  const { fn: ignored, ...roundtrip } = modelprinter.string(spec).json()
+  if (!Object.keys(overrides).every(key => JSON.stringify(roundtrip[key as keyof typeof roundtrip]) === JSON.stringify(values[key]))) exact = false
+  return {
+    spec,
+    values: exact ? roundtrip : values,
+    code: exact
+      ? `import { modelprinter } from "@tscircuit/modelprinter"\n\nconst model = modelprinter.string(${JSON.stringify(spec)}).json()`
+      : `const model = ${JSON.stringify({ fn: entry.fn, ...values }, null, 2)}`,
+    ...(exact ? {} : { warnings: ["Some settings are available in JSON only."] }),
   }
 }

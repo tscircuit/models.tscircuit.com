@@ -130,7 +130,7 @@ export function App() {
     return window.location.pathname !== "/" || query.has("model") || query.has("spec")
   })
   const [search, setSearch] = useState("")
-  const [library, setLibrary] = useState<"all" | Library>("all")
+  const [library, setLibrary] = useState<"all" | Library>(workspaceOpen ? "all" : "modelprinter")
   const [visibleExamples, setVisibleExamples] = useState(24)
   const [view, setView] = useState<"3d" | "2d">(
     seed.entry.library === "modelprinter" ? "3d" : "2d",
@@ -146,11 +146,12 @@ export function App() {
   const [catalogOpen, setCatalogOpen] = useState(false)
   const [parametersOpen, setParametersOpen] = useState(false)
   const id = useRef(0)
+  const loadMoreRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const copyTimer = useRef<number | undefined>(undefined)
   const homeSearch = useRef<{ search: string; library: "all" | Library }>({
     search: "",
-    library: "all",
+    library: "modelprinter",
   })
 
   const configured = useMemo(() => {
@@ -221,12 +222,20 @@ export function App() {
   )
   const examples = useMemo(() => {
     const matching = searchExamples(search, library)
+    if (!search.trim() && library !== "footprinter") {
+      // Keep the motor frames visible together before the wider parts catalog.
+      const motors = [8, 17, 34, 23].map(size => ({
+        id: `featured-nema${size}`, library: "modelprinter" as const,
+        fn: "nema", spec: `nema${size}`, sources: [],
+      }))
+      matching.unshift(...motors)
+    }
     if (search.trim()) return matching
     const functions = new Set<string>()
     const representatives: typeof modelExamples = []
     const remaining: typeof modelExamples = []
     for (const example of matching) {
-      const key = `${example.library}:${example.fn}`
+      const key = example.fn === "nema" ? `${example.library}:${example.spec.match(/^nema(8|17|23|34)(?:_|$)/i)?.[1] ?? example.fn}` : `${example.library}:${example.fn}`
       if (functions.has(key)) remaining.push(example)
       else {
         functions.add(key)
@@ -235,6 +244,18 @@ export function App() {
     }
     return [...representatives, ...remaining]
   }, [search, library])
+  useEffect(() => {
+    const sentinel = loadMoreRef.current
+    if (workspaceOpen || !sentinel || visibleExamples >= examples.length) return
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return
+      observer.disconnect()
+      setVisibleExamples((count) => Math.min(count + 24, examples.length))
+    }, { rootMargin: "600px" })
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [examples.length, visibleExamples, workspaceOpen])
+
   const grouped = groupParameters(entry.parameters)
   const resolved =
     configured.result?.resolvedValues ?? configured.result?.values ?? {}
@@ -372,7 +393,7 @@ export function App() {
         ref={searchRef}
         aria-label="Search functions"
         placeholder={
-          workspaceOpen ? "Search functions…" : "Search models and footprints…"
+          workspaceOpen ? "Search functions…" : "Search 3D models…"
         }
         value={search}
         onChange={(event) => setSearch(event.target.value)}
@@ -466,13 +487,8 @@ export function App() {
             </div>
           )}
           {examples.length > visibleExamples && (
-            <div className="load-more">
-              <button
-                className="secondary-button"
-                onClick={() => setVisibleExamples((count) => count + 24)}
-              >
-                Load more
-              </button>
+            <div className="load-more" ref={loadMoreRef} data-testid="catalog-load-sentinel">
+              <span className="sr-only">Loading more models…</span>
             </div>
           )}
         </main>

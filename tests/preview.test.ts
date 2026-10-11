@@ -42,6 +42,19 @@ describe("real library preview generation", () => {
     })
   }
 
+  test("heatsink fins span the base and preserve the specified height and volume", () => {
+    const entry = modelCatalog.find((entry) => entry.fn === "adhesivemountelectricalcomponentheatsink")!
+    const config = configureModel(entry, entry.initialValues)
+    let volume = 0
+    const result = generatePreview({ id: 1, library: "modelprinter", fn: entry.fn, spec: config.spec, values: config.values }, (geometries) => {
+      expect(geometries).toHaveLength(7)
+      volume = geometries.reduce((sum, geometry) => sum + jscad.measurements.measureVolume(geometry), 0)
+    })
+    expect(result.error).toBeUndefined()
+    expect(result.bounds).toEqual({ min: [-10, -10, 0], max: [10, 10, 10] })
+    expect(volume).toBeCloseTo(1760, 4)
+  })
+
   test("spur gear face width changes actual 3D bounds", () => {
     const entry = modelCatalog.find((entry) => entry.fn === "spurgear")!
     const config = configureModel(entry, { faceWidth: 9, hubLength: 0 })

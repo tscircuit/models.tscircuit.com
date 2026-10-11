@@ -1,0 +1,676 @@
+{
+  "adhesivemountelectricalcomponentheatsink": {
+    "width": [
+      "w"
+    ],
+    "length": [
+      "l"
+    ],
+    "height": [
+      "h"
+    ],
+    "baseThickness": [
+      "base"
+    ],
+    "finThickness": [
+      "fin"
+    ]
+  },
+  "anglebar": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "innerRadius": [
+      "innerr",
+      "innerradius"
+    ],
+    "tipRadius": [
+      "tipr",
+      "tipradius"
+    ]
+  },
+  "ballbearing": {
+    "innerDiameter": [
+      "id",
+      "innerdiameter"
+    ],
+    "outerDiameter": [
+      "od",
+      "outerdiameter"
+    ],
+    "width": [
+      "w",
+      "width"
+    ],
+    "bothSidesOpen": [
+      "open",
+      "bothsidesopen"
+    ],
+    "bothSidesShielded": [
+      "shielded",
+      "bothsidesshielded"
+    ],
+    "bothSidesSealed": [
+      "sealed",
+      "bothsidessealed"
+    ],
+    "topSideOpen": [
+      "topsideopen"
+    ],
+    "topSideShielded": [
+      "topsideshielded"
+    ],
+    "topSideSealed": [
+      "topsidesealed"
+    ],
+    "bottomSideOpen": [
+      "bottomsideopen"
+    ],
+    "bottomSideShielded": [
+      "bottomsideshielded"
+    ],
+    "bottomSideSealed": [
+      "bottomsidesealed"
+    ]
+  },
+  "balltransferunit": {
+    "ballDiameter": [
+      "balld",
+      "balldiameter"
+    ],
+    "bodyDiameter": [
+      "bodyod",
+      "bodydiameter"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "ballProtrusion": [
+      "ballprotrusion"
+    ],
+    "flangeDiameter": [
+      "flangeod",
+      "flangediameter"
+    ],
+    "flangeThickness": [
+      "flangethickness"
+    ],
+    "pitchCircleDiameter": [
+      "pcd",
+      "pitchcirclediameter"
+    ],
+    "holeDiameter": [
+      "holed",
+      "holediameter"
+    ],
+    "socketClearance": [
+      "socketclearance"
+    ]
+  },
+  "buttonscrew": {
+    "length": [
+      "l",
+      "length"
+    ],
+    "threadPitch": [
+      "threadpitch"
+    ],
+    "drive": [
+      "drive"
+    ],
+    "thread": [
+      "thread"
+    ],
+    "threadHand": [
+      "threadhand"
+    ],
+    "threadClass": [
+      "threadclass"
+    ]
+  },
+  "cablegrommet": {
+    "panelHoleDiameter": [
+      "panelhole",
+      "panelholediameter"
+    ],
+    "innerDiameter": [
+      "id",
+      "innerdiameter"
+    ],
+    "outerDiameter": [
+      "od",
+      "outerdiameter"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "grooveWidth": [
+      "groovew",
+      "groovewidth"
+    ],
+    "grooveDepth": [
+      "grooved",
+      "groovedepth"
+    ]
+  },
+  "channelbar": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "webThickness": [
+      "web",
+      "webthickness"
+    ],
+    "flangeThickness": [
+      "flange",
+      "flangethickness"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "innerRadius": [
+      "innerr",
+      "innerradius"
+    ],
+    "tipRadius": [
+      "tipr",
+      "tipradius"
+    ]
+  },
+  "clampingshaftcollar": {},
+  "compressionspring": {
+    "outerDiameter": [
+      "od"
+    ],
+    "wireDiameter": [
+      "wire"
+    ],
+    "freeLength": [
+      "l",
+      "length",
+      "freelength"
+    ],
+    "spec": [
+      "spec"
+    ],
+    "ends": [
+      "ends"
+    ],
+    "hand": [
+      "hand"
+    ],
+    "state": [
+      "state"
+    ]
+  },
+  "dowelpin": {
+    "diameter": [
+      "d",
+      "diameter"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "endLeadLength": [
+      "c",
+      "endleadlength"
+    ]
+  },
+  "femalestandoff": {
+    "acrossFlats": [
+      "af",
+      "acrossflats"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "threadPitch": [
+      "p",
+      "threadpitch"
+    ],
+    "endChamfer": [
+      "endchamfer"
+    ]
+  },
+  "flangebolt": {},
+  "flangedbushing": {
+    "innerDiameter": [
+      "id",
+      "innerdiameter"
+    ],
+    "outerDiameter": [
+      "od",
+      "outerdiameter"
+    ],
+    "flangeDiameter": [
+      "flangeod",
+      "flangediameter"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "flangeThickness": [
+      "flangethickness"
+    ]
+  },
+  "flangenut": {},
+  "flatheadscrew": {},
+  "heatsetinsert": {},
+  "hexbolt": {},
+  "hexnut": {
+    "threadHand": [
+      "threadhand"
+    ],
+    "threadClass": [
+      "threadclass"
+    ]
+  },
+  "hollowpositioningarmtube": {
+    "outerDiameter": [
+      "od"
+    ],
+    "innerDiameter": [
+      "id"
+    ],
+    "startLength": [
+      "start"
+    ],
+    "endLength": [
+      "end"
+    ],
+    "bendRadius": [
+      "radius"
+    ],
+    "ribPitch": [
+      "pitch"
+    ],
+    "ribDepth": [
+      "depth"
+    ]
+  },
+  "malefemalestandoff": {
+    "acrossFlats": [
+      "af",
+      "acrossflats"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "studLength": [
+      "studl",
+      "studlength"
+    ],
+    "femaleDepth": [
+      "femaledepth"
+    ],
+    "threadPitch": [
+      "threadpitch"
+    ],
+    "bodyChamfer": [
+      "bodychamfer"
+    ],
+    "studChamfer": [
+      "studchamfer"
+    ],
+    "mouthChamfer": [
+      "mouthchamfer"
+    ]
+  },
+  "nylonlocknut": {},
+  "panscrew": {},
+  "perforatedsheet": {
+    "length": [
+      "l",
+      "length"
+    ],
+    "width": [
+      "w",
+      "width"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "holeDiameter": [
+      "hole",
+      "holediameter"
+    ],
+    "pitchX": [
+      "pitchx"
+    ],
+    "pitchY": [
+      "pitchy"
+    ],
+    "edgeX": [
+      "edgex"
+    ],
+    "edgeY": [
+      "edgey"
+    ],
+    "stagger": [
+      "stagger"
+    ]
+  },
+  "plainbushing": {
+    "innerDiameter": [
+      "id",
+      "innerdiameter"
+    ],
+    "outerDiameter": [
+      "od",
+      "outerdiameter"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "edgeChamfer": [
+      "edgechamfer"
+    ]
+  },
+  "pushfitplug": {
+    "tubeDiameter": [
+      "tubeod",
+      "tubediameter"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "headDiameter": [
+      "headod",
+      "headdiameter"
+    ],
+    "headThickness": [
+      "headt",
+      "headthickness"
+    ]
+  },
+  "rectangularbar": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "cornerRadius": [
+      "cornerr",
+      "cornerradius"
+    ]
+  },
+  "rectangulargasket": {},
+  "rectangulartube": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "wallThickness": [
+      "wall",
+      "wallthickness"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "outerRadius": [
+      "outerr",
+      "outerradius"
+    ],
+    "innerRadius": [
+      "innerr",
+      "innerradius"
+    ]
+  },
+  "rigidcoupler": {},
+  "setscrew": {},
+  "shaftcollar": {},
+  "slottedchannel": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "innerRadius": [
+      "innerr",
+      "innerradius"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "slotCount": [
+      "slots",
+      "slotcount"
+    ],
+    "slotWidth": [
+      "slotw",
+      "slotwidth"
+    ],
+    "slotLength": [
+      "slotl",
+      "slotlength"
+    ],
+    "pitch": [
+      "pitch"
+    ],
+    "endOffset": [
+      "end",
+      "endoffset"
+    ]
+  },
+  "spacer": {
+    "innerDiameter": [
+      "id",
+      "innerdiameter"
+    ],
+    "outerDiameter": [
+      "od",
+      "outerdiameter"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "chamfer": [
+      "chamfer",
+      "edgechamfer"
+    ]
+  },
+  "splitgrommet": {},
+  "splitwasher": {
+    "innerDiameter": [
+      "id",
+      "innerdiameter"
+    ],
+    "outerDiameter": [
+      "od",
+      "outerdiameter"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "rise": [
+      "rise"
+    ]
+  },
+  "threadedrod": {
+    "length": [
+      "l",
+      "length"
+    ],
+    "chamfer": [
+      "chamfer"
+    ],
+    "threadPitch": [
+      "threadpitch"
+    ]
+  },
+  "torsionspring": {
+    "outerDiameter": [
+      "od"
+    ],
+    "wireDiameter": [
+      "wire"
+    ],
+    "pitch": [
+      "pitch"
+    ],
+    "startLegLength": [
+      "start"
+    ],
+    "endLegLength": [
+      "end"
+    ]
+  },
+  "tslotcoverstrip": {},
+  "tslotextrusion": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "slotWidth": [
+      "slot",
+      "slotwidth"
+    ],
+    "pocketWidth": [
+      "pocket",
+      "pocketwidth"
+    ],
+    "pocketDepth": [
+      "pocketd",
+      "pocketdepth"
+    ],
+    "lipThickness": [
+      "lip",
+      "lipthickness"
+    ],
+    "boreDiameter": [
+      "bore",
+      "borediameter"
+    ],
+    "cornerRadius": [
+      "corner",
+      "cornerradius"
+    ]
+  },
+  "tslotgusset": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "edgeMargin": [
+      "edgemargin"
+    ]
+  },
+  "tslotinsidecorner": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "legLength": [
+      "leg",
+      "leglength"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "holeDiameter": [
+      "hole",
+      "holediameter"
+    ],
+    "holeOffset": [
+      "offset",
+      "holeoffset"
+    ],
+    "bendRadius": [
+      "bendr",
+      "bendradius"
+    ]
+  },
+  "zeebar": {
+    "height": [
+      "h",
+      "height"
+    ],
+    "upperWidth": [
+      "upperw",
+      "upperwidth"
+    ],
+    "lowerWidth": [
+      "lowerw",
+      "lowerwidth"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "bendRadius": [
+      "bendr",
+      "bendradius"
+    ],
+    "length": [
+      "l",
+      "length"
+    ]
+  }
+}

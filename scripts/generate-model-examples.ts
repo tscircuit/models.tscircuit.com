@@ -601,6 +601,21 @@ export async function generateModelExamples() {
   const sources = []
   for (const library of ["modelprinter", "footprinter"] as const) {
     const sourceDirectory = await getPinnedSource(library)
+    if (library === "modelprinter") {
+      const aliases: Record<string, Record<string, string[]>> = {}
+      for (const file of await testFiles(join(sourceDirectory, "src/models"))) {
+        if (!file.endsWith("/parse-model-string.ts")) continue
+        const fields: Record<string, string[]> = {}
+        const source = await readFile(file, "utf8")
+        for (const block of source.matchAll(/const \w+\s*=\s*\{([^}]+)\}\s*as const/g)) {
+          for (const match of block[1]!.matchAll(/(\w+):\s*"(\w+)"/g)) {
+            (fields[match[2]!] ??= []).push(match[1]!)
+          }
+        }
+        aliases[relative(join(sourceDirectory, "src/models"), file).split("/")[0]!] = fields
+      }
+      await writeFile(join(appRoot, "src/lib/model-token-aliases.json"), JSON.stringify(aliases, null, 2) + "\n")
+    }
     const files = await testFiles(join(sourceDirectory, "tests"))
     const candidates = extractAllTestStrings(
       await Promise.all(
