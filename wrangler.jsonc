@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "models-tscircuit-com",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-09",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/*.glb", "/*.step", "/*.x_t"],
+  },
+  "kv_namespaces": [
+    { "binding": "MODEL_CACHE", "id": "REPLACE_WITH_KV_NAMESPACE_ID" },
+  ],
+  "routes": [{ "pattern": "models.tscircuit.com", "custom_domain": true }],
+  "observability": { "enabled": true },
+  "limits": { "cpu_ms": 300000 },
+}

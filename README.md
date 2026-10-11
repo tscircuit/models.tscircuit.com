@@ -53,18 +53,34 @@ bun run generate:catalog
 
 When upgrading either package, update its version and `scripts/source-pins.json` together, regenerate the catalogs, and run the tests. Catalog tests cover all installed ModelPrinter and Footprinter functions, including functions without a valid test-string example. `FOOTPRINTER_SOURCE_PATH` can override the Footprinter checkout while developing its schemas.
 
-## Deployment
+## Cloudflare deployment and model URLs
 
-The [live configurator](https://models-tscircuit-com.vercel.app) is hosted in the `tscircuit` team's Vercel project `models-tscircuit-com`. This GitHub repository is connected to Vercel with production deployments from `main`.
+The Cloudflare Worker serves the Vite site and generates direct downloads using the same geometry and exporters as the configurator:
 
-`bun run build` produces the static site in `dist/`. The included `vercel.json` sets the Bun install/build commands and Vite output directory.
+- `https://models.tscircuit.com/spurgear20_m0.5mm_w3mm_bore2mm` opens that model.
+- Append `.glb`, `.step`, or `.x_t` to download the model directly.
+- Footprinter strings also work. URL-encode strings containing `#`, `/`, or other reserved characters.
+- Existing query-based share links remain supported. Share links use model paths and retain explicit `params` overrides so JSON-only placement and footprint settings survive reloads. These overrides can also be appended to download URLs.
 
-The custom domain `models.tscircuit.com` is assigned to this project. To activate it, add a Cloudflare CNAME record named `models` pointing to `c27d28c7764d151e.vercel-dns-016.com`, with proxy status **DNS only**.
+Successful exports are stored as binary KV values with `expirationTtl: 604800` (seven days). Keys include format, resolved parameters, library identity, and bundled library versions. Cache hits do not extend expiration. Invalid requests and export errors are never cached. Files above KV's 25 MiB value limit are served without KV caching. `X-Model-Cache` reports `HIT`, `MISS`, or `BYPASS`. The current site does not use ModelCDN; no existing ModelCDN integration is replaced.
+
+```sh
+bunx wrangler login
+bunx wrangler kv namespace create MODEL_CACHE
+# Put the returned namespace id in wrangler.jsonc.
+bun run deploy
+```
+
+Select the `tscircuit` Cloudflare account when prompted. The custom-domain route in `wrangler.jsonc` assigns `models.tscircuit.com` to this Worker. If an existing DNS record points to Vercel, remove that record before assigning the Worker custom domain. The Worker includes static assets and SPA fallback; model extensions run through the Worker first. The configured CPU budget requires Workers Paid for complex CAD exports.
+
+For local end-to-end tests, run `bun run dev:worker`. This uses local KV and serves model URLs from the actual Workers runtime. `bun run dev` remains the browser-only configurator development server.
+
+GitHub Actions deployment requires repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts Edit, Workers KV Storage Edit, account access and the domain permissions needed for custom domains) and `CLOUDFLARE_ACCOUNT_ID`, plus the committed KV namespace id. The deploy workflow follows successful validation on main, including scheduled library updates. Set up those secrets before enabling automatic deployment. The previous Vercel deployment can remain available during migration.
 
 ## Daily library updates
 
 The `Update model libraries` GitHub Actions workflow checks npm daily at 10:23 UTC and can also be run manually from the Actions tab. It checks `@tscircuit/footprinter`, `@tscircuit/modelprinter`, and `jscad-electronics` for newer stable releases.
 
-When versions change, it updates exact package pins, the Bun lockfile, and the matching published Git commits in `scripts/source-pins.json`. It regenerates the catalogs and runs the production build, unit tests, and browser tests before committing to `main`. The existing Vercel Git integration deploys that commit. Unchanged versions produce no commit or deployment; failed validation leaves production unchanged. No additional deployment secret is needed. If branch protection is added later, it must allow this workflow's updates or the publishing step will fail.
+When versions change, it updates exact package pins, the Bun lockfile, and the matching published Git commits in `scripts/source-pins.json`. It regenerates the catalogs and runs the production build, unit tests, and browser tests before committing to `main`. The Cloudflare deploy workflow deploys that validated commit once its repository secrets are configured. Unchanged versions produce no commit or deployment; failed validation leaves production unchanged. No additional deployment secret is needed. If branch protection is added later, it must allow this workflow's updates or the publishing step will fail.
 
 Run `bun run update:libraries` locally to update the package/source pins and install dependencies, then run `bun run build`, `bun run test`, and `PLAYWRIGHT_PREVIEW=1 bun run test:browser` before committing the generated catalogs.

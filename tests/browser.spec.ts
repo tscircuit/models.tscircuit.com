@@ -654,3 +654,17 @@ test("hex bolt controls import selectors, regenerate geometry, and survive a ref
   await expect(canvas(page)).toBeVisible()
   await settle(page)
 })
+
+test("extensionless model paths open the matching configuration and return home", async ({
+  page,
+}) => {
+  await page.goto("/spurgear20_m0.5mm_w3mm_bore2mm")
+  await expect(page.getByLabel("Teeth", { exact: true })).toHaveValue("20")
+  await expect(dimensions(page)).toContainText("11 × 11 × 3")
+  await page.reload()
+  await expect(page.getByLabel("Teeth", { exact: true })).toHaveValue("20")
+  await page.getByRole("button", { name: "Back to search" }).click()
+  expect(new URL(page.url()).pathname).toBe("/")
+  await page.reload()
+  await expect(page.locator(".example-grid")).toBeVisible()
+})
