@@ -18,14 +18,20 @@ for (const extension of ["glb", "step", "x_t"]) {
   if (!first.headers.get("cache-control")?.includes("max-age=15552000"))
     throw new Error("180-day cache header missing")
   let hit = false
+  let previousHit: Uint8Array | undefined
   for (let attempt = 0; attempt < 15; attempt++) {
     const second = await fetch(url)
     const cached = new Uint8Array(await second.arrayBuffer())
     if (second.headers.get("x-model-cache") === "HIT") {
-      if (cached.length !== bytes.length || cached.some((value, index) => value !== bytes[index]))
-        throw new Error(`${extension}: cache returned different bytes`)
-      hit = true
-      break
+      // Cold requests can independently generate timestamped CAD exports while
+      // KV propagates. Verify the stored response against a second cached read.
+      if (previousHit) {
+        if (cached.length !== previousHit.length || cached.some((value, index) => value !== previousHit![index]))
+          throw new Error(`${extension}: cache returned different bytes`)
+        hit = true
+        break
+      }
+      previousHit = cached
     }
     await Bun.sleep(5000)
   }
