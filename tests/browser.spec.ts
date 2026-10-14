@@ -655,7 +655,7 @@ test("hex bolt controls import selectors, regenerate geometry, and survive a ref
   legacy.searchParams.set("spec", "HEXBOLT_M6_length2.5cm_STANDARD(ISO4017:2014)_DRIVE(HEX)")
   await page.goto(legacy.pathname + legacy.search)
   await expect.poll(() => new URL(page.url()).search).toBe("")
-  expect(decodeURIComponent(new URL(page.url()).pathname)).toBe("/hexbolt_m6_l25mm_hex_iso4017")
+  expect(decodeURIComponent(new URL(page.url()).pathname)).toBe("/hexbolt_m6_l25mm_iso4017_hex")
   await expect(page.locator(".header-download-hint")).toHaveText("Add .glb, .step or .x_t to the end of any url")
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hex bolt")
   await expect(canvas(page)).toBeVisible()
