@@ -3,12 +3,12 @@
     {
       "library": "modelprinter",
       "package": "@tscircuit/modelprinter",
-      "version": "0.0.33",
+      "version": "0.0.35",
       "repository": "tscircuit/modelprinter",
-      "commit": "88cb190cde54ca77357071f50e67c9cfbf3d5865",
-      "testFiles": 130,
-      "scannedStrings": 3982,
-      "examples": 267
+      "commit": "0f3582ac55138e3eb5d27404a728e6cd4ce3a114",
+      "testFiles": 146,
+      "scannedStrings": 4859,
+      "examples": 351
     },
     {
       "library": "footprinter",
@@ -290,31 +290,31 @@
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 28
+          "line": 27
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 36
+          "line": 35
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 38
+          "line": 37
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 44
+          "line": 43
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 48
+          "line": 47
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 50
+          "line": 49
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 61
+          "line": 60
         },
         {
           "file": "tests/balltransferunit.02-validation.test.ts",
@@ -330,7 +330,7 @@
       "sources": [
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 58
+          "line": 57
         }
       ]
     },
@@ -342,19 +342,31 @@
       "sources": [
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 24
+          "line": 23
         }
       ]
     },
     {
-      "id": "modelprinter:dd74aa882f31906d",
+      "id": "modelprinter:d0f4b93a9cc4e69f",
       "library": "modelprinter",
       "fn": "balltransferunit",
-      "spec": "balltransferunit_balld25mm_flangeod45mm_h30mm_mount(face3hole)_pcd36mm_holed4mm",
+      "spec": "balltransferunit_balld25mm_flangeod45mm_h30mm_pcd36mm_holed4mm",
       "sources": [
         {
-          "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 23
+          "file": "tests/balltransferunit.03-flags.test.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:a046e356efac3754",
+      "library": "modelprinter",
+      "fn": "balltransferunit",
+      "spec": "balltransferunit_balld25mm_flangeod45mm_h30mm_pcd36mm_holed4mm_face3hole",
+      "sources": [
+        {
+          "file": "tests/balltransferunit.03-flags.test.ts",
+          "line": 7
         }
       ]
     },
@@ -366,7 +378,7 @@
       "sources": [
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 25
+          "line": 24
         }
       ]
     },
@@ -378,11 +390,11 @@
       "sources": [
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 37
+          "line": 36
         },
         {
           "file": "tests/balltransferunit.01-contract.test.ts",
-          "line": 40
+          "line": 39
         }
       ]
     },
@@ -405,8 +417,24 @@
       "spec": "buttonscrew_m3_l10mm",
       "sources": [
         {
+          "file": "tests/button-screw-boolean-flags.test.ts",
+          "line": 3
+        },
+        {
           "file": "tests/button-screw.test.ts",
           "line": 12
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:349dcf7d0d4247bb",
+      "library": "modelprinter",
+      "fn": "buttonscrew",
+      "spec": "buttonscrew_m3_l10mm_hexsocket_fullthread_righthanded",
+      "sources": [
+        {
+          "file": "tests/button-screw-boolean-flags.test.ts",
+          "line": 6
         }
       ]
     },
@@ -423,6 +451,18 @@
       ]
     },
     {
+      "id": "modelprinter:5b5a53d2f6ff50e9",
+      "library": "modelprinter",
+      "fn": "buttonscrew",
+      "spec": "buttonscrew_m3_l10mm_righthanded",
+      "sources": [
+        {
+          "file": "tests/button-screw-boolean-flags.test.ts",
+          "line": 69
+        }
+      ]
+    },
+    {
       "id": "modelprinter:4d3dbfac9b446629",
       "library": "modelprinter",
       "fn": "buttonscrew",
@@ -430,15 +470,15 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 43
+          "line": 91
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 76
+          "line": 140
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 77
+          "line": 142
         }
       ]
     },
@@ -461,20 +501,40 @@
       "spec": "cablegrommet_panelhole20mm_id10mm_od24mm_h8mm_groovew3mm_grooved2mm",
       "sources": [
         {
+          "file": "tests/cable-grommet.test.ts",
+          "line": 133
+        },
+        {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 46
+          "line": 94
         }
       ]
     },
     {
-      "id": "modelprinter:0fddd54353346c41",
+      "id": "modelprinter:d1347ebf71c47595",
       "library": "modelprinter",
       "fn": "cablegrommet",
-      "spec": "cablegrommet_panelhole20mm_id10mm_od24mm_h8mm_groovew3mm_grooved2mm_shape(symmetricring)",
+      "spec": "cablegrommet_panelhole20mm_id10mm_od24mm_h8mm_groovew3mm_grooved2mm_symmetricring",
       "sources": [
         {
           "file": "tests/cable-grommet.test.ts",
           "line": 12
+        },
+        {
+          "file": "tests/cable-grommet.test.ts",
+          "line": 138
+        },
+        {
+          "file": "tests/cable-grommet.test.ts",
+          "line": 139
+        },
+        {
+          "file": "tests/cable-grommet.test.ts",
+          "line": 142
+        },
+        {
+          "file": "tests/cable-grommet.test.ts",
+          "line": 144
         }
       ]
     },
@@ -503,10 +563,10 @@
       ]
     },
     {
-      "id": "modelprinter:c2902cc2c1719c79",
+      "id": "modelprinter:a4a4ef50537a66b3",
       "library": "modelprinter",
       "fn": "clampingshaftcollar",
-      "spec": "CLAMPINGSHAFTCOLLAR_BORE0.8CM_OD1.8CM_W0.9CM_SPLIT0.1CM_MOUNT(SINGLECLAMP)_M4",
+      "spec": "CLAMPINGSHAFTCOLLAR_BORE0.8CM_OD1.8CM_W0.9CM_SPLIT0.1CM_singleclamp_M4",
       "sources": [
         {
           "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
@@ -521,24 +581,56 @@
       "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_m4",
       "sources": [
         {
-          "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 12
+          "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
+          "line": 114
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
+          "line": 32
+        },
+        {
+          "file": "tests/fixtures/model-string-flag-cases.ts",
+          "line": 39
+        },
+        {
+          "file": "tests/fixtures/model-string-flag-cases.ts",
+          "line": 127
+        },
+        {
+          "file": "tests/mount-spring-direct-flags.test.ts",
           "line": 17
-        },
-        {
-          "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 67
         }
       ]
     },
     {
-      "id": "modelprinter:6f0fc732e16aafe9",
+      "id": "modelprinter:25ffa0bbfb76fc16",
       "library": "modelprinter",
       "fn": "clampingshaftcollar",
-      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_mount(singleclamp)_m4",
+      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_m4_lefthanded",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
+          "line": 131
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:d65e71f51afaa1ea",
+      "library": "modelprinter",
+      "fn": "clampingshaftcollar",
+      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_m4_righthanded",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
+          "line": 128
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:ab502c22cd12de7d",
+      "library": "modelprinter",
+      "fn": "clampingshaftcollar",
+      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_singleclamp_m4",
       "sources": [
         {
           "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
@@ -547,50 +639,50 @@
       ]
     },
     {
-      "id": "modelprinter:3815d47d82e5afb3",
+      "id": "modelprinter:86aa983b6dcbdc97",
       "library": "modelprinter",
       "fn": "clampingshaftcollar",
-      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_mount(singleclamp)_m4_screwz5mm_clampx6.6mm_clearance4.6mm_chamfer0.2mm",
+      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_singleclamp_m4_screwz5mm_clampx6.6mm_clearance4.6mm_chamfer0.2mm",
       "sources": [
         {
           "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
-          "line": 105
+          "line": 103
         }
       ]
     },
     {
-      "id": "modelprinter:d7c0752e15584378",
+      "id": "modelprinter:1839bcdc22f395db",
       "library": "modelprinter",
       "fn": "clampingshaftcollar",
-      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_mount(singleclamp)_m4_threadpitch0.5mm_threadhand(left)_threadclass(6H)",
+      "spec": "clampingshaftcollar_bore8mm_od18mm_w9mm_split1mm_singleclamp_m4_threadpitch0.5mm_lefthanded_threadclass(6H)",
       "sources": [
         {
           "file": "tests/fixtures/assert-clamping-shaft-collar.ts",
-          "line": 63
+          "line": 62
         }
       ]
     },
     {
-      "id": "modelprinter:75ece7345026fd22",
+      "id": "modelprinter:f2f2e7f8e02f6e29",
       "library": "modelprinter",
       "fn": "compressionspring",
-      "spec": "COMPRESSIONSPRING_OD0.8cm_WIRE0.1cm_LENGTH2cm_TURNS8_HAND(LEFT)",
+      "spec": "compressionspring_custom_od8mm_wire1mm_l20mm_turns8_active6_closedground_righthanded_free",
+      "sources": [
+        {
+          "file": "tests/compression-spring.test.ts",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:6c4ef6c5ab3267de",
+      "library": "modelprinter",
+      "fn": "compressionspring",
+      "spec": "COMPRESSIONSPRING_OD0.8cm_WIRE0.1cm_LENGTH2cm_TURNS8_LEFTHANDED",
       "sources": [
         {
           "file": "tests/compression-spring.test.ts",
           "line": 61
-        }
-      ]
-    },
-    {
-      "id": "modelprinter:e32fdb107a3809cb",
-      "library": "modelprinter",
-      "fn": "compressionspring",
-      "spec": "compressionspring_od0.8cm_wire1mm_l20mm_turns8_closedground_lefthanded",
-      "sources": [
-        {
-          "file": "tests/model-string-flags.test.ts",
-          "line": 43
         }
       ]
     },
@@ -610,43 +702,51 @@
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 8
+          "line": 11
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 79
+          "line": 149
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 83
+          "line": 156
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 84
-        }
-      ]
-    },
-    {
-      "id": "modelprinter:018654007e6dba2c",
-      "library": "modelprinter",
-      "fn": "compressionspring",
-      "spec": "compressionspring_spec(custom)_od0.8cm_wire1mm_l20mm_turns8_ends(closedground)_lefthanded_state(free)",
-      "sources": [
+          "line": 163
+        },
         {
           "file": "tests/model-string-flags.test.ts",
-          "line": 41
+          "line": 46
+        },
+        {
+          "file": "tests/mount-spring-direct-flags.test.ts",
+          "line": 31
         }
       ]
     },
     {
-      "id": "modelprinter:b81c5075b6829683",
+      "id": "modelprinter:f533d623d15085b6",
       "library": "modelprinter",
       "fn": "compressionspring",
-      "spec": "compressionspring_spec(custom)_od8mm_wire1mm_l20mm_turns8_active6_ends(closedground)_hand(right)_state(free)",
+      "spec": "compressionspring_od8mm_wire1mm_l20mm_turns8_lefthanded",
       "sources": [
         {
           "file": "tests/compression-spring.test.ts",
-          "line": 20
+          "line": 149
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:5463d5e4f16cbec1",
+      "library": "modelprinter",
+      "fn": "compressionspring",
+      "spec": "compressionspring_od8mm_wire1mm_l20mm_turns8_righthanded",
+      "sources": [
+        {
+          "file": "tests/compression-spring.test.ts",
+          "line": 146
         }
       ]
     },
@@ -818,31 +918,51 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 33
+          "line": 67
         },
         {
           "file": "tests/flanged-bushing.test.ts",
           "line": 101
+        },
+        {
+          "file": "tests/flanged-bushing.test.ts",
+          "line": 195
         }
       ]
     },
     {
-      "id": "modelprinter:62ca7482340c6786",
+      "id": "modelprinter:714fa017414751ba",
       "library": "modelprinter",
       "fn": "flangedbushing",
-      "spec": "flangedbushing_id8mm_od12mm_flangeod18mm_l15mm_flangethickness2mm_style(plainclosed)",
+      "spec": "flangedbushing_id8mm_od12mm_flangeod18mm_l15mm_flangethickness2mm_plainclosed",
       "sources": [
         {
           "file": "tests/flanged-bushing.test.ts",
           "line": 14
+        },
+        {
+          "file": "tests/flanged-bushing.test.ts",
+          "line": 200
+        },
+        {
+          "file": "tests/flanged-bushing.test.ts",
+          "line": 201
+        },
+        {
+          "file": "tests/flanged-bushing.test.ts",
+          "line": 204
+        },
+        {
+          "file": "tests/flanged-bushing.test.ts",
+          "line": 206
         }
       ]
     },
     {
-      "id": "modelprinter:54cba27082daf9ae",
+      "id": "modelprinter:829d81b13e59f530",
       "library": "modelprinter",
       "fn": "flangedbushing",
-      "spec": "FLANGEDBUSHING_innerdiameter8MM_outerdiameter1.2CM_flangediameter18mm_length15mm_flangethickness0.2cm_STYLE(PLAINCLOSED)",
+      "spec": "FLANGEDBUSHING_innerdiameter8MM_outerdiameter1.2CM_flangediameter18mm_length15mm_flangethickness0.2cm_PLAINCLOSED",
       "sources": [
         {
           "file": "tests/flanged-bushing.test.ts",
@@ -911,6 +1031,22 @@
       ]
     },
     {
+      "id": "modelprinter:cdc8b59f0f5368d6",
+      "library": "modelprinter",
+      "fn": "flatgasket",
+      "spec": "flatgasket_id20mm_od35mm_t2mm",
+      "sources": [
+        {
+          "file": "tests/flatgasket-contract-01.test.ts",
+          "line": 13
+        },
+        {
+          "file": "tests/flatgasket-contract-04-flags.test.ts",
+          "line": 5
+        }
+      ]
+    },
+    {
       "id": "modelprinter:0cb0dc7dc3181ed4",
       "library": "modelprinter",
       "fn": "flatgasket",
@@ -923,6 +1059,10 @@
         {
           "file": "tests/flatgasket-contract-02.test.ts",
           "line": 18
+        },
+        {
+          "file": "tests/flatgasket-contract-04-flags.test.ts",
+          "line": 6
         }
       ]
     },
@@ -939,34 +1079,34 @@
       ]
     },
     {
-      "id": "modelprinter:00cb849f8a92580f",
-      "library": "modelprinter",
-      "fn": "flatgasket",
-      "spec": "flatgasket_id20mm_od35mm_t2mm_profile(flatannulus)",
-      "sources": [
-        {
-          "file": "tests/flatgasket-contract-01.test.ts",
-          "line": 14
-        }
-      ]
-    },
-    {
-      "id": "modelprinter:61943055d0df3b52",
+      "id": "modelprinter:868e829e3cb0beff",
       "library": "modelprinter",
       "fn": "flatheadscrew",
-      "spec": "flatheadscrew_iso10642_m3_l10mm_drive(hexsocket)",
+      "spec": "flatheadscrew_iso10642_m3_l10mm_hexsocket",
       "sources": [
         {
           "file": "tests/fixtures/assert-flat-head-screw.ts",
-          "line": 48
+          "line": 47
         }
       ]
     },
     {
-      "id": "modelprinter:86e6677af88852dc",
+      "id": "modelprinter:24b70884bc33d198",
       "library": "modelprinter",
       "fn": "flatheadscrew",
-      "spec": "flatheadscrew_m3_l10mm_drive(hexsocket)",
+      "spec": "flatheadscrew_m3_l10mm",
+      "sources": [
+        {
+          "file": "tests/flat-head-screw-boolean-flags.test.ts",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:775f8fee79f3952e",
+      "library": "modelprinter",
+      "fn": "flatheadscrew",
+      "spec": "flatheadscrew_m3_l10mm_hexsocket",
       "sources": [
         {
           "file": "tests/fixtures/assert-flat-head-screw.ts",
@@ -975,10 +1115,46 @@
       ]
     },
     {
-      "id": "modelprinter:30092424bf7a7e2f",
+      "id": "modelprinter:416a32c2626006ea",
       "library": "modelprinter",
       "fn": "flatheadscrew",
-      "spec": "FLATHEADSCREW_M3_length1.0cm_ISO10642_DRIVE(HEXSOCKET)",
+      "spec": "flatheadscrew_m3_l10mm_hexsocket_fullthread_righthanded_male",
+      "sources": [
+        {
+          "file": "tests/flat-head-screw-boolean-flags.test.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:1cbb6ac08cf971cb",
+      "library": "modelprinter",
+      "fn": "flatheadscrew",
+      "spec": "flatheadscrew_m3_l10mm_lefthanded",
+      "sources": [
+        {
+          "file": "tests/flat-head-screw-boolean-flags.test.ts",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:f40c82f64873c337",
+      "library": "modelprinter",
+      "fn": "flatheadscrew",
+      "spec": "flatheadscrew_m3_l10mm_righthanded",
+      "sources": [
+        {
+          "file": "tests/flat-head-screw-boolean-flags.test.ts",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:59902fef133afb86",
+      "library": "modelprinter",
+      "fn": "flatheadscrew",
+      "spec": "FLATHEADSCREW_M3_length1.0cm_ISO10642_HEXSOCKET",
       "sources": [
         {
           "file": "tests/fixtures/assert-flat-head-screw.ts",
@@ -994,31 +1170,31 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 39
+          "line": 76
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 40
+          "line": 83
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 60
+          "line": 114
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 61
+          "line": 116
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 62
+          "line": 122
         }
       ]
     },
     {
-      "id": "modelprinter:f119e76578d7da07",
+      "id": "modelprinter:2dd9c5870628980d",
       "library": "modelprinter",
       "fn": "flatheadscrew",
-      "spec": "flatheadscrew_metricsize(m3)_l10mm_threadpitch0.5mm_threadhand(left)_nothreads",
+      "spec": "flatheadscrew_metricsize(m3)_l10mm_threadpitch0.5mm_lefthanded_nothreads",
       "sources": [
         {
           "file": "tests/fixtures/assert-flat-head-screw.ts",
@@ -1034,19 +1210,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 33
+          "line": 39
         },
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 50
+          "line": 62
         },
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 54
+          "line": 75
         },
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 70
+          "line": 97
         },
         {
           "file": "tests/fixtures/assert-model-registration.ts",
@@ -1066,11 +1242,19 @@
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 101
+          "line": 118
         },
         {
           "file": "tests/fixtures/registration-types.ts",
           "line": 147
+        },
+        {
+          "file": "tests/flex-screen-orientation.test.ts",
+          "line": 38
+        },
+        {
+          "file": "tests/flex-screen-orientation.test.ts",
+          "line": 57
         }
       ]
     },
@@ -1082,7 +1266,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 49
+          "line": 60
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:42b605323ae779ff",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen_foldedtofacebelowboard_distance0.5cm",
+      "sources": [
+        {
+          "file": "tests/flex-screen-orientation.test.ts",
+          "line": 137
         }
       ]
     },
@@ -1094,7 +1290,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 41
+          "line": 52
         }
       ]
     },
@@ -1106,7 +1302,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 46
+          "line": 57
         }
       ]
     },
@@ -1118,7 +1314,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 69
+          "line": 96
         }
       ]
     },
@@ -1135,6 +1331,18 @@
       ]
     },
     {
+      "id": "modelprinter:81c309a5fcbee6df",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_p0.5",
+      "sources": [
+        {
+          "file": "tests/flex-screen-orientation.test.ts",
+          "line": 37
+        }
+      ]
+    },
+    {
       "id": "modelprinter:1a35d1be9cc639d7",
       "library": "modelprinter",
       "fn": "flexscreen",
@@ -1142,7 +1350,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 68
+          "line": 95
         }
       ]
     },
@@ -1154,7 +1362,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 52
+          "line": 73
         }
       ]
     },
@@ -1166,7 +1374,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 45
+          "line": 56
         }
       ]
     },
@@ -1178,7 +1386,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 65
+          "line": 92
         }
       ]
     },
@@ -1190,11 +1398,23 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-flex-screen-pitch.ts",
-          "line": 31
+          "line": 37
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 99
+          "line": 116
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:be188dfd1b08d1c4",
+      "library": "modelprinter",
+      "fn": "flexscreen",
+      "spec": "flexscreen30_w2cm_foldsabove_distance1cm_ratio4x3_screencolor(#123456)",
+      "sources": [
+        {
+          "file": "tests/flex-screen-orientation.test.ts",
+          "line": 124
         }
       ]
     },
@@ -1265,6 +1485,10 @@
           "line": 33
         },
         {
+          "file": "tests/gear-boolean-flags.test.ts",
+          "line": 12
+        },
+        {
           "file": "tests/helical-gears.test.ts",
           "line": 21
         },
@@ -1327,26 +1551,50 @@
       ]
     },
     {
-      "id": "modelprinter:aae64d718eab0666",
+      "id": "modelprinter:b97b08c712927625",
       "library": "modelprinter",
       "fn": "hexbolt",
-      "spec": "hexbolt_iso4017_m4_l20mm_hex_fullthread",
+      "spec": "hexbolt_m3_l25mm",
       "sources": [
         {
-          "file": "tests/model-string-flags.test.ts",
-          "line": 52
+          "file": "tests/hex-bolt-boolean-flags.test.ts",
+          "line": 3
         }
       ]
     },
     {
-      "id": "modelprinter:c60db3c9654046dd",
+      "id": "modelprinter:68e5d6291a6bdebf",
       "library": "modelprinter",
       "fn": "hexbolt",
-      "spec": "hexbolt_iso4017_m4_l20mm_hex_male_righthanded_fullthread",
+      "spec": "hexbolt_m3_l25mm_hex_fullthread_righthanded_male",
       "sources": [
         {
-          "file": "tests/model-string-flags.test.ts",
-          "line": 50
+          "file": "tests/hex-bolt-boolean-flags.test.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:a558720b4eb4f857",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "hexbolt_m3_l25mm_lefthanded",
+      "sources": [
+        {
+          "file": "tests/hex-bolt-boolean-flags.test.ts",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:d0dffbfd563a0897",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "hexbolt_m3_l25mm_righthanded",
+      "sources": [
+        {
+          "file": "tests/hex-bolt-boolean-flags.test.ts",
+          "line": 76
         }
       ]
     },
@@ -1358,47 +1606,35 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 37
+          "line": 73
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 38
+          "line": 74
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 63
+          "line": 123
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 64
+          "line": 124
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 65
+          "line": 125
         },
         {
           "file": "tests/model-string-flags.test.ts",
-          "line": 58
+          "line": 45
         }
       ]
     },
     {
-      "id": "modelprinter:3dedfc9c53f456c5",
+      "id": "modelprinter:6a5961098d36fec8",
       "library": "modelprinter",
       "fn": "hexbolt",
-      "spec": "hexbolt_m6_l25mm_drive(hex)",
-      "sources": [
-        {
-          "file": "tests/fixtures/registration-baselines.json",
-          "line": 3
-        }
-      ]
-    },
-    {
-      "id": "modelprinter:322ab663abd71be8",
-      "library": "modelprinter",
-      "fn": "hexbolt",
-      "spec": "hexbolt_m6_l25mm_thread(full)_drive(hex)",
+      "spec": "hexbolt_m6_l25mm_fullthread_hex",
       "sources": [
         {
           "file": "tests/fixtures/assert-hex-bolt.ts",
@@ -1407,10 +1643,22 @@
       ]
     },
     {
-      "id": "modelprinter:4e6663dfefeeebb4",
+      "id": "modelprinter:bcf8c103eabb72ea",
       "library": "modelprinter",
       "fn": "hexbolt",
-      "spec": "HEXBOLT_M6_length2.5cm_DRIVE(HEX)",
+      "spec": "hexbolt_m6_l25mm_hex",
+      "sources": [
+        {
+          "file": "tests/fixtures/registration-baselines.json",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:3f297b4e2878e8da",
+      "library": "modelprinter",
+      "fn": "hexbolt",
+      "spec": "HEXBOLT_M6_length2.5cm_HEX",
       "sources": [
         {
           "file": "tests/fixtures/assert-hex-bolt.ts",
@@ -1419,10 +1667,10 @@
       ]
     },
     {
-      "id": "modelprinter:66ea23e4a8b9bfe9",
+      "id": "modelprinter:634cfb38232b14be",
       "library": "modelprinter",
       "fn": "hexbolt",
-      "spec": "hexbolt_metricsize(m6)_l25mm_threadpitch1mm_threadhand(left)_nothreads",
+      "spec": "hexbolt_metricsize(m6)_l25mm_threadpitch1mm_lefthanded_nothreads",
       "sources": [
         {
           "file": "tests/fixtures/assert-hex-bolt.ts",
@@ -1602,7 +1850,11 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 44
+          "line": 92
+        },
+        {
+          "file": "tests/hex-nut-boolean-flags.test.ts",
+          "line": 5
         },
         {
           "file": "tests/hex-nut.test.ts",
@@ -1631,6 +1883,18 @@
         {
           "file": "tests/hex-nut.test.ts",
           "line": 110
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:5207a66cb892914c",
+      "library": "modelprinter",
+      "fn": "hexnut",
+      "spec": "hexnut_m6_righthanded",
+      "sources": [
+        {
+          "file": "tests/hex-nut-boolean-flags.test.ts",
+          "line": 8
         }
       ]
     },
@@ -1670,7 +1934,7 @@
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 111
+          "line": 133
         }
       ]
     },
@@ -1747,6 +2011,18 @@
       ]
     },
     {
+      "id": "modelprinter:6f5c814cedc66ee2",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
       "id": "modelprinter:1d2e6014aa2ef3fc",
       "library": "modelprinter",
       "fn": "nema",
@@ -1766,11 +2042,23 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
         },
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 50
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:1b3d801366b09c3d",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_backfaceholes_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -1782,7 +2070,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 39
+          "line": 43
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:d8a3e79ee71fef02",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_backfaceplain_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -1794,7 +2094,43 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:bd5a407358f77091",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_backfacescrews_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:9d1047da81df041f",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_chamfered_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:e65c39cea38502f9",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_dshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -1806,7 +2142,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 57
+          "line": 61
         }
       ]
     },
@@ -1818,7 +2154,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 76
+          "line": 82
         }
       ]
     },
@@ -1830,7 +2166,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 76
+          "line": 82
         }
       ]
     },
@@ -1842,7 +2178,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 76
+          "line": 82
         }
       ]
     },
@@ -1854,7 +2190,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 76
+          "line": 82
         }
       ]
     },
@@ -1866,7 +2202,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 76
+          "line": 82
         }
       ]
     },
@@ -1878,7 +2214,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 76
+          "line": 82
         }
       ]
     },
@@ -1890,7 +2226,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 67
+          "line": 73
         }
       ]
     },
@@ -1902,7 +2238,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 34
+          "line": 38
         }
       ]
     },
@@ -1914,7 +2250,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 67
+          "line": 73
         }
       ]
     },
@@ -1938,7 +2274,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 65
+          "line": 69
         }
       ]
     },
@@ -1950,7 +2286,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -1962,11 +2298,23 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 48
+          "line": 53
         },
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:f3dd237205678417",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_nowires_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -1978,7 +2326,55 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:aa62a9d17b87ce3c",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_plainbackface_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:0526abfebb13e3bb",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_round_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:63cb3feb59ed7869",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_roundshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:cc9354f6110f2646",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_stepped_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -1990,7 +2386,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2002,7 +2398,19 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:22d03195a4b5d38a",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema17_wirestubs_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2014,7 +2422,23 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 40
+          "line": 44
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:dace2e697f08676e",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 6
+        },
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 10
         }
       ]
     },
@@ -2038,11 +2462,23 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
         },
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 50
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:e6e5778e76354fd7",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_backfaceholes_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2054,7 +2490,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 39
+          "line": 43
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:e9c9c7f257905567",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_backfaceplain_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2066,7 +2514,103 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:b25958af81734e8d",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_backfacescrews_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:adea809ce3dda47e",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_backholespacing30mm",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:1120faa72a8aebdf",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_backholespacingx48mm_backholespacingy30mm_rearrecess4mm_rearfillet2mm",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:fd91310856dc6958",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_bodyrecess4mm_bodyfillet2mm",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 95
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:0f01e6048eea4491",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_bodyrecess6mm_bodyfillet2mm",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 122
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:76e2357aafdb8ff6",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_chamfered_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:7cd2ab9095ce9121",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_chamfered_backholespacing47.14mm_backscrewm4",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 106
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:fb280e301cba0f90",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_dshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2078,7 +2622,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 57
+          "line": 61
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:bb4919daa9ed5717",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_holespacing46mm_facechamfer3mm",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 29
         }
       ]
     },
@@ -2090,7 +2646,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 65
+          "line": 69
         }
       ]
     },
@@ -2102,7 +2658,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2114,7 +2670,19 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:90a1d897ea39366a",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_nowires_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2126,7 +2694,67 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:a67c1192931608a9",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_plainbackface_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:f950861b54cf0ab3",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_rearchamfered_backholespacing47.14mm_backscrewm4",
+      "sources": [
+        {
+          "file": "tests/nema23-rear-profile.test.ts",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:ee235f112a9e778c",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_round_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:556f76675cae0c68",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_roundshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:6f5c1dc351d060cd",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_stepped_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2138,7 +2766,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2150,7 +2778,19 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:3fabfa6e615ef843",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema23_wirestubs_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2161,12 +2801,16 @@
       "spec": "nema34",
       "sources": [
         {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 6
+        },
+        {
           "file": "tests/nema34.test.ts",
           "line": 9
         },
         {
           "file": "tests/nema34.test.ts",
-          "line": 62
+          "line": 63
         }
       ]
     },
@@ -2190,11 +2834,23 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
         },
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 50
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:94407027ebb2edfe",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_backfaceholes_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2206,7 +2862,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 39
+          "line": 43
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:cb2d1513c4b37b4f",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_backfaceplain_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2218,7 +2886,43 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:694f7e604d1da685",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_backfacescrews_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:3ddba145fed13ce0",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_chamfered_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:26e92d8f41c87671",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_dshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2230,7 +2934,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 57
+          "line": 61
         }
       ]
     },
@@ -2242,7 +2946,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 73
+          "line": 77
         }
       ]
     },
@@ -2254,7 +2958,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -2266,7 +2970,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -2278,7 +2982,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -2290,7 +2994,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -2302,7 +3006,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -2314,7 +3018,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -2326,7 +3030,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -2338,7 +3042,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -2350,7 +3054,7 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -2362,7 +3066,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 65
+          "line": 69
         }
       ]
     },
@@ -2374,7 +3078,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2386,7 +3090,19 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:f2ce94a2d7655544",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_nowires_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2398,7 +3114,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:fed1876f9e78a873",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_plainbackface_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2410,7 +3138,43 @@
       "sources": [
         {
           "file": "tests/nema34.test.ts",
-          "line": 79
+          "line": 83
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:22df9f57b1cb69e2",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_round_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:e972ad489b02e6f1",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_roundshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:129de46206e5c8b5",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_stepped_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2422,7 +3186,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2434,7 +3198,31 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:cc3f10ef0ec8929e",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema34_wirestubs_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:3c8f230f49a006d9",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 6
         }
       ]
     },
@@ -2458,11 +3246,23 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
         },
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 50
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:852fecd3eb8618ad",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_backfaceholes_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2474,7 +3274,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 39
+          "line": 43
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:51208046046425cb",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_backfaceplain_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2486,7 +3298,43 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:dc9ae5bef4da2373",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_backfacescrews_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:c662c56d26dca399",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_chamfered_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:9a9d9c2e01270908",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_dshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2498,7 +3346,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 57
+          "line": 61
         }
       ]
     },
@@ -2510,7 +3358,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 70
+          "line": 74
         }
       ]
     },
@@ -2522,7 +3370,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 65
+          "line": 69
         }
       ]
     },
@@ -2534,7 +3382,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2546,7 +3394,19 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:343f2c3e2b8037c3",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_nowires_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2558,7 +3418,55 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-nema-motor.ts",
-          "line": 33
+          "line": 37
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:62c1bb5fac08a528",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_plainbackface_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:47375ec955f23d7a",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_round_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:c26c6a07beff6f41",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_roundshaft_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:01c5de6b1259ab4a",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_stepped_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2570,7 +3478,7 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 90
+          "line": 96
         }
       ]
     },
@@ -2582,7 +3490,19 @@
       "sources": [
         {
           "file": "tests/nema-motor-wire-references.test.ts",
-          "line": 91
+          "line": 97
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:526a4271239ddced",
+      "library": "modelprinter",
+      "fn": "nema",
+      "spec": "nema8_wirestubs_backholespacing12mm",
+      "sources": [
+        {
+          "file": "tests/nema-motor-boolean-flags.test.ts",
+          "line": 41
         }
       ]
     },
@@ -2611,14 +3531,50 @@
       ]
     },
     {
-      "id": "modelprinter:9505305fb419a368",
+      "id": "modelprinter:9774916aae98ecf7",
       "library": "modelprinter",
       "fn": "panscrew",
-      "spec": "panscrew_m3_l10mm_drive(phillips)",
+      "spec": "panscrew_m3_l10mm",
+      "sources": [
+        {
+          "file": "tests/pan-screw-boolean-flags.test.ts",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:eb2874c5ff4836cf",
+      "library": "modelprinter",
+      "fn": "panscrew",
+      "spec": "panscrew_m3_l10mm_lefthanded",
+      "sources": [
+        {
+          "file": "tests/pan-screw-boolean-flags.test.ts",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:33be6ff9b907e15d",
+      "library": "modelprinter",
+      "fn": "panscrew",
+      "spec": "panscrew_m3_l10mm_phillips",
       "sources": [
         {
           "file": "tests/fixtures/assert-pan-screw.ts",
           "line": 13
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:316d6c6dc1f177b5",
+      "library": "modelprinter",
+      "fn": "panscrew",
+      "spec": "panscrew_m3_l10mm_phillips_fullthread_righthanded_male",
+      "sources": [
+        {
+          "file": "tests/pan-screw-boolean-flags.test.ts",
+          "line": 6
         }
       ]
     },
@@ -2630,15 +3586,27 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-pan-screw.ts",
-          "line": 184
+          "line": 182
         }
       ]
     },
     {
-      "id": "modelprinter:0d5b2f8d2930b659",
+      "id": "modelprinter:0203253dac32c8a3",
       "library": "modelprinter",
       "fn": "panscrew",
-      "spec": "PANSCREW_M3_length1.0cm_DRIVE(PHILLIPS)",
+      "spec": "panscrew_m3_l10mm_righthanded",
+      "sources": [
+        {
+          "file": "tests/pan-screw-boolean-flags.test.ts",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:ca33f8c35e2a4687",
+      "library": "modelprinter",
+      "fn": "panscrew",
+      "spec": "PANSCREW_M3_length1.0cm_PHILLIPS",
       "sources": [
         {
           "file": "tests/fixtures/assert-pan-screw.ts",
@@ -2654,35 +3622,35 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 41
+          "line": 89
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 42
+          "line": 90
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 85
+          "line": 169
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 86
+          "line": 171
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 87
+          "line": 177
         }
       ]
     },
     {
-      "id": "modelprinter:e6806434980d78e5",
+      "id": "modelprinter:56a8fd141cf5b6a7",
       "library": "modelprinter",
       "fn": "panscrew",
-      "spec": "panscrew_metricsize(m3)_l10mm_threadpitch0.5mm_threadhand(left)_nothreads",
+      "spec": "panscrew_metricsize(m3)_l10mm_threadpitch0.5mm_lefthanded_nothreads",
       "sources": [
         {
           "file": "tests/fixtures/assert-pan-screw.ts",
-          "line": 61
+          "line": 59
         }
       ]
     },
@@ -2718,15 +3686,15 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 31
-        },
-        {
-          "file": "tests/model-string-flags.test.ts",
-          "line": 47
+          "line": 60
         },
         {
           "file": "tests/plain-bushing.test.ts",
-          "line": 90
+          "line": 89
+        },
+        {
+          "file": "tests/plain-bushing.test.ts",
+          "line": 169
         }
       ]
     },
@@ -2737,32 +3705,44 @@
       "spec": "plainbushing_id8mm_od12mm_l20mm_plainclosed",
       "sources": [
         {
-          "file": "tests/model-string-flags.test.ts",
-          "line": 46
+          "file": "tests/plain-bushing.test.ts",
+          "line": 174
+        },
+        {
+          "file": "tests/plain-bushing.test.ts",
+          "line": 175
+        },
+        {
+          "file": "tests/plain-bushing.test.ts",
+          "line": 178
+        },
+        {
+          "file": "tests/plain-bushing.test.ts",
+          "line": 180
         }
       ]
     },
     {
-      "id": "modelprinter:8d969345ca28d5f3",
+      "id": "modelprinter:900067b7afca3bd9",
       "library": "modelprinter",
       "fn": "plainbushing",
-      "spec": "plainbushing_id8mm_od12mm_l20mm_style(plainclosed)_edgechamfer0.5mm",
+      "spec": "plainbushing_id8mm_od12mm_l20mm_plainclosed_edgechamfer0.5mm",
       "sources": [
         {
           "file": "tests/plain-bushing.test.ts",
-          "line": 14
+          "line": 13
         }
       ]
     },
     {
-      "id": "modelprinter:4dd92c0fe63c5184",
+      "id": "modelprinter:a554923b446e7fe5",
       "library": "modelprinter",
       "fn": "plainbushing",
-      "spec": "PLAINBUSHING_innerdiameter0.8CM_outerdiameter1.2cm_length20MM_STYLE(PLAINCLOSED)",
+      "spec": "PLAINBUSHING_innerdiameter0.8CM_outerdiameter1.2cm_length20MM_PLAINCLOSED",
       "sources": [
         {
           "file": "tests/plain-bushing.test.ts",
-          "line": 69
+          "line": 68
         }
       ]
     },
@@ -2791,6 +3771,22 @@
       ]
     },
     {
+      "id": "modelprinter:98c0dfcd4f368eea",
+      "library": "modelprinter",
+      "fn": "rectangulargasket",
+      "spec": "rectangulargasket_w80mm_h50mm_border5mm_t2mm_cornerr5mm",
+      "sources": [
+        {
+          "file": "tests/rectangulargasket-contract-01.test.ts",
+          "line": 24
+        },
+        {
+          "file": "tests/rectangulargasket-contract-04-flags.test.ts",
+          "line": 5
+        }
+      ]
+    },
+    {
       "id": "modelprinter:2736d74e667cc5ed",
       "library": "modelprinter",
       "fn": "rectangulargasket",
@@ -2803,6 +3799,10 @@
         {
           "file": "tests/rectangulargasket-contract-02.test.ts",
           "line": 30
+        },
+        {
+          "file": "tests/rectangulargasket-contract-04-flags.test.ts",
+          "line": 6
         }
       ]
     },
@@ -2819,18 +3819,6 @@
       ]
     },
     {
-      "id": "modelprinter:a30491b0791c92c2",
-      "library": "modelprinter",
-      "fn": "rectangulargasket",
-      "spec": "rectangulargasket_w80mm_h50mm_border5mm_t2mm_profile(flatframe)_cornerr5mm",
-      "sources": [
-        {
-          "file": "tests/rectangulargasket-contract-01.test.ts",
-          "line": 26
-        }
-      ]
-    },
-    {
       "id": "modelprinter:fe70100ae00ed58d",
       "library": "modelprinter",
       "fn": "rectangulartube",
@@ -2843,50 +3831,54 @@
       ]
     },
     {
-      "id": "modelprinter:1d5f7a345008ea37",
+      "id": "modelprinter:d9c5c1372a2999c8",
       "library": "modelprinter",
       "fn": "rigidcoupler",
-      "spec": "RIGIDCOUPLER_BORE0.8CM_OD2CM_L2.5CM_MOUNT(SETSCREW)_SCREWCOUNT4_M4",
+      "spec": "RIGIDCOUPLER_BORE0.8CM_OD2CM_L2.5CM_setscrew_SCREWCOUNT4_M4",
       "sources": [
         {
           "file": "tests/fixtures/assert-rigid-coupler.ts",
-          "line": 50
+          "line": 48
         }
       ]
     },
     {
-      "id": "modelprinter:dfee3af3c5cff0d9",
+      "id": "modelprinter:cdd1b618c09b0541",
       "library": "modelprinter",
       "fn": "rigidcoupler",
-      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_mount(setscrew)_screwcount4_m4",
+      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_m4",
       "sources": [
         {
           "file": "tests/fixtures/assert-rigid-coupler.ts",
-          "line": 12
+          "line": 113
+        },
+        {
+          "file": "tests/mount-spring-direct-flags.test.ts",
+          "line": 24
         }
       ]
     },
     {
-      "id": "modelprinter:3a1c19c9ffbb745d",
+      "id": "modelprinter:f9714672dfe964e0",
       "library": "modelprinter",
       "fn": "rigidcoupler",
-      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_mount(setscrew)_screwcount4_m4_boreb10mm_screwendoffset5mm_screwangle45deg_chamfer0.2mm",
+      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_m4_lefthanded",
       "sources": [
         {
           "file": "tests/fixtures/assert-rigid-coupler.ts",
-          "line": 106
+          "line": 130
         }
       ]
     },
     {
-      "id": "modelprinter:8ba11c185a200bef",
+      "id": "modelprinter:088cffb58c4e40b4",
       "library": "modelprinter",
       "fn": "rigidcoupler",
-      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_mount(setscrew)_screwcount4_m4_threadpitch0.5mm_threadhand(left)_threadclass(6H)",
+      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_m4_righthanded",
       "sources": [
         {
           "file": "tests/fixtures/assert-rigid-coupler.ts",
-          "line": 62
+          "line": 127
         }
       ]
     },
@@ -2898,15 +3890,51 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 22
+          "line": 46
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 27
+          "line": 53
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 72
+          "line": 134
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:1b42515b58c0cec6",
+      "library": "modelprinter",
+      "fn": "rigidcoupler",
+      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_setscrew_screwcount4_m4",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-rigid-coupler.ts",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:a52da0e7a59bc8f0",
+      "library": "modelprinter",
+      "fn": "rigidcoupler",
+      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_setscrew_screwcount4_m4_boreb10mm_screwendoffset5mm_screwangle45deg_chamfer0.2mm",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-rigid-coupler.ts",
+          "line": 101
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:750120284d49cca3",
+      "library": "modelprinter",
+      "fn": "rigidcoupler",
+      "spec": "rigidcoupler_bore8mm_od20mm_l25mm_setscrew_screwcount4_m4_threadpitch0.5mm_lefthanded_threadclass(6H)",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-rigid-coupler.ts",
+          "line": 58
         }
       ]
     },
@@ -2959,10 +3987,10 @@
       ]
     },
     {
-      "id": "modelprinter:9802b910c1913cf1",
+      "id": "modelprinter:cc4807e70d3661af",
       "library": "modelprinter",
       "fn": "shaftcollar",
-      "spec": "SHAFTCOLLAR_BORE0.8CM_OD1.6CM_W0.8CM_MOUNT(SETSCREW)_M4",
+      "spec": "SHAFTCOLLAR_BORE0.8CM_OD1.6CM_W0.8CM_setscrew_M4",
       "sources": [
         {
           "file": "tests/fixtures/assert-shaft-collar.ts",
@@ -2977,28 +4005,60 @@
       "spec": "shaftcollar_bore8mm_od16mm_w8mm_m4",
       "sources": [
         {
-          "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 9
+          "file": "tests/fixtures/assert-shaft-collar.ts",
+          "line": 95
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 10
+          "line": 18
         },
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 88
+          "line": 25
+        },
+        {
+          "file": "tests/fixtures/model-string-flag-cases.ts",
+          "line": 179
         },
         {
           "file": "tests/model-string-flags.test.ts",
-          "line": 57
+          "line": 44
+        },
+        {
+          "file": "tests/mount-spring-direct-flags.test.ts",
+          "line": 10
         }
       ]
     },
     {
-      "id": "modelprinter:2374e1eb18c7ea83",
+      "id": "modelprinter:feae1bb03b521b01",
       "library": "modelprinter",
       "fn": "shaftcollar",
-      "spec": "shaftcollar_bore8mm_od16mm_w8mm_mount(setscrew)_m4",
+      "spec": "shaftcollar_bore8mm_od16mm_w8mm_m4_lefthanded",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-shaft-collar.ts",
+          "line": 112
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:d4dfeefc20f9ee72",
+      "library": "modelprinter",
+      "fn": "shaftcollar",
+      "spec": "shaftcollar_bore8mm_od16mm_w8mm_m4_righthanded",
+      "sources": [
+        {
+          "file": "tests/fixtures/assert-shaft-collar.ts",
+          "line": 109
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:90bd894417897850",
+      "library": "modelprinter",
+      "fn": "shaftcollar",
+      "spec": "shaftcollar_bore8mm_od16mm_w8mm_setscrew_m4",
       "sources": [
         {
           "file": "tests/fixtures/assert-shaft-collar.ts",
@@ -3007,26 +4067,38 @@
       ]
     },
     {
-      "id": "modelprinter:280bed6769d47404",
+      "id": "modelprinter:5d0f39eb39839513",
       "library": "modelprinter",
       "fn": "shaftcollar",
-      "spec": "shaftcollar_bore8mm_od16mm_w8mm_mount(setscrew)_m4_screwangle90deg_screwz5mm_chamfer0.2mm",
+      "spec": "shaftcollar_bore8mm_od16mm_w8mm_setscrew_m4_screwangle90deg_screwz5mm_chamfer0.2mm",
       "sources": [
         {
           "file": "tests/fixtures/assert-shaft-collar.ts",
-          "line": 92
+          "line": 90
         }
       ]
     },
     {
-      "id": "modelprinter:ab962ec314f90ded",
+      "id": "modelprinter:764dca387582d860",
       "library": "modelprinter",
       "fn": "shaftcollar",
-      "spec": "shaftcollar_bore8mm_od16mm_w8mm_mount(setscrew)_m4_threadpitch0.5mm_threadhand(left)_threadclass(6H)",
+      "spec": "shaftcollar_bore8mm_od16mm_w8mm_setscrew_m4_threadpitch0.5mm_lefthanded_threadclass(6H)",
       "sources": [
         {
           "file": "tests/fixtures/assert-shaft-collar.ts",
-          "line": 55
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:04484e528cf7a011",
+      "library": "modelprinter",
+      "fn": "sheetmetal",
+      "spec": "sheetmetal_angle_w20_l20",
+      "sources": [
+        {
+          "file": "tests/sheet-metal-flags.test.ts",
+          "line": 11
         }
       ]
     },
@@ -3038,7 +4110,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-sheet-metal.ts",
-          "line": 41
+          "line": 46
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:e5e901bf377119cf",
+      "library": "modelprinter",
+      "fn": "sheetmetal",
+      "spec": "sheetmetal_channel_w20_l20",
+      "sources": [
+        {
+          "file": "tests/sheet-metal-flags.test.ts",
+          "line": 11
         }
       ]
     },
@@ -3050,7 +4134,7 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-sheet-metal.ts",
-          "line": 23
+          "line": 27
         }
       ]
     },
@@ -3066,7 +4150,19 @@
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 86
+          "line": 101
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:ddc7a2309ff62598",
+      "library": "modelprinter",
+      "fn": "sheetmetal",
+      "spec": "sheetmetal_plate_w20_l20",
+      "sources": [
+        {
+          "file": "tests/sheet-metal-flags.test.ts",
+          "line": 11
         }
       ]
     },
@@ -3078,7 +4174,19 @@
       "sources": [
         {
           "file": "tests/fixtures/assert-sheet-metal.ts",
-          "line": 15
+          "line": 17
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:db15e9420fb70c34",
+      "library": "modelprinter",
+      "fn": "sheetmetal",
+      "spec": "sheetmetal_w20_l20",
+      "sources": [
+        {
+          "file": "tests/sheet-metal-flags.test.ts",
+          "line": 5
         }
       ]
     },
@@ -3218,11 +4326,11 @@
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 120
+          "line": 142
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 122
+          "line": 144
         }
       ]
     },
@@ -3395,10 +4503,22 @@
       ]
     },
     {
-      "id": "modelprinter:7278b1dfbcd3fd4a",
+      "id": "modelprinter:9048afaf37f87002",
       "library": "modelprinter",
       "fn": "tslotcoverstrip",
-      "spec": "tslotcoverstrip_l100mm_w8mm_t1mm_stemw5.8mm_stemh2mm_barbw6.2mm_profile(tee)",
+      "spec": "tslotcoverstrip_l100mm_w8mm_t1mm_stemw5.8mm_stemh2mm_barbw6.2mm",
+      "sources": [
+        {
+          "file": "tests/tslotcoverstrip-06-legacy-selectors.test.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:7b6ad5d5f896be30",
+      "library": "modelprinter",
+      "fn": "tslotcoverstrip",
+      "spec": "tslotcoverstrip_l100mm_w8mm_t1mm_stemw5.8mm_stemh2mm_barbw6.2mm_tee",
       "sources": [
         {
           "file": "tests/tslotcoverstrip-01-contract.test.ts",
@@ -3419,18 +4539,14 @@
         {
           "file": "tests/tslotcoverstrip-05-flags.test.ts",
           "line": 9
-        }
-      ]
-    },
-    {
-      "id": "modelprinter:7b6ad5d5f896be30",
-      "library": "modelprinter",
-      "fn": "tslotcoverstrip",
-      "spec": "tslotcoverstrip_l100mm_w8mm_t1mm_stemw5.8mm_stemh2mm_barbw6.2mm_tee",
-      "sources": [
+        },
         {
           "file": "tests/tslotcoverstrip-05-flags.test.ts",
           "line": 24
+        },
+        {
+          "file": "tests/tslotcoverstrip-06-legacy-selectors.test.ts",
+          "line": 7
         }
       ]
     },
@@ -3467,6 +4583,38 @@
         {
           "file": "tests/tslot-extrusion.test.ts",
           "line": 90
+        },
+        {
+          "file": "tests/tslot-extrusion.test.ts",
+          "line": 116
+        },
+        {
+          "file": "tests/tslot-extrusion.test.ts",
+          "line": 118
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:85a4b6611cf18fd7",
+      "library": "modelprinter",
+      "fn": "tslotextrusion",
+      "spec": "tslotextrusion_fourtsolid",
+      "sources": [
+        {
+          "file": "tests/tslot-extrusion.test.ts",
+          "line": 121
+        },
+        {
+          "file": "tests/tslot-extrusion.test.ts",
+          "line": 122
+        },
+        {
+          "file": "tests/tslot-extrusion.test.ts",
+          "line": 125
+        },
+        {
+          "file": "tests/tslot-extrusion.test.ts",
+          "line": 127
         }
       ]
     },
@@ -3483,10 +4631,10 @@
       ]
     },
     {
-      "id": "modelprinter:7b5e268463421e5e",
+      "id": "modelprinter:d9a3374f54967293",
       "library": "modelprinter",
       "fn": "tslotextrusion",
-      "spec": "tslotextrusion_w20mm_h20mm_l100mm_profile(fourtsolid)_slot6mm_pocket10mm_pocketd2mm_lip2mm_bore4mm_corner1mm",
+      "spec": "tslotextrusion_w20mm_h20mm_l100mm_fourtsolid_slot6mm_pocket10mm_pocketd2mm_lip2mm_bore4mm_corner1mm",
       "sources": [
         {
           "file": "tests/tslot-extrusion.test.ts",
@@ -3502,7 +4650,7 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 51
+          "line": 101
         }
       ]
     },
@@ -3531,14 +4679,46 @@
         {
           "file": "tests/tslot-gusset.test.ts",
           "line": 108
+        },
+        {
+          "file": "tests/tslot-gusset.test.ts",
+          "line": 138
+        },
+        {
+          "file": "tests/tslot-gusset.test.ts",
+          "line": 140
         }
       ]
     },
     {
-      "id": "modelprinter:f5d0c0aeb499dd0b",
+      "id": "modelprinter:55dbf7d3167cf116",
       "library": "modelprinter",
       "fn": "tslotgusset",
-      "spec": "tslotgusset_w40mm_h40mm_t4mm_shape(righttriangle)_slots2_slot(5mm,12mm)_centers(12mm,28mm)",
+      "spec": "tslotgusset_righttriangle",
+      "sources": [
+        {
+          "file": "tests/tslot-gusset.test.ts",
+          "line": 143
+        },
+        {
+          "file": "tests/tslot-gusset.test.ts",
+          "line": 144
+        },
+        {
+          "file": "tests/tslot-gusset.test.ts",
+          "line": 147
+        },
+        {
+          "file": "tests/tslot-gusset.test.ts",
+          "line": 149
+        }
+      ]
+    },
+    {
+      "id": "modelprinter:af5639d118b06806",
+      "library": "modelprinter",
+      "fn": "tslotgusset",
+      "spec": "tslotgusset_w40mm_h40mm_t4mm_righttriangle_slots2_slot(5mm,12mm)_centers(12mm,28mm)",
       "sources": [
         {
           "file": "tests/tslot-gusset.test.ts",
@@ -3554,7 +4734,7 @@
       "sources": [
         {
           "file": "tests/fixtures/model-string-flag-cases.ts",
-          "line": 56
+          "line": 108
         }
       ]
     },
@@ -3698,11 +4878,15 @@
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 137
+          "line": 159
         },
         {
           "file": "tests/fixtures/registration-baselines.json",
-          "line": 139
+          "line": 161
+        },
+        {
+          "file": "tests/gear-boolean-flags.test.ts",
+          "line": 17
         }
       ]
     },
