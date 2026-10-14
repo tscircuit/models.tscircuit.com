@@ -160,14 +160,15 @@ describe("relevant native-schema controls", () => {
     expect(modelKeys("wormgear")).toEqual(
       expect.arrayContaining([
         "starts",
-        "handedness",
+        "leftHanded",
         "pitchDiameter",
         "segmentsPerTurn",
       ]),
     )
     expect(modelKeys("flexscreen")).toEqual(
       expect.arrayContaining([
-        "orientation",
+        "sitsFlat",
+        "foldedToFaceAboveBoard",
         "aspectRatio",
         "screenOffset",
         "screenRotation",
@@ -175,12 +176,8 @@ describe("relevant native-schema controls", () => {
     )
     for (const alias of [
       "ratio",
-      "sitsFlat",
-      "sitsFlatBelowBoard",
-      "foldedToFaceAboveBoard",
       "foldsAboveBoard",
       "foldsBelowBoard",
-      "foldedToRightAngleAboveBoard",
     ])
       expect(modelKeys("flexscreen")).not.toContain(alias)
     const gear = modelCatalog.find((entry) => entry.fn === "spurgear")!

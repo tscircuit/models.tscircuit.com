@@ -69,3 +69,14 @@ test("changing connector families repeatedly selects the most recent choice", ()
   values = updateValues(entry, values, "ph", true)
   expect(configure(entry, values).resolvedValues).toEqual(ph)
 })
+
+
+test("model flags replace conflicting choices and preserve dimension overrides", () => {
+  const entry = catalog.find(item => item.fn === "nema")!
+  let values = updateValues(entry, { nemaSize: 23, bodyLength: 60, backFaceScrews: true }, "backFaceHoles", true)
+  expect(configure(entry, values).values).toMatchObject({ backFaceHoles: true, backFaceScrews: false, bodyLength: 60 })
+  values = updateValues(entry, values, "wireConnection", "jst-sh-4")
+  values = updateValues(entry, values, "noWires", true)
+  expect(configure(entry, values).values).toMatchObject({ noWires: true, wireStubs: false })
+  expect(values).not.toHaveProperty("wireConnection")
+})
