@@ -86,7 +86,7 @@ test("applying a model string retains explicit inputs without freezing NEMA defa
   expect(explicit.values).toEqual({
     nemaSize: 17,
     bodyLength: 38,
-    wireStubs: true,
+    wireConnection: "stubs",
   })
   expect(changed.values.bodyLength).toBe(38)
   expect(changed.values.bodyWidth).toBe(nemaMotorDimensions[23].bodyWidth)
@@ -126,7 +126,7 @@ test("spur and worm edits roundtrip all gear parameters through the official gra
     pitchDiameter: 14,
     length: 30,
     starts: 3,
-    leftHanded: true,
+    handedness: "left",
     pressureAngle: 20,
     boreDiameter: 3,
     backlash: 0.01,
@@ -151,12 +151,12 @@ test("sheet features retain signed positions and slot orientation on every panel
     for (const panel of panels)
       for (const axis of ["u", "v"]) {
         const configured = configureModel(entry("sheetmetal"), {
-          [profile]: true,
+          profile,
           width: 60,
           baseLength: 60,
           holes: [
-            { panel, round: true, u: 4, v: -5, diameter: 3 },
-            { panel, slot: true, u: -8, v: 6, length: 8, width: 2, axis },
+            { panel, shape: "round", u: 4, v: -5, diameter: 3 },
+            { panel, shape: "slot", u: -8, v: 6, length: 8, width: 2, axis },
           ],
         })
         expect(parseSpec(configured.spec)).toEqual({
@@ -182,9 +182,8 @@ test("JSON-only flex placement remains in preview props and exported JSX", () =>
   expect(configured.warnings).toEqual([
     "Placement settings are available in JSX/JSON",
   ])
-  expect(parseSpec(configured.spec)).toMatchObject({
+  expect(parseSpec(configured.spec)).toEqual({
     fn: "flexscreen",
-    sitsFlat: true,
     width: 25.4,
     aspectRatio: "16:9",
     showFlexCable: false,
@@ -238,7 +237,7 @@ test("helical gear strings preserve tooth count, helix angle, handedness, and re
     toothCount: 32,
     faceWidth: 4,
     helixAngle: 30,
-    leftHanded: true,
+    handedness: "left",
     segmentsPerTurn: 48,
   })
   const configured = configureModel(entry("helicalgear"), imported.values)
@@ -264,21 +263,10 @@ test("new part dimensions roundtrip through native model strings", () => {
 })
 
 test("NEMA34 and JST connectors retain their native dimensions and strings", () => {
-  const configured = configureModel(entry("nema"), { nemaSize: 34, wireConnection: "jst-sh-4", stepped: true })
+  const configured = configureModel(entry("nema"), { nemaSize: 34, wireConnection: "jst-sh-4", cornerProfile: "stepped" })
   expect(configured.spec).toBe("nema34_jstsh4_stepped")
   expect(configured.values.bodyWidth).toBe(86)
   expect(configured.values.shaftDiameter).toBe(14)
   const input = modelInputFromSpec(configured.spec)
   expect(configureModel(entry("nema"), input.values).values).toEqual(configured.values)
-})
-
-
-test("NEMA23 rear dimensions and arc controls roundtrip with current defaults", () => {
-  const motor = entry("nema")
-  const defaults = configureModel(motor, { nemaSize: 23 })
-  expect(defaults.values).toMatchObject({ stepped: true, rearStepped: true, backFaceHoleSpacingX: 50, backFaceHoleSpacingY: 32, bodyCornerRecessRadius: 5, rearCornerRecessRadius: 5 })
-  const configured = configureModel(motor, { nemaSize: 23, backFaceHoles: true, backFaceHoleSpacingX: 46, backFaceHoleSpacingY: 28, bodyCornerRecessRadius: 4, bodyCornerFilletRadius: 2, rearCornerRecessRadius: 4, rearCornerFilletRadius: 2 })
-  expect(configured.spec).toContain("backholespacingx46mm_backholespacingy28mm")
-  const imported = modelInputFromSpec(configured.spec)
-  expect(configureModel(motor, imported.values).values).toEqual(configured.values)
 })

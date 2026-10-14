@@ -22,9 +22,19 @@ test("the updated catalog configures, imports, and renders ISO hex bolts", () =>
       "wormgear",
     ]),
   )
-  for (const key of ["fullThread", "hex", "male"])
-    expect(entry.parameters.find(parameter => parameter.key === key)).toMatchObject({ kind: "enum", options: [{value: true, label: "true"}] })
-  expect(entry.parameters.find(parameter => parameter.key === "threadClass")?.kind).toBe("enum")
+  for (const [key, value] of [
+    ["thread", "full"],
+    ["drive", "hex"],
+    ["threadClass", "6g"],
+    ["threadGender", "male"],
+  ]) {
+    expect(
+      entry.parameters.find((parameter) => parameter.key === key),
+    ).toMatchObject({
+      kind: "enum",
+      options: [{ value, label: expect.any(String) }],
+    })
+  }
 
   for (const metricSize of ["M3", "M4", "M5", "M6"] as const) {
     for (const threadHand of ["right", "left"] as const) {
@@ -49,7 +59,7 @@ test("the updated catalog configures, imports, and renders ISO hex bolts", () =>
           ...hexBoltDimensions[metricSize],
           length: 12.7,
           iso4017: true,
-          leftHanded: threadHand === "left",
+          threadHand,
           showThreads,
         })
         expect(configured.warnings).toBeUndefined()

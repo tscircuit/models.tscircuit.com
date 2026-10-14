@@ -94,8 +94,6 @@ export const lengthTokens: Record<ModelName, Record<string, string>> = {
     bodyLength: "bodylength",
     bodyWidth: "bodywidth",
     backFaceHoleSpacing: "backholespacing",
-    backFaceHoleSpacingX: "backholespacingx",
-    backFaceHoleSpacingY: "backholespacingy",
     backFaceHoleDiameter: "backholediameter",
     backFaceHoleDepth: "backholedepth",
     shaftLength: "shaftlength",
@@ -111,10 +109,6 @@ export const lengthTokens: Record<ModelName, Record<string, string>> = {
     rearCapLength: "rearcap",
     faceCornerChamfer: "facechamfer",
     bodyCornerChamfer: "bodychamfer",
-    bodyCornerRecessRadius: "bodyrecess",
-    bodyCornerFilletRadius: "bodyfillet",
-    rearCornerRecessRadius: "rearrecess",
-    rearCornerFilletRadius: "rearfillet",
     rearCornerChamfer: "rearchamfer",
   },
   flexscreen: {
@@ -192,16 +186,51 @@ const numberTokens: Partial<Record<ModelName, Record<string, string>>> = {
 const enumTokens: Partial<
   Record<ModelName, Record<string, Record<string, string>>>
 > = {
-  hexbolt: { threadClass: { "6g": "threadclass(6g)" } },
+  hexbolt: {
+    standard: {
+      iso4017: "standard(iso4017)",
+      "iso4017:2014": "standard(iso4017:2014)",
+    },
+    thread: { full: "thread(full)" },
+    drive: { hex: "drive(hex)" },
+    threadHand: {
+      right: "threadhand(right)",
+      left: "threadhand(left)",
+    },
+    threadClass: { "6g": "threadclass(6g)" },
+    threadGender: { male: "threadgender(male)" },
+  },
+  nema: {
+    cornerProfile: { stepped: "stepped", chamfered: "chamfered" },
+    backFace: {
+      plain: "plainbackface",
+      holes: "backfaceholes",
+      screws: "backfacescrews",
+    },
+    wireConnection: {
+      none: "nowires",
+      stubs: "wirestubs",
+      "jst-ph-6": "jstph6",
+    },
+    shaftShape: { round: "round", d: "dshaft" },
+  },
+  flexscreen: {
+    orientation: {
+      sitsFlat: "sitsflat",
+      sitsFlatBelowBoard: "sitsflatbelow",
+      foldedToFaceAboveBoard: "foldsabove",
+      foldedToFaceBelowBoard: "foldsbelow",
+      foldedToRightAngleAboveBoard: "rightangleabove",
+      foldedToRightAngleBelowBoard: "rightanglebelow",
+    },
+  },
 }
 const booleanTokens: Partial<
   Record<ModelName, Record<string, [string, string]>>
 > = {
   nema: { mountingHoleThrough: ["throughholes", "blindholes"] },
   hexsocketbolt: { showThreads: ["threads", "nothreads"] },
-  hexbolt: { showThreads: ["threads", "nothreads"], leftHanded: ["lefthanded", "righthanded"] },
-  helicalgear: { leftHanded: ["left", "right"] },
-  wormgear: { leftHanded: ["left", "right"] },
+  hexbolt: { showThreads: ["threads", "nothreads"], iso4017: ["iso4017", "iso4017"] },
   flexscreen: {
     showScreen: ["showscreen", "hidescreen"],
     showFlexCable: ["showflex", "hideflex"],
@@ -209,26 +238,6 @@ const booleanTokens: Partial<
     showStiffeners: ["showstiffeners", "hidestiffeners"],
   },
 }
-const selectorTokens: Record<string, Record<string, string>> = {
-  nema: {
-    backFacePlain: "plainbackface", backFaceHoles: "backfaceholes", backFaceScrews: "backfacescrews",
-    roundShaft: "round", dShaft: "dshaft", chamfered: "chamfered", stepped: "stepped",
-    rearChamfered: "rearchamfered", rearStepped: "rearstepped", noWires: "nowires", wireStubs: "wirestubs",
-  },
-  flexscreen: {
-    sitsFlat: "sitsflat", sitsFlatBelowBoard: "sitsflatbelow",
-    foldedToFaceAboveBoard: "foldsabove", foldedToFaceBelowBoard: "foldsbelow",
-    foldedToRightAngleAboveBoard: "rightangleabove", foldedToRightAngleBelowBoard: "rightanglebelow",
-  },
-  sheetmetal: { plate: "plate", angle: "angle", channel: "channel" },
-  hexbolt: { iso4017: "iso4017", fullThread: "fullthread", hex: "hex", male: "male" },
-}
-export const modelFlagGroups: Record<string, string[][]> = {
-  nema: [["backFacePlain", "backFaceHoles", "backFaceScrews"], ["roundShaft", "dShaft"], ["chamfered", "stepped"], ["rearChamfered", "rearStepped"], ["noWires", "wireStubs", "wireConnection"]],
-  sheetmetal: [["plate", "angle", "channel"]],
-  flexscreen: [["sitsFlat", "sitsFlatBelowBoard", "foldedToFaceAboveBoard", "foldedToFaceBelowBoard", "foldedToRightAngleAboveBoard", "foldedToRightAngleBelowBoard", "foldsAboveBoard", "foldsBelowBoard"]],
-}
-
 const colorTokens: Record<string, string> = {
   screenColor: "screencolor",
   bezelColor: "bezelcolor",
@@ -251,8 +260,8 @@ const inputAliases: Partial<Record<ModelName, Record<string, string>>> = {
   helicalgear: {
     teeth: "toothCount",
     width: "faceWidth",
-    right: "leftHanded",
-    left: "leftHanded",
+    right: "handedness",
+    left: "handedness",
   },
   nema: {
     l: "bodyLength",
@@ -272,13 +281,13 @@ const inputAliases: Partial<Record<ModelName, Record<string, string>>> = {
     af: "headAcrossFlats",
   },
   sheetmetal: {
-    plate: "plate",
-    angle: "angle",
-    channel: "channel",
+    plate: "profile",
+    angle: "profile",
+    channel: "profile",
     hole: "holes",
     slot: "holes",
   },
-  wormgear: { right: "leftHanded", left: "leftHanded" },
+  wormgear: { right: "handedness", left: "handedness" },
   flexscreen: {
     d: "diagonal",
     defaultdiag: "defaultDiagonal",
@@ -291,15 +300,15 @@ const inputAliases: Partial<Record<ModelName, Record<string, string>>> = {
     distanceaboveboard: "distanceAboveBoard",
     distancebelowboard: "distanceBelowBoard",
     foldstart: "foldDistanceFromConnector",
-    sitsflatbelowboard: "sitsFlatBelowBoard",
-    foldsaboveboard: "foldedToFaceAboveBoard",
-    foldsbelowboard: "foldedToFaceBelowBoard",
-    foldedtofaceaboveboard: "foldedToFaceAboveBoard",
-    foldedtofacebelowboard: "foldedToFaceBelowBoard",
-    rightangleaboveboard: "foldedToRightAngleAboveBoard",
-    rightanglebelowboard: "foldedToRightAngleBelowBoard",
-    foldedtorightangleaboveboard: "foldedToRightAngleAboveBoard",
-    foldedtorightanglebelowboard: "foldedToRightAngleBelowBoard",
+    sitsflatbelowboard: "orientation",
+    foldsaboveboard: "orientation",
+    foldsbelowboard: "orientation",
+    foldedtofaceaboveboard: "orientation",
+    foldedtofacebelowboard: "orientation",
+    rightangleaboveboard: "orientation",
+    rightanglebelowboard: "orientation",
+    foldedtorightangleaboveboard: "orientation",
+    foldedtorightanglebelowboard: "orientation",
     ratio: "aspectRatio",
   },
 }
@@ -309,12 +318,7 @@ export function modelInputFromSpec(spec: string): {
   fn: ModelName
   values: Record<string, unknown>
 } {
-  const builder = modelprinter.string(spec
-    .replace(/_standard\(iso4017(?::2014)?\)/gi, "_iso4017")
-    .replace(/_drive\(hex\)/gi, "_hex")
-    .replace(/_thread\(full\)/gi, "_fullthread")
-    .replace(/_threadhand\((left|right)\)/gi, (_, hand) => `_${hand.toLowerCase()}handed`)
-    .replace(/_threadgender\(male\)/gi, "_male"))
+  const builder = modelprinter.string(spec.replace(/_standard\(iso4017(?::2014)?\)/gi, "_iso4017"))
   const { fn: name, ...parsed } = builder.json()
   const fn = name as ModelName
   const raw = builder.params()
@@ -335,16 +339,12 @@ export function modelInputFromSpec(spec: string): {
     for (const token of Object.values(options))
       tokenToProperty[token.replace(/\d+$/, "")] = key
   }
-  for (const [key, token] of Object.entries(selectorTokens[fn] ?? {})) {
-    tokenToProperty[token] = key
-    tokenToProperty[key.toLowerCase()] = key
-  }
   if (fn === "flexscreen") {
     for (const [key, token] of Object.entries(colorTokens))
       tokenToProperty[token] = key
     if (raw.distance !== undefined)
       tokenToProperty.distance =
-        definition.foldedToFaceAboveBoard === true
+        definition.orientation === "foldedToFaceAboveBoard"
           ? "distanceAboveBoard"
           : "distanceBelowBoard"
   }
@@ -411,9 +411,6 @@ export function serializeModelInput(
     else if (flag) tokens.push(flag[value ? 0 : 1])
     else if (fn === "nema" && key === "wireConnection" && /^jst-(ph|sh)-\d+$/.test(String(value)))
       tokens.push(String(value).replace(/^jst-(ph|sh)-(\d+)$/, "jst$1$2"))
-    else if (selectorTokens[fn]?.[key]) {
-      if (value) tokens.push(selectorTokens[fn]![key]!)
-    }
     else if (selection) tokens.push(selection[String(value)]!)
     else if (
       (fn === "hexsocketbolt" || fn === "hexbolt") && key === "metricSize"
@@ -421,6 +418,8 @@ export function serializeModelInput(
       tokens.push(`m${value.slice(1)}`)
     else if (fn === "nema" && key === "backFaceScrewSize")
       tokens.push(`backscrewm${value.slice(1)}`)
+    else if ((fn === "wormgear" || fn === "helicalgear") && key === "handedness") tokens.push(value)
+    else if (fn === "sheetmetal" && key === "profile") tokens.push(value)
     else if (fn === "sheetmetal" && key === "holes") {
       for (const [index, hole] of value.entries()) {
         const base = hole.panel === "base"
@@ -428,7 +427,7 @@ export function serializeModelInput(
           ? "bottomface"
           : hole.panel === "left"
             ? "leftface"
-            : props.angle
+            : props.profile === "angle"
               ? "angledface"
               : "rightface"
         const horizontal = base
@@ -436,7 +435,7 @@ export function serializeModelInput(
           : hole.v * (hole.panel === "left" ? -1 : 1)
         const vertical = base ? hole.v : hole.u
         const feature = [
-          hole.round
+          hole.shape === "round"
             ? `d${decimal(hole.diameter)}mm`
             : `l${decimal(hole.length)}mm_w${decimal(hole.width)}mm`,
           face,
@@ -449,14 +448,14 @@ export function serializeModelInput(
           feature.push(
             `${vertical > 0 ? "abovecenter" : "belowcenter"}${decimal(Math.abs(vertical))}mm`,
           )
-        if (hole.slot)
+        if (hole.shape === "slot")
           feature.push(
             (base && hole.axis === "u") || (!base && hole.axis === "v")
               ? "horizontal"
               : "vertical",
           )
         tokens.push(
-          `${hole.round ? "hole" : "slot"}${index + 1}(${feature.join("_")})`,
+          `${hole.shape === "round" ? "hole" : "slot"}${index + 1}(${feature.join("_")})`,
         )
       }
     } else if (fn === "flexscreen" && ["aspectRatio", "ratio"].includes(key)) {
@@ -508,19 +507,6 @@ export function configureModel(
     if (!["iso4017", "iso4017:2014"].includes(String(input.standard).toLowerCase())) throw new Error("Unsupported hex bolt standard")
     delete input.standard
     input.iso4017 = true
-  }
-  if (fn === "hexbolt") {
-    for (const [key, flag, expected] of [["drive", "hex", "hex"], ["thread", "fullThread", "full"], ["threadGender", "male", "male"]]) {
-      if (input[key!] === undefined) continue
-      if (input[key!] !== expected) throw new Error(`Unsupported hex bolt ${key}`)
-      delete input[key!]
-      input[flag!] = true
-    }
-    if (input.threadHand !== undefined) {
-      if (!["left", "right"].includes(String(input.threadHand))) throw new Error("Unsupported thread hand")
-      input.leftHanded = input.threadHand === "left"
-      delete input.threadHand
-    }
   }
   for (const parameter of entry.parameters) {
     if (parameter.kind === "json" && typeof input[parameter.key] === "string") {

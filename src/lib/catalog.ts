@@ -1,7 +1,7 @@
 import type { CatalogEntry, Configuration } from "./catalog-types"
 import { modelCatalog } from "./model-catalog"
 import { footprintCatalog } from "./footprint-catalog"
-import { configureModel, modelInputFromSpec, modelFlagGroups } from "./model-configuration"
+import { configureModel, modelInputFromSpec } from "./model-configuration"
 import {
   configureFootprint,
   footprintInputFromSpec,
@@ -87,13 +87,6 @@ export function updateValues(
           : []
     if (value === true && exclusive.includes(key)) {
       for (const field of exclusive) delete next[field]
-    }
-  }
-  if (entry.library === "modelprinter") {
-    const group = modelFlagGroups[entry.fn]?.find(fields => fields.includes(key))
-    if (group && value !== "" && value !== undefined) {
-      for (const field of group) delete next[field]
-      if (value === false) return next
     }
   }
   if (value === "" || value === undefined) delete next[key]

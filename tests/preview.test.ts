@@ -156,17 +156,3 @@ describe("geometry transfer", () => {
     expect(getMeshBounds([])).toBeUndefined()
   })
 })
-
-
-test("released NEMA23 renderer keeps the rear shoulders flush with the body", () => {
-  const motor = modelCatalog.find(entry => entry.fn === "nema")!
-  const configured = configureModel(motor, { nemaSize: 23, noWires: true })
-  const preview = generatePreview({ id: 23, library: "modelprinter", fn: "nema", spec: configured.spec, values: configured.values }, geometries => {
-    for (const z of [-25, -50]) {
-      const probe = jscad.primitives.cuboid({ size: [0.1, 0.1, 0.1], center: [27, 16, z] })
-      const volume = geometries.reduce((sum, geom) => sum + jscad.measurements.measureVolume(jscad.booleans.intersect(geom, probe)), 0)
-      expect(volume).toBeGreaterThan(0.0009)
-    }
-  })
-  expect(preview.error).toBeUndefined()
-})

@@ -44,7 +44,7 @@ const names: Record<string, string> = {
   radialSegments: "Radial segments",
   segmentsPerTurn: "Segments per turn",
   segmentsPerTooth: "Segments per tooth",
-  leftHanded: "Left handed",
+  backFace: "Rear face",
   wireConnection: "Wire connection",
   showThreads: "Show threads",
   holes: "Holes and slots",
@@ -113,7 +113,7 @@ const metadata: Record<
     tags: ["plate", "angle", "channel", "bracket", "hole", "slot"],
     description: "A plate, angle, or channel with positioned holes and slots.",
     initialSpec: "sheetmetal_plate_w30mm_l40mm",
-    initialValues: { plate: true, width: 30, baseLength: 40 },
+    initialValues: { profile: "plate", width: 30, baseLength: 40 },
   },
   hexsocketbolt: {
     name: "Hex socket bolt",
@@ -159,7 +159,11 @@ const orientationKeys = [
 
 function isCanonicalParameter(fn: ModelName, key: string): boolean {
   if (fn !== "flexscreen") return true
-  return !["ratio", "foldsAboveBoard", "foldsBelowBoard"].includes(key)
+  // The orientation enum and aspectRatio already cover these native aliases.
+  // Raw strings and shared configurations can still use the aliases.
+  return (
+    key !== "ratio" && (key === "orientation" || !orientationKeys.includes(key))
+  )
 }
 
 function group(fn: ModelName, key: string): string {
@@ -265,7 +269,7 @@ function describeParameter(
   }
   if (key === "holes")
     parameter.description =
-      'JSON array: [{"panel":"base","round":true,"u":0,"v":0,"diameter":3}]'
+      'JSON array: [{"panel":"base","shape":"round","u":0,"v":0,"diameter":3}]'
   if (["offset", "screenOffset"].includes(key))
     parameter.description =
       'JSON coordinates in millimeters: {"x":0,"y":0,"z":0}'

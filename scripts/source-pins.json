@@ -7,8 +7,8 @@
   },
   "modelprinter": {
     "package": "@tscircuit/modelprinter",
-    "version": "0.0.35",
+    "version": "0.0.33",
     "repository": "tscircuit/modelprinter",
-    "commit": "0f3582ac55138e3eb5d27404a728e6cd4ce3a114"
+    "commit": "88cb190cde54ca77357071f50e67c9cfbf3d5865"
   }
 }
