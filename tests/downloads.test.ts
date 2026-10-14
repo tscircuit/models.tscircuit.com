@@ -20,7 +20,7 @@ for (const [fn, edits] of [
     "flexscreen",
     {
       offset: { x: 100, y: -50, z: 25 },
-      orientation: "sitsFlat",
+      sitsFlat: true,
       conductorCount: 2,
     },
   ],
