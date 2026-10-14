@@ -129,15 +129,6 @@
     "threadPitch": [
       "threadpitch"
     ],
-    "drive": [
-      "drive"
-    ],
-    "thread": [
-      "thread"
-    ],
-    "threadHand": [
-      "threadhand"
-    ],
     "threadClass": [
       "threadclass"
     ]
@@ -210,18 +201,6 @@
       "l",
       "length",
       "freelength"
-    ],
-    "spec": [
-      "spec"
-    ],
-    "ends": [
-      "ends"
-    ],
-    "hand": [
-      "hand"
-    ],
-    "state": [
-      "state"
     ]
   },
   "dowelpin": {
@@ -278,13 +257,38 @@
     ]
   },
   "flangenut": {},
+  "flatcableclip": {},
+  "flatgasket": {},
   "flatheadscrew": {},
+  "hatsection": {
+    "crownWidth": [
+      "crownw",
+      "crownwidth"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "lipWidth": [
+      "lip",
+      "lipwidth"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "bendRadius": [
+      "bendr",
+      "bendradius"
+    ],
+    "length": [
+      "l",
+      "length"
+    ]
+  },
   "heatsetinsert": {},
   "hexbolt": {},
   "hexnut": {
-    "threadHand": [
-      "threadhand"
-    ],
     "threadClass": [
       "threadclass"
     ]
@@ -343,6 +347,46 @@
   },
   "nylonlocknut": {},
   "panscrew": {},
+  "perforatedangle": {
+    "width": [
+      "w",
+      "width"
+    ],
+    "height": [
+      "h",
+      "height"
+    ],
+    "thickness": [
+      "t",
+      "thickness"
+    ],
+    "length": [
+      "l",
+      "length"
+    ],
+    "innerRadius": [
+      "innerr",
+      "innerradius"
+    ],
+    "holeCount": [
+      "holes",
+      "holecount"
+    ],
+    "holeDiameter": [
+      "hole",
+      "holediameter"
+    ],
+    "pitch": [
+      "pitch"
+    ],
+    "endOffset": [
+      "end",
+      "endoffset"
+    ],
+    "legOffset": [
+      "legoffset"
+    ]
+  },
   "perforatedsheet": {
     "length": [
       "l",
@@ -645,6 +689,26 @@
     "bendRadius": [
       "bendr",
       "bendradius"
+    ]
+  },
+  "ufl": {
+    "groundPitch": [
+      "p"
+    ],
+    "groundPadWidth": [
+      "pw"
+    ],
+    "groundPadHeight": [
+      "ph"
+    ],
+    "signalPadWidth": [
+      "signalw"
+    ],
+    "signalPadHeight": [
+      "signalh"
+    ],
+    "signalPadX": [
+      "signalx"
     ]
   },
   "zeebar": {
